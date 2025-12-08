@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Norwegian Wood - Advanced Nuance</title>
+    <style>
+      body {
+        font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+        background-color: #f4f6f8;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 30px;
+      }
+
+      .container {
+        max-width: 950px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: #2c3e50;
+        text-align: center;
+        font-size: 2.2em;
+        margin-bottom: 10px;
+      }
+
+      .sub-header {
+        text-align: center;
+        color: #7f8c8d;
+        margin-bottom: 40px;
+        font-style: italic;
+      }
+
+      h2.section-title {
+        color: #34495e;
+        border-left: 5px solid #3498db;
+        padding-left: 12px;
+        margin-top: 40px;
+        margin-bottom: 20px;
+        font-size: 1.6em;
+      }
+
+      /* --- VOCAB CARD --- */
+      .vocab-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+        border: 1px solid #e1e8ed;
+        overflow: hidden;
+      }
+
+      .card-header {
+        background-color: #3498db;
+        color: white;
+        padding: 12px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header-word {
+        font-size: 1.6em;
+        font-weight: bold;
+      }
+      .header-pinyin {
+        font-size: 1.2em;
+        opacity: 0.9;
+        margin-left: 10px;
+        font-weight: 300;
+      }
+      .header-meaning {
+        font-size: 1.1em;
+        font-style: italic;
+        opacity: 0.95;
+      }
+
+      .card-body {
+        padding: 15px 20px;
+      }
+
+      /* Row Layout */
+      .concept-row {
+        display: flex;
+        margin-bottom: 15px;
+        border-bottom: 1px dashed #eee;
+        padding-bottom: 15px;
+      }
+      .concept-row:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .concept-label {
+        width: 100px;
+        flex-shrink: 0;
+        font-weight: bold;
+        font-size: 0.8em;
+        text-transform: uppercase;
+        padding-top: 6px;
+        letter-spacing: 0.5px;
+      }
+
+      .label-target {
+        color: #3498db;
+      }
+      .label-syn {
+        color: #27ae60;
+      }
+      .label-ant {
+        color: #c0392b;
+      }
+
+      .concept-content {
+        flex-grow: 1;
+      }
+
+      .word-focus {
+        display: inline-block;
+        font-size: 1.25em;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 6px;
+      }
+      .pinyin-focus {
+        color: #7f8c8d;
+        font-size: 0.95em;
+        margin-left: 8px;
+      }
+
+      /* Sentence Box Logic */
+      .sentence-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px; /* Space between the two use cases */
+      }
+
+      .sentence-box {
+        background-color: #f9fafb;
+        border-radius: 4px;
+        padding: 8px 12px;
+        font-size: 0.95em;
+        border-left: 3px solid #ddd;
+      }
+
+      /* Differentiating the use cases */
+      .use-case-tag {
+        font-size: 0.75em;
+        font-weight: bold;
+        color: #fff;
+        background-color: #95a5a6;
+        padding: 1px 5px;
+        border-radius: 3px;
+        margin-right: 6px;
+        vertical-align: middle;
+      }
+      .tag-literal {
+        background-color: #3498db;
+      } /* Blue for Literal */
+      .tag-abstract {
+        background-color: #9b59b6;
+      } /* Purple for Abstract/Metaphor */
+
+      .cn-sent {
+        color: #2c3e50;
+        font-weight: 500;
+      }
+      .py-sent {
+        color: #7f8c8d;
+        font-size: 0.9em;
+        margin-left: 8px;
+        font-style: italic;
+      }
+      .en-sent {
+        display: block;
+        color: #95a5a6;
+        font-size: 0.85em;
+        margin-top: 2px;
+      }
+
+      /* --- LYRICS TABLE --- */
+      .lyrics-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+      .lyrics-table th {
+        background-color: #2c3e50;
+        color: white;
+        padding: 12px 15px;
+        text-align: left;
+      }
+      .lyrics-table td {
+        padding: 10px 15px;
+        border-bottom: 1px solid #f1f1f1;
+        vertical-align: top;
+      }
+      .lyrics-table tr:hover {
+        background-color: #f4fcff;
+      }
+      .hanzi-lyric {
+        font-size: 1.15em;
+        font-weight: bold;
+        color: #333;
+        width: 35%;
+      }
+      .pinyin-lyric {
+        color: #2980b9;
+        font-size: 1em;
+        width: 30%;
+      }
+      .eng-lyric {
+        color: #7f8c8d;
+        font-style: italic;
+        font-size: 0.95em;
+        width: 35%;
+      }
+      .lyric-highlight {
+        color: #c0392b;
+        font-weight: 900;
+        background-color: #fff0f0;
+        padding: 0 4px;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🎵 挪威的森林 (Norwegian Wood)</h1>
+      <div class="sub-header">Advanced Vocabulary: Context & Nuance</div>
+
+      <h2 class="section-title">1. Vocabulary Focus</h2>
+
+      <!-- CARD 1: 融化 -->
+      <div class="vocab-card">
+        <div class="card-header">
+          <div>
+            <span class="header-word">融化</span>
+            <span class="header-pinyin">róng huà</span>
+          </div>
+          <span class="header-meaning">To Melt</span>
+        </div>
+        <div class="card-body">
+          <!-- Target (2 Use Cases) -->
+          <div class="concept-row">
+            <div class="concept-label label-target">Target</div>
+            <div class="concept-content">
+              <span class="word-focus">融化</span>
+              <span class="pinyin-focus">róng huà</span>
+              <div class="sentence-group">
+                <!-- Use Case 1 -->
+                <div class="sentence-box">
+                  <span class="use-case-tag tag-literal">Literal</span>
+                  <span class="cn-sent">雪在阳光下<b>融化</b>。</span>
+                  <span class="py-sent">Xuě zài yángguāng xià rónghuà.</span>
+                  <span class="en-sent"
+                    >The snow melts under the sunlight.</span
+                  >
+                </div>
+                <!-- Use Case 2 -->
+                <div class="sentence-box">
+                  <span class="use-case-tag tag-abstract">Metaphor</span>
+                  <span class="cn-sent">她的微笑让我的心<b>融化</b>了。</span>
+                  <span class="py-sent"
+                    >Tā de wēixiào ràng wǒ de xīn rónghuà le.</span
+                  >
+                  <span class="en-sent"
+                    >Her smile melted my heart. (Emotional softening)</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Synonym -->
+          <div class="concept-row">
+            <div class="concept-label label-syn">Synonym</div>
+            <div class="concept-content">
+              <span class="word-focus">消融</span>
+              <span class="pinyin-focus">xiāo róng (Thaw)</span>
+              <div class="sentence-box">
+                <span class="cn-sent">冰川正在消融。</span>
+                <span class="en-sent">Glaciers are thawing.</span>
+              </div>
+            </div>
+          </div>
+          <!-- Antonym -->
+          <div class="concept-row">
+            <div class="concept-label label-ant">Antonym</div>
+            <div class="concept-content">
+              <span class="word-focus">凝固</span>
+              <span class="pinyin-focus">níng gù (Solidify)</span>
+              <div class="sentence-box">
+                <span class="cn-sent">水凝固成了冰。</span>
+                <span class="en-sent">Water solidified into ice.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: 宁静 -->
+      <div class="vocab-card">
+        <div class="card-header" style="background-color: #8e44ad">
+          <div>
+            <span class="header-word">宁静</span>
+            <span class="header-pinyin">níng jìng</span>
+          </div>
+          <span class="header-meaning">Peaceful / Tranquil</span>
+        </div>
+        <div class="card-body">
+          <div class="concept-row">
+            <div class="concept-label label-target" style="color: #8e44ad">
+              Target
+            </div>
+            <div class="concept-content">
+              <span class="word-focus">宁静</span>
+              <span class="pinyin-focus">níng jìng</span>
+              <div class="sentence-group">
+                <!-- Use Case 1 -->
+                <div class="sentence-box">
+                  <span class="use-case-tag tag-literal">Environment</span>
+                  <span class="cn-sent">夜晚的森林非常<b>宁静</b>。</span>
+                  <span class="py-sent"
+                    >Yèwǎn de sēnlín fēicháng níngjìng.</span
+                  >
+                  <span class="en-sent"
+                    >The forest at night is very tranquil.</span
+                  >
+                </div>
+                <!-- Use Case 2 -->
+                <div class="sentence-box">
+                  <span class="use-case-tag tag-abstract">Inner State</span>
+                  <span class="cn-sent">我们需要保持内心的<b>宁静</b>。</span>
+                  <span class="py-sent"
+                    >Wǒmen xūyào bǎochí nèixīn de níngjìng.</span
+                  >
+                  <span class="en-sent">We need to maintain inner peace.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Synonym -->
+          <div class="concept-row">
+            <div class="concept-label label-syn">Synonym</div>
+            <div class="concept-content">
+              <span class="word-focus">安静</span>
+              <span class="pinyin-focus">ān jìng (Quiet)</span>
+              <div class="sentence-box">
+                <span class="cn-sent">请保持安静。</span>
+                <span class="en-sent">Please keep quiet.</span>
+              </div>
+            </div>
+          </div>
+          <!-- Antonym -->
+          <div class="concept-row">
+            <div class="concept-label label-ant">Antonym</div>
+            <div class="concept-content">
+              <span class="word-focus">喧闹</span>
+              <span class="pinyin-focus">xuān nào (Noisy)</span>
+              <div class="sentence-box">
+                <span class="cn-sent">我不喜欢喧闹的街道。</span>
+                <span class="en-sent">I don't like noisy streets.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3: 澄清 -->
+      <div class="vocab-card">
+        <div class="card-header" style="background-color: #16a085">
+          <div>
+            <span class="header-word">澄清</span>
+            <span class="header-pinyin">chéng qīng</span>
+          </div>
+          <span class="header-meaning">Clear / To Clarify</span>
+        </div>
+        <div class="card-body">
+          <div class="concept-row">
+            <div class="concept-label label-target" style="color: #16a085">
+              Target
+            </div>
+            <div class="concept-content">
+              <span class="word-focus">澄清</span>
+              <span class="pinyin-focus">chéng qīng</span>
+              <div class="sentence-group">
+                <!-- Use Case 1 -->
+                <div class="sentence-box">
+                  <span class="use-case-tag tag-literal">Visual</span>
+                  <span class="cn-sent">湖水很<b>澄清</b>，看见底下的鱼。</span>
+                  <span class="py-sent"
+                    >Húshuǐ hěn chéngqīng, kànjiàn dǐxià de yú.</span
+                  >
+                  <span class="en-sent"
+                    >The lake water is clear, seeing the fish below.</span
+                  >
+                </div>
+                <!-- Use Case 2 -->
+                <div class="sentence-box">
+                  <span class="use-case-tag tag-abstract">Action</span>
+                  <span class="cn-sent">公司必须<b>澄清</b>这个误会。</span>
+                  <span class="py-sent"
+                    >Gōngsī bìxū chéngqīng zhège wùhuì.</span
+                  >
+                  <span class="en-sent"
+                    >The company must clarify this misunderstanding.</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Synonym -->
+          <div class="concept-row">
+            <div class="concept-label label-syn">Synonym</div>
+            <div class="concept-content">
+              <span class="word-focus">清澈</span>
+              <span class="pinyin-focus">qīng chè (Crystal Clear)</span>
+              <div class="sentence-box">
+                <span class="cn-sent">清澈的河水。</span>
+                <span class="en-sent">Crystal clear river water.</span>
+              </div>
+            </div>
+          </div>
+          <!-- Antonym -->
+          <div class="concept-row">
+            <div class="concept-label label-ant">Antonym</div>
+            <div class="concept-content">
+              <span class="word-focus">浑浊</span>
+              <span class="pinyin-focus">hún zhuó (Muddy)</span>
+              <div class="sentence-box">
+                <span class="cn-sent">水变浑浊了。</span>
+                <span class="en-sent">The water turned muddy.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="section-title">2. Full Lyrics (Line-by-Line)</h2>
+
+      <table class="lyrics-table">
+        <thead>
+          <tr>
+            <th>Hanzi</th>
+            <th>Pinyin</th>
+            <th>English</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="hanzi-lyric">让我将你心儿摘下</td>
+            <td class="pinyin-lyric">Ràng wǒ jiāng nǐ xīnr zhāi xià</td>
+            <td class="eng-lyric">Let me take off your heart</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">
+              试着将它慢慢<span class="lyric-highlight">融化</span>
+            </td>
+            <td class="pinyin-lyric">
+              Shìzhe jiāng tā mànmàn
+              <span class="lyric-highlight">rónghuà</span>
+            </td>
+            <td class="eng-lyric">Try to melt it slowly</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">看我在你心中是否仍完美无瑕</td>
+            <td class="pinyin-lyric">
+              Kàn wǒ zài nǐ xīnzhōng shìfǒu réng wánměi wúxiá
+            </td>
+            <td class="eng-lyric">See if I am still perfect in your heart</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">是否依然为我丝丝牵挂</td>
+            <td class="pinyin-lyric">Shìfǒu yīrán wèi wǒ sīsī qiānguà</td>
+            <td class="eng-lyric">Do you still worry about me a little?</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">依然爱我无法自拔</td>
+            <td class="pinyin-lyric">Yīrán ài wǒ wúfǎ zìbá</td>
+            <td class="eng-lyric">Still love me uncontrollably</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">心中是否有我未曾到过的地方啊</td>
+            <td class="pinyin-lyric">
+              Xīnzhōng shìfǒu yǒu wǒ wèicéng dàoguò de dìfāng a
+            </td>
+            <td class="eng-lyric">
+              Is there a place in your heart I have never been?
+            </td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">
+              那里湖面总是<span class="lyric-highlight">澄清</span>
+            </td>
+            <td class="pinyin-lyric">
+              Nàlǐ húmiàn zǒngshì <span class="lyric-highlight">chéngqīng</span>
+            </td>
+            <td class="eng-lyric">The lake surface there is always clear</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">
+              那里空气充满<span class="lyric-highlight">宁静</span>
+            </td>
+            <td class="pinyin-lyric">
+              Nàlǐ kōngqì chōngmǎn <span class="lyric-highlight">níngjìng</span>
+            </td>
+            <td class="eng-lyric">The air there is full of tranquility</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">雪白明月照在大地</td>
+            <td class="pinyin-lyric">Xuěbái míngyuè zhào zài dàdì</td>
+            <td class="eng-lyric">Snow-white moon shines on the earth</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">藏着你不愿提起的回忆</td>
+            <td class="pinyin-lyric">Cángzhe nǐ bùyuàn tíqǐ de huíyì</td>
+            <td class="eng-lyric">Hiding memories you don't want to mention</td>
+          </tr>
+
+          <tr style="background-color: #f1f8fc">
+            <td
+              colspan="3"
+              style="text-align: center; font-weight: bold; color: #2980b9"
+            >
+              --- CHORUS ---
+            </td>
+          </tr>
+
+          <tr>
+            <td class="hanzi-lyric">你说真心总是可以从头</td>
+            <td class="pinyin-lyric">Nǐ shuō zhēnxīn zǒngshì kěyǐ cóngtóu</td>
+            <td class="eng-lyric">
+              You say a true heart can always start over
+            </td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">真爱总是可以长久</td>
+            <td class="pinyin-lyric">Zhēn'ài zǒngshì kěyǐ chángjiǔ</td>
+            <td class="eng-lyric">True love can always last long</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">为何你的眼神还有孤独时的落寞</td>
+            <td class="pinyin-lyric">
+              Wèihé nǐ de yǎnshén háiyǒu gūdú shí de luòmò
+            </td>
+            <td class="eng-lyric">
+              Why do your eyes still have the loneliness of solitude?
+            </td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">是否我只是你一种寄托</td>
+            <td class="pinyin-lyric">Shìfǒu wǒ zhǐshì nǐ yīzhǒng jìtuō</td>
+            <td class="eng-lyric">
+              Am I just a kind of emotional support for you?
+            </td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">填满你感情的缺口</td>
+            <td class="pinyin-lyric">Tiánmǎn nǐ gǎnqíng de quēkǒu</td>
+            <td class="eng-lyric">Filling the void in your emotions</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">心中那片森林何时能让我停留</td>
+            <td class="pinyin-lyric">
+              Xīnzhōng nà piàn sēnlín héshí néng ràng wǒ tíngliú
+            </td>
+            <td class="eng-lyric">
+              When will that forest in your heart let me stay?
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <br /><br />
+    </div>
+  </body>
+</html>

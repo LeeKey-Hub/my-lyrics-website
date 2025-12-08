@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meeting Again (再度重相逢) - Deep Dive Learning</title>
+    <style>
+      body {
+        font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+        background-color: #f4f6f8;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 30px;
+      }
+
+      .container {
+        max-width: 950px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: #2c3e50;
+        text-align: center;
+        font-size: 2.2em;
+        margin-bottom: 10px;
+      }
+
+      .sub-header {
+        text-align: center;
+        color: #7f8c8d;
+        margin-bottom: 40px;
+        font-style: italic;
+      }
+
+      h2.section-title {
+        color: #34495e;
+        border-left: 5px solid #3498db;
+        padding-left: 12px;
+        margin-top: 40px;
+        margin-bottom: 20px;
+        font-size: 1.6em;
+      }
+
+      /* --- VOCAB CARD --- */
+      .vocab-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+        border: 1px solid #e1e8ed;
+        overflow: hidden;
+      }
+
+      .card-header {
+        background-color: #3498db;
+        color: white;
+        padding: 12px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header-word {
+        font-size: 1.6em;
+        font-weight: bold;
+      }
+      .header-pinyin {
+        font-size: 1.2em;
+        opacity: 0.9;
+        margin-left: 10px;
+        font-weight: 300;
+      }
+      .header-meaning {
+        font-size: 1.1em;
+        font-style: italic;
+        opacity: 0.95;
+      }
+
+      .card-body {
+        padding: 15px 20px;
+      }
+
+      /* Row Layout */
+      .concept-row {
+        display: flex;
+        margin-bottom: 15px;
+        border-bottom: 1px dashed #eee;
+        padding-bottom: 15px;
+      }
+      .concept-row:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .concept-label {
+        width: 100px;
+        flex-shrink: 0;
+        font-weight: bold;
+        font-size: 0.8em;
+        text-transform: uppercase;
+        padding-top: 6px;
+        letter-spacing: 0.5px;
+      }
+
+      .label-target {
+        color: #3498db;
+      }
+      .label-syn {
+        color: #27ae60;
+      }
+      .label-ant {
+        color: #c0392b;
+      }
+
+      .concept-content {
+        flex-grow: 1;
+      }
+
+      .word-focus {
+        display: inline-block;
+        font-size: 1.25em;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 6px;
+      }
+      .pinyin-focus {
+        color: #7f8c8d;
+        font-size: 0.95em;
+        margin-left: 8px;
+      }
+
+      /* Sentence Box Logic */
+      .sentence-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px; /* Space between the two use cases */
+      }
+
+      .sentence-box {
+        background-color: #f9fafb;
+        border-radius: 4px;
+        padding: 8px 12px;
+        font-size: 0.95em;
+        border-left: 3px solid #ddd;
+      }
+
+      /* Differentiating the use cases */
+      .use-case-tag {
+        font-size: 0.75em;
+        font-weight: bold;
+        color: #fff;
+        background-color: #95a5a6;
+        padding: 1px 5px;
+        border-radius: 3px;
+        margin-right: 6px;
+        vertical-align: middle;
+      }
+      .tag-literal {
+        background-color: #3498db;
+      } /* Blue for Literal */
+      .tag-abstract {
+        background-color: #9b59b6;
+      } /* Purple for Abstract/Metaphor */
+
+      .cn-sent {
+        color: #2c3e50;
+        font-weight: 500;
+      }
+      .py-sent {
+        color: #7f8c8d;
+        font-size: 0.9em;
+        margin-left: 8px;
+        font-style: italic;
+      }
+      .en-sent {
+        display: block;
+        color: #95a5a6;
+        font-size: 0.85em;
+        margin-top: 2px;
+      }
+
+      /* --- LYRICS TABLE --- */
+      .lyrics-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+      .lyrics-table th {
+        background-color: #2c3e50;
+        color: white;
+        padding: 12px 15px;
+        text-align: left;
+      }
+      .lyrics-table td {
+        padding: 10px 15px;
+        border-bottom: 1px solid #f1f1f1;
+        vertical-align: top;
+      }
+      .lyrics-table tr:hover {
+        background-color: #f4fcff;
+      }
+      .hanzi-lyric {
+        font-size: 1.15em;
+        font-weight: bold;
+        color: #333;
+        width: 35%;
+      }
+      .pinyin-lyric {
+        color: #2980b9;
+        font-size: 1em;
+        width: 30%;
+      }
+      .eng-lyric {
+        color: #7f8c8d;
+        font-style: italic;
+        font-size: 0.95em;
+        width: 35%;
+      }
+
+      /* Highlight Class */
+      .lyric-highlight {
+        color: #c0392b;
+        font-weight: 900;
+        background-color: #fff0f0;
+        padding: 0 4px;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🎵 再度重相逢 (Meeting Again)</h1>
+      <div class="sub-header">Advanced Vocabulary: Context & Nuance</div>
+
+      <h2 class="section-title">1. Vocabulary Focus</h2>
+
+      <!-- CARD 1: 朦胧 (Hazy) -->
+      <div class="vocab-card">
+        <div class="card-header">
+          <div>
+            <span class="header-word">朦胧</span>
+            <span class="header-pinyin">méng lóng</span>
+          </div>
+          <span class="header-meaning">Hazy / Haze</span>
+        </div>
+        <div class="card-body">
+          <!-- Target -->
+          <div class="concept-row">
+            <div class="concept-label label-target">Target</div>
+            <div class="concept-content">
+              <span class="word-focus">朦胧</span>
+              <span class="pinyin-focus">méng lóng</span>
+              <div class="sentence-group">
+                <div class="sentence-box">
+                  <span class="use-case-tag tag-literal">Literal</span>
+                  <span class="cn-sent">今晚月色<b>朦胧</b>。</span>
+                  <span class="py-sent">Jīn wǎn yuè sè ménglóng.</span>
+                  <span class="en-sent">The moonlight is hazy tonight.</span>
+                </div>
+                <div class="sentence-box">
+                  <span class="use-case-tag tag-abstract">Abstract</span>
+                  <span class="cn-sent">他对童年的记忆很<b>朦胧</b>。</span>
+                  <span class="py-sent"
+                    >Tā duì tóngnián de jìyì hěn ménglóng.</span
+                  >
+                  <span class="en-sent"
+                    >His memory of childhood is very blurry/hazy.</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Synonym -->
+          <div class="concept-row">
+            <div class="concept-label label-syn">Synonym</div>
+            <div class="concept-content">
+              <span class="word-focus">模糊</span>
+              <span class="pinyin-focus">mó hú (Blurry)</span>
+              <div class="sentence-box">
+                <span class="cn-sent">视线变得模糊了。</span>
+                <span class="en-sent">The vision became blurry.</span>
+              </div>
+            </div>
+          </div>
+          <!-- Antonym -->
+          <div class="concept-row">
+            <div class="concept-label label-ant">Antonym</div>
+            <div class="concept-content">
+              <span class="word-focus">清晰</span>
+              <span class="pinyin-focus">qīng xī (Clear/Distinct)</span>
+              <div class="sentence-box">
+                <span class="cn-sent">照片非常清晰。</span>
+                <span class="en-sent">The photo is very clear.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: 简单 (Simple) -->
+      <div class="vocab-card">
+        <div class="card-header" style="background-color: #8e44ad">
+          <div>
+            <span class="header-word">简单</span>
+            <span class="header-pinyin">jiǎn dān</span>
+          </div>
+          <span class="header-meaning">Simple</span>
+        </div>
+        <div class="card-body">
+          <!-- Target -->
+          <div class="concept-row">
+            <div class="concept-label label-target" style="color: #8e44ad">
+              Target
+            </div>
+            <div class="concept-content">
+              <span class="word-focus">简单</span>
+              <span class="pinyin-focus">jiǎn dān</span>
+              <div class="sentence-group">
+                <div class="sentence-box">
+                  <span class="use-case-tag tag-literal">Literal</span>
+                  <span class="cn-sent">这个问题很<b>简单</b>。</span>
+                  <span class="py-sent">Zhège wèntí hěn jiǎndān.</span>
+                  <span class="en-sent"
+                    >This question/problem is very simple.</span
+                  >
+                </div>
+                <div class="sentence-box">
+                  <span class="use-case-tag tag-abstract">Abstract</span>
+                  <span class="cn-sent">我想要<b>简单</b>的幸福。</span>
+                  <span class="py-sent">Wǒ xiǎngyào jiǎndān de xìngfú.</span>
+                  <span class="en-sent"
+                    >I want simple happiness (uncomplicated life).</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Synonym -->
+          <div class="concept-row">
+            <div class="concept-label label-syn">Synonym</div>
+            <div class="concept-content">
+              <span class="word-focus">单纯</span>
+              <span class="pinyin-focus">dān chún (Pure/Simple)</span>
+              <div class="sentence-box">
+                <span class="cn-sent">他的想法很单纯。</span>
+                <span class="en-sent">His thoughts are very simple/pure.</span>
+              </div>
+            </div>
+          </div>
+          <!-- Antonym -->
+          <div class="concept-row">
+            <div class="concept-label label-ant">Antonym</div>
+            <div class="concept-content">
+              <span class="word-focus">复杂</span>
+              <span class="pinyin-focus">fù zá (Complex)</span>
+              <div class="sentence-box">
+                <span class="cn-sent">人心很复杂。</span>
+                <span class="en-sent">Human hearts are complex.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3: 安排 (Arrange) -->
+      <div class="vocab-card">
+        <div class="card-header" style="background-color: #27ae60">
+          <div>
+            <span class="header-word">安排</span>
+            <span class="header-pinyin">ān pái</span>
+          </div>
+          <span class="header-meaning">To Arrange / Arrangement</span>
+        </div>
+        <div class="card-body">
+          <!-- Target -->
+          <div class="concept-row">
+            <div class="concept-label label-target" style="color: #27ae60">
+              Target
+            </div>
+            <div class="concept-content">
+              <span class="word-focus">安排</span>
+              <span class="pinyin-focus">ān pái</span>
+              <div class="sentence-group">
+                <div class="sentence-box">
+                  <span class="use-case-tag tag-literal">Literal</span>
+                  <span class="cn-sent">我会<b>安排</b>会议室。</span>
+                  <span class="py-sent">Wǒ huì ānpái huìyìshì.</span>
+                  <span class="en-sent">I will arrange the meeting room.</span>
+                </div>
+                <div class="sentence-box">
+                  <span class="use-case-tag tag-abstract">Destiny</span>
+                  <span class="cn-sent">一切都是命运的<b>安排</b>。</span>
+                  <span class="py-sent">Yīqiè dōu shì mìngyùn de ānpái.</span>
+                  <span class="en-sent"
+                    >Everything is the arrangement of fate.</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Synonym -->
+          <div class="concept-row">
+            <div class="concept-label label-syn">Synonym</div>
+            <div class="concept-content">
+              <span class="word-focus">筹备</span>
+              <span class="pinyin-focus">chóu bèi (Prepare/Plan)</span>
+              <div class="sentence-box">
+                <span class="cn-sent">我们在筹备婚礼。</span>
+                <span class="en-sent">We are preparing for the wedding.</span>
+              </div>
+            </div>
+          </div>
+          <!-- Antonym -->
+          <div class="concept-row">
+            <div class="concept-label label-ant">Antonym</div>
+            <div class="concept-content">
+              <span class="word-focus">打乱</span>
+              <span class="pinyin-focus">dǎ luàn (To Disrupt)</span>
+              <div class="sentence-box">
+                <span class="cn-sent">计划被打乱了。</span>
+                <span class="en-sent">The plan was disrupted.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 4: 相逢 (To Meet) -->
+      <div class="vocab-card">
+        <div class="card-header" style="background-color: #16a085">
+          <div>
+            <span class="header-word">相逢</span>
+            <span class="header-pinyin">xiāng féng</span>
+          </div>
+          <span class="header-meaning">To meet (often by chance)</span>
+        </div>
+        <div class="card-body">
+          <!-- Target -->
+          <div class="concept-row">
+            <div class="concept-label label-target" style="color: #16a085">
+              Target
+            </div>
+            <div class="concept-content">
+              <span class="word-focus">相逢</span>
+              <span class="pinyin-focus">xiāng féng</span>
+              <div class="sentence-group">
+                <div class="sentence-box">
+                  <span class="use-case-tag tag-literal">Literal</span>
+                  <span class="cn-sent">我们终于在巴黎<b>相逢</b>。</span>
+                  <span class="py-sent">Wǒmen zhōngyú zài Bālí xiāngféng.</span>
+                  <span class="en-sent">We finally met in Paris.</span>
+                </div>
+                <div class="sentence-box">
+                  <span class="use-case-tag tag-abstract">Poetic</span>
+                  <span class="cn-sent">相逢何必曾相识。</span>
+                  <span class="py-sent">Xiāngféng hébì céng xiāngshí.</span>
+                  <span class="en-sent"
+                    >Why must we have known each other before to enjoy this
+                    meeting? (Famous idiom).</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Synonym -->
+          <div class="concept-row">
+            <div class="concept-label label-syn">Synonym</div>
+            <div class="concept-content">
+              <span class="word-focus">相遇</span>
+              <span class="pinyin-focus">xiāng yù (Encounter)</span>
+              <div class="sentence-box">
+                <span class="cn-sent">很高兴与你相遇。</span>
+                <span class="en-sent">Very happy to encounter/meet you.</span>
+              </div>
+            </div>
+          </div>
+          <!-- Antonym -->
+          <div class="concept-row">
+            <div class="concept-label label-ant">Antonym</div>
+            <div class="concept-content">
+              <span class="word-focus">离别</span>
+              <span class="pinyin-focus">lí bié (Parting)</span>
+              <div class="sentence-box">
+                <span class="cn-sent">离别总是悲伤的。</span>
+                <span class="en-sent">Parting is always sad.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="section-title">2. Full Lyrics (Line-by-Line)</h2>
+
+      <table class="lyrics-table">
+        <thead>
+          <tr>
+            <th>Hanzi</th>
+            <th>Pinyin</th>
+            <th>English</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="hanzi-lyric">你说人生如梦</td>
+            <td class="pinyin-lyric">Nǐ shuō rénshēng rú mèng</td>
+            <td class="eng-lyric">You say life is like a dream</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">我说人生如秀</td>
+            <td class="pinyin-lyric">Wǒ shuō rénshēng rú xiù</td>
+            <td class="eng-lyric">I say life is like a show</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">哪有什么不同</td>
+            <td class="pinyin-lyric">Nǎ yǒu shénme bùtóng</td>
+            <td class="eng-lyric">What difference is there?</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">
+              不都一样<span class="lyric-highlight">朦胧</span>
+            </td>
+            <td class="pinyin-lyric">
+              Bù dōu yīyàng <span class="lyric-highlight">ménglóng</span>
+            </td>
+            <td class="eng-lyric">Isn't it all equally hazy?</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">
+              <span class="lyric-highlight">朦胧</span>中有你
+            </td>
+            <td class="pinyin-lyric">
+              <span class="lyric-highlight">Ménglóng</span> zhōng yǒu nǐ
+            </td>
+            <td class="eng-lyric">In the haze there is you</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">有你跟我就已经足够</td>
+            <td class="pinyin-lyric">Yǒu nǐ gēn wǒ jiù yǐjīng zúgòu</td>
+            <td class="eng-lyric">Having you and me is already enough</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">你就在我的世界</td>
+            <td class="pinyin-lyric">Nǐ jiù zài wǒ de shìjiè</td>
+            <td class="eng-lyric">You are right here in my world</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">升起了彩虹</td>
+            <td class="pinyin-lyric">Shēngqǐle cǎihóng</td>
+            <td class="eng-lyric">Raising a rainbow</td>
+          </tr>
+
+          <tr style="background-color: #f1f8fc">
+            <td
+              colspan="3"
+              style="text-align: center; font-weight: bold; color: #2980b9"
+            >
+              --- CHORUS ---
+            </td>
+          </tr>
+
+          <tr>
+            <td class="hanzi-lyric">
+              <span class="lyric-highlight">简单</span>爱你心所爱
+            </td>
+            <td class="pinyin-lyric">
+              <span class="lyric-highlight">Jiǎndān</span> ài nǐ xīn suǒ ài
+            </td>
+            <td class="eng-lyric">Simply love what your heart loves</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">世界也变得大了起来</td>
+            <td class="pinyin-lyric">Shìjiè yě biànde dàle qǐlái</td>
+            <td class="eng-lyric">The world also becomes bigger</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">所有花都为你开</td>
+            <td class="pinyin-lyric">Suǒyǒu huā dōu wèi nǐ kāi</td>
+            <td class="eng-lyric">All the flowers bloom for you</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">
+              所有景物也为了你<span class="lyric-highlight">安排</span>
+            </td>
+            <td class="pinyin-lyric">
+              Suǒyǒu jǐngwù yě wèile nǐ
+              <span class="lyric-highlight">ānpái</span>
+            </td>
+            <td class="eng-lyric">All scenery is also arranged for you</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">我们是如此的不同</td>
+            <td class="pinyin-lyric">Wǒmen shì rúcǐ de bùtóng</td>
+            <td class="eng-lyric">We are so different</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">肯定前世就已经深爱过</td>
+            <td class="pinyin-lyric">Kěndìng qiánshì jiù yǐjīng shēn àiguò</td>
+            <td class="eng-lyric">Must have loved deeply in a previous life</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">讲好了这一辈子</td>
+            <td class="pinyin-lyric">Jiǎng hǎole zhè yībèizi</td>
+            <td class="eng-lyric">Agreed that in this life</td>
+          </tr>
+          <tr>
+            <td class="hanzi-lyric">
+              再度重<span class="lyric-highlight">相逢</span>
+            </td>
+            <td class="pinyin-lyric">
+              Zàidù chóng <span class="lyric-highlight">xiāngféng</span>
+            </td>
+            <td class="eng-lyric">We meet again</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <br /><br />
+    </div>
+  </body>
+</html>
