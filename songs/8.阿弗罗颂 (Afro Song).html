@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Afro Song - Lyrics Study</title>
+    <style>
+      :root {
+        --bg-color: #0d0d0d;
+        --card-bg: #1a1a1a;
+        --card-hover: #252525;
+        --text-main: #ffffff;
+        --text-sub: #b3b3b3;
+
+        /* THEME: Afrobeat Gold & Night Purple */
+        --accent: #ffb300; /* Amber Gold */
+        --highlight: #ffe082; /* Light Gold for text highlights */
+        --gradient-start: #fde7a3; /* Deep Purple */
+        --gradient-mid: #e6a203; /* Indigo */
+        --gradient-end: #0d0d0d; /* Black */
+      }
+
+      body {
+        font-family: "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
+
+      /* --- NAVIGATION --- */
+      .top-nav {
+        padding: 20px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(13, 13, 13, 0.9);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #222;
+      }
+
+      .back-btn {
+        text-decoration: none;
+        color: var(--text-sub);
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: color 0.3s;
+      }
+      .back-btn:hover {
+        color: var(--text-main);
+      }
+
+      .tools-menu a {
+        color: var(--text-sub);
+        text-decoration: none;
+        font-size: 0.85em;
+        margin-left: 15px;
+        border: 1px solid #444;
+        padding: 6px 15px;
+        border-radius: 20px;
+        transition: all 0.3s;
+      }
+      .tools-menu a:hover {
+        border-color: var(--accent);
+        color: var(--text-main);
+        background: rgba(255, 179, 0, 0.1);
+      }
+
+      /* --- HERO HEADER --- */
+      .hero {
+        background: linear-gradient(
+          to bottom,
+          var(--gradient-start) 0%,
+          var(--gradient-mid) 50%,
+          var(--gradient-end) 100%
+        );
+        padding: 20px 40px;
+        display: flex;
+        align-items: flex-end;
+        gap: 24px;
+        height: 300px;
+        box-sizing: border-box;
+      }
+
+      .album-art-placeholder {
+        width: 232px;
+        height: 232px;
+        min-width: 232px;
+        box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
+        border-radius: 4px;
+        overflow: hidden;
+        background: #222;
+      }
+
+      .album-art-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .hero-text {
+        margin-bottom: 10px;
+      }
+
+      .hero-text h1 {
+        font-size: 3.5em;
+        margin: 0 0 10px 0;
+        font-weight: 900;
+        letter-spacing: -1px;
+        line-height: 1;
+      }
+
+      .hero-text p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1em;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .tag-pill {
+        display: inline-block;
+        font-size: 0.75em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 8px;
+        border-radius: 4px;
+      }
+
+      /* --- MAIN LAYOUT --- */
+      .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 50px;
+      }
+
+      h2.section-title {
+        color: var(--text-main);
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #333;
+        padding-bottom: 10px;
+        position: sticky;
+        top: 80px;
+        background: var(--bg-color);
+        z-index: 10;
+      }
+
+      /* --- VOCAB --- */
+      .vocab-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .vocab-card {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        padding: 20px;
+        border-left: 4px solid var(--accent);
+        transition: all 0.3s ease;
+      }
+      .vocab-card:hover {
+        background-color: var(--card-hover);
+        transform: translateX(5px);
+      }
+
+      .vocab-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 12px;
+      }
+      .target-word {
+        font-size: 1.6em;
+        font-weight: bold;
+        color: var(--text-main);
+      }
+      .target-pinyin {
+        font-size: 1em;
+        color: var(--accent);
+        margin-bottom: 5px;
+      }
+      .target-meaning {
+        font-size: 0.95em;
+        color: var(--text-sub);
+        font-style: italic;
+        border-top: 1px solid #333;
+        width: 100%;
+        padding-top: 5px;
+        margin-top: 5px;
+      }
+
+      .sentence-box {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 10px;
+        font-size: 0.85em;
+      }
+      .cn-sent {
+        display: block;
+        color: #ddd;
+        margin-bottom: 4px;
+      }
+      .en-sent {
+        display: block;
+        color: #777;
+        font-size: 0.9em;
+      }
+      .tag {
+        font-size: 0.7em;
+        padding: 2px 6px;
+        border-radius: 3px;
+        background: #333;
+        color: #ccc;
+        margin-right: 5px;
+        text-transform: uppercase;
+      }
+
+      /* --- LYRICS --- */
+      .lyrics-container {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 30px;
+      }
+
+      .lyric-row {
+        padding: 18px 15px;
+        border-bottom: 1px solid #2a2a2a;
+        transition: background 0.2s;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+      .lyric-row:hover {
+        background-color: #222;
+        border-left: 3px solid var(--highlight);
+        padding-left: 12px;
+      }
+
+      .hanzi-line {
+        font-size: 1.5em;
+        color: var(--text-main);
+        letter-spacing: 0.5px;
+        font-weight: 500;
+      }
+      .pinyin-line {
+        color: var(--accent);
+        font-size: 0.9em;
+        font-weight: 500;
+        font-family: monospace;
+      }
+      .eng-line {
+        color: #666;
+        font-style: italic;
+        font-size: 0.95em;
+      }
+
+      .hl {
+        color: var(--highlight);
+        font-weight: bold;
+        border-bottom: 1px dotted var(--highlight);
+      }
+
+      @media (max-width: 900px) {
+        .main-container {
+          grid-template-columns: 1fr;
+        }
+        .hero {
+          flex-direction: column;
+          align-items: flex-start;
+          height: auto;
+          padding-top: 40px;
+        }
+        .album-art-placeholder {
+          width: 180px;
+          height: 180px;
+          min-width: 180px;
+        }
+        .hero-text h1 {
+          font-size: 2.5em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="top-nav">
+      <a href="../index.html" class="back-btn"><span>←</span> Library</a>
+      <div class="tools-menu">
+        <a href="https://www.mdbg.net/chinese/dictionary" target="_blank"
+          >📖 Dict</a
+        >
+        <a href="https://translate.google.com/" target="_blank">Translate</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="album-art-placeholder">
+        <!-- Replace with actual album art -->
+        <img src="../assets/images/8.afro-song.png" alt="Album Art" />
+      </div>
+      <div class="hero-text">
+        <span class="tag-pill">Afrobeat / Rap</span>
+        <h1>阿弗罗颂 (Afro Song)</h1>
+        <p>Vinz-T & Majin</p>
+      </div>
+    </header>
+
+    <div class="main-container">
+      <!-- VOCABULARY SECTION -->
+      <section>
+        <h2 class="section-title">Deep Dive Vocabulary</h2>
+        <div class="vocab-list">
+          <!-- Word 1 -->
+          <div class="vocab-card" style="border-left-color: #ffb300">
+            <div class="vocab-header">
+              <span class="target-word">律动</span>
+              <span class="target-pinyin">lǜ dòng</span>
+              <span class="target-meaning">Rhythm / Groove</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Music</span>
+              <span class="cn-sent">感受这首歌的<b>律动</b>。</span>
+              <span class="en-sent">Feel the groove/rhythm of this song.</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Abstract</span>
+              <span class="cn-sent">生命的<b>律动</b>。</span>
+              <span class="en-sent">The rhythm of life.</span>
+            </div>
+          </div>
+
+          <!-- Word 2 -->
+          <div class="vocab-card" style="border-left-color: #7c4dff">
+            <div class="vocab-header">
+              <span class="target-word">紧凑</span>
+              <span class="target-pinyin">jǐn còu</span>
+              <span class="target-meaning">Compact / Tight / Fast-paced</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Schedule</span>
+              <span class="cn-sent">行程安排得很<b>紧凑</b>。</span>
+              <span class="en-sent"
+                >The schedule is arranged very tightly.</span
+              >
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Music/Flow</span>
+              <span class="cn-sent">你怎么唱的那么<b>紧凑</b>？</span>
+              <span class="en-sent">Why are you singing so tight/fast?</span>
+            </div>
+          </div>
+
+          <!-- Word 3 -->
+          <div class="vocab-card" style="border-left-color: #00e676">
+            <div class="vocab-header">
+              <span class="target-word">松懈</span>
+              <span class="target-pinyin">sōng xiè</span>
+              <span class="target-meaning"
+                >To relax / To slack / To let guard down</span
+              >
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Literal</span>
+              <span class="cn-sent">螺丝<b>松懈</b>了。</span>
+              <span class="en-sent">The screw has come loose.</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Mental</span>
+              <span class="cn-sent">让我对压力<b>松懈</b>。</span>
+              <span class="en-sent">Let me relax from the pressure.</span>
+            </div>
+          </div>
+
+          <!-- Word 4 -->
+          <div class="vocab-card" style="border-left-color: #ec407a">
+            <div class="vocab-header">
+              <span class="target-word">调情</span>
+              <span class="target-pinyin">tiáo qíng</span>
+              <span class="target-meaning">To flirt</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Social</span>
+              <span class="cn-sent">他在跟那个女生<b>调情</b>。</span>
+              <span class="en-sent">He is flirting with that girl.</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Metaphor</span>
+              <span class="cn-sent">跟编曲<b>调情</b>。</span>
+              <span class="en-sent">Flirting with the arrangement/beat.</span>
+            </div>
+          </div>
+
+          <!-- Word 5 -->
+          <div class="vocab-card" style="border-left-color: #29b6f6">
+            <div class="vocab-header">
+              <span class="target-word">共性</span>
+              <span class="target-pinyin">gòng xìng</span>
+              <span class="target-meaning"
+                >Commonality / Universal character</span
+              >
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Logic</span>
+              <span class="cn-sent">这两种观点有<b>共性</b>。</span>
+              <span class="en-sent"
+                >These two points of view have commonalities.</span
+              >
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Lyric</span>
+              <span class="cn-sent">两种风格其实有<b>共性</b>。</span>
+              <span class="en-sent"
+                >The two styles actually have commonalities.</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LYRICS SECTION -->
+      <section>
+        <h2 class="section-title">Lyrics</h2>
+        <div class="lyrics-container">
+          <!-- Chorus (Hook) -->
+          <div
+            style="
+              text-align: center;
+              padding: 20px;
+              color: var(--accent);
+              letter-spacing: 2px;
+              font-weight: bold;
+              opacity: 0.6;
+            "
+          >
+            ● ● ● CHORUS ● ● ●
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">总问我 how to wrote afro song</div>
+            <div class="pinyin-line">Zǒng wèn wǒ how to wrote afro song</div>
+            <div class="eng-line">
+              Always asking me how to wrote an afro song
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              首先你得了解<span class="hl">律动</span>
+            </div>
+            <div class="pinyin-line">
+              Shǒuxiān nǐ děi liǎojiě <span class="hl">lǜdòng</span>
+            </div>
+            <div class="eng-line">
+              First you have to understand the
+              <span class="hl">rhythm/groove</span>
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">这又不是 Amapiano</div>
+            <div class="pinyin-line">Zhè yòu bùshì Amapiano</div>
+            <div class="eng-line">
+              This isn't Amapiano (South African House)
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              你怎么唱的那么快那么<span class="hl">紧凑</span>
+            </div>
+            <div class="pinyin-line">
+              Nǐ zěnme chàng de nàme kuài nàme <span class="hl">jǐncòu</span>
+            </div>
+            <div class="eng-line">
+              Why are you singing so fast and so
+              <span class="hl">tight/compact</span>?
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">把你排列的 flow 放轻松</div>
+            <div class="pinyin-line">Bǎ nǐ páiliè de flow fàng qīngsōng</div>
+            <div class="eng-line">Relax the flow you have arranged</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">跟着鼓点摇晃会有用</div>
+            <div class="pinyin-line">Gēnzhe gǔdiǎn yáohuàng huì yǒuyòng</div>
+            <div class="eng-line">Swaying with the drum beats will help</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">忘掉你是个说唱歌手</div>
+            <div class="pinyin-line">Wàngdiào nǐ shì gè shuōchàng gēshǒu</div>
+            <div class="eng-line">Forget that you are a rapper</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">发挥才能够自由</div>
+            <div class="pinyin-line">Fāhuī cái nénggòu zìyóu</div>
+            <div class="eng-line">Only then can your performance be free</div>
+          </div>
+
+          <!-- Verse 1 -->
+          <div
+            style="
+              text-align: center;
+              padding: 20px;
+              color: var(--accent);
+              letter-spacing: 2px;
+              font-weight: bold;
+              opacity: 0.6;
+            "
+          >
+            VERSE 1 (Vinz-T)
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">我听 Reggae</div>
+            <div class="pinyin-line">Wǒ tīng Reggae</div>
+            <div class="eng-line">I listen to Reggae</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">听完切换 R&B</div>
+            <div class="pinyin-line">Tīng wán qiēhuàn R&B</div>
+            <div class="eng-line">After listening, switch to R&B</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              两种风格其实有<span class="hl">共性</span>
+            </div>
+            <div class="pinyin-line">
+              Liǎng zhǒng fēnggé qíshí yǒu <span class="hl">gòngxìng</span>
+            </div>
+            <div class="eng-line">
+              The two styles actually share
+              <span class="hl">commonalities</span>
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">内容就是狂野带点色情</div>
+            <div class="pinyin-line">
+              Nèiróng jiùshì kuángyě dài diǎn sèqíng
+            </div>
+            <div class="eng-line">
+              The content is wild with a bit of eroticism
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">放弃固化的思维</div>
+            <div class="pinyin-line">Fàngqì gùhuà de sīwéi</div>
+            <div class="eng-line">Give up rigid thinking</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">不需要太冷静但需要一点真心</div>
+            <div class="pinyin-line">
+              Bù xūyào tài lěngjìng dàn xūyào yīdiǎn zhēnxīn
+            </div>
+            <div class="eng-line">
+              Don't need to be too calm, but need a bit of sincerity
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">但如果你的状态特别冷清</div>
+            <div class="pinyin-line">
+              Dàn rúguǒ nǐ de zhuàngtài tèbié lěngqīng
+            </div>
+            <div class="eng-line">
+              But if your state is particularly cold/desolate
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">建议你涉入一点酒精</div>
+            <div class="pinyin-line">Jiànyì nǐ shèrù yīdiǎn jiǔjīng</div>
+            <div class="eng-line">I suggest you involve a little alcohol</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">Let your body moving today</div>
+            <div class="pinyin-line">-</div>
+            <div class="eng-line">Let your body moving today</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">Bling bling 撞击你的 gold chain</div>
+            <div class="pinyin-line">Bling bling zhuàngjī nǐ de gold chain</div>
+            <div class="eng-line">Bling bling hitting your gold chain</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              Give me the lighter I wanna smoke a cigarette
+            </div>
+            <div class="pinyin-line">-</div>
+            <div class="eng-line">
+              Give me the lighter I wanna smoke a cigarette
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">让我对压力<span class="hl">松懈</span></div>
+            <div class="pinyin-line">
+              Ràng wǒ duì yālì <span class="hl">sōngxiè</span>
+            </div>
+            <div class="eng-line">
+              Let me <span class="hl">relax/slack</span> off from the pressure
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">如果你现在正在戒烟</div>
+            <div class="pinyin-line">Rúguǒ nǐ xiànzài zhèngzài jièyān</div>
+            <div class="eng-line">If you are currently quitting smoking</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">那就算了 换个方式解决</div>
+            <div class="pinyin-line">Nà jiù suànle huàn gè fāngshì jiějué</div>
+            <div class="eng-line">
+              Then forget it, find another way to solve it
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">一些很小的建议别跟我说谢谢</div>
+            <div class="pinyin-line">
+              Yīxiē hěn xiǎo de jiànyì bié gēn wǒ shuō xièxie
+            </div>
+            <div class="eng-line">
+              Just some small suggestions, don't say thanks to me
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">如果你真爱音乐</div>
+            <div class="pinyin-line">Rúguǒ nǐ zhēn ài yīnyuè</div>
+            <div class="eng-line">If you truly love music</div>
+          </div>
+
+          <!-- Verse 2 -->
+          <div
+            style="
+              text-align: center;
+              padding: 20px;
+              color: var(--accent);
+              letter-spacing: 2px;
+              font-weight: bold;
+              opacity: 0.6;
+            "
+          >
+            VERSE 2 (Majin)
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">氛围最好是半夜</div>
+            <div class="pinyin-line">Fēnwéi zuìhǎo shì bànyè</div>
+            <div class="eng-line">The vibe is best at midnight</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">Please don't talk about no money</div>
+            <div class="pinyin-line">-</div>
+            <div class="eng-line">Please don't talk about no money</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">Talk about your bae</div>
+            <div class="pinyin-line">-</div>
+            <div class="eng-line">Talk about your bae</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">节奏的编排要够特别 So</div>
+            <div class="pinyin-line">Jiézòu de biānpái yào gòu tèbié So</div>
+            <div class="eng-line">
+              The rhythm arrangement needs to be special enough So
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">忘记规则忘掉那些 Ay</div>
+            <div class="pinyin-line">Wàngjì guīzé wàngdiào nàxiē Ay</div>
+            <div class="eng-line">Forget the rules, forget all that Ay</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">Gotta keep her moving</div>
+            <div class="pinyin-line">-</div>
+            <div class="eng-line">Gotta keep her moving</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">如果你还没让 chicas shake their booty</div>
+            <div class="pinyin-line">
+              Rúguǒ nǐ hái méi ràng chicas shake their booty
+            </div>
+            <div class="eng-line">
+              If you haven't made the chicas (girls) shake their booty
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">代表你还要继续磨练</div>
+            <div class="pinyin-line">Dàibiǎo nǐ hái yào jìxù móliàn</div>
+            <div class="eng-line">
+              It means you still need to continue polishing
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">Be Like Burna Boy</div>
+            <div class="pinyin-line">-</div>
+            <div class="eng-line">Be Like Burna Boy</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">Make me 跳到双脚麻痹</div>
+            <div class="pinyin-line">Make me tiào dào shuāngjiǎo mábì</div>
+            <div class="eng-line">Make me jump until my feet are numb</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">跟编曲<span class="hl">调情</span></div>
+            <div class="pinyin-line">
+              Gēn biānqǔ <span class="hl">tiáoqíng</span>
+            </div>
+            <div class="eng-line">
+              <span class="hl">Flirt</span> with the arrangement/beat
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">对欲望递出邀请</div>
+            <div class="pinyin-line">Duì yùwàng dìchū yāoqǐng</div>
+            <div class="eng-line">Send an invitation to desire</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">给隐藏的狂野机会</div>
+            <div class="pinyin-line">Gěi yǐncáng de kuángyě jīhuì</div>
+            <div class="eng-line">Give the hidden wildness a chance</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">口音骚得惹心动</div>
+            <div class="pinyin-line">Kǒuyīn sāo de rě xīndòng</div>
+            <div class="eng-line">
+              The accent is so seductive it stirs the heart
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">Be sexy like Asake</div>
+            <div class="pinyin-line">-</div>
+            <div class="eng-line">Be sexy like Asake</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">18禁那种情节</div>
+            <div class="pinyin-line">Shíbā jìn nà zhǒng qíngjié</div>
+            <div class="eng-line">The kind of plot that's 18+</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">只要微醺酒不必烈</div>
+            <div class="pinyin-line">Zhǐyào wēixūn jiǔ bùbì liè</div>
+            <div class="eng-line">
+              Just need a slight buzz, the alcohol doesn't need to be strong
+            </div>
+          </div>
+
+          <!-- Outro -->
+          <div
+            style="
+              text-align: center;
+              padding: 20px;
+              color: var(--accent);
+              letter-spacing: 2px;
+              font-weight: bold;
+              opacity: 0.6;
+            "
+          >
+            OUTRO
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">Como escribo afro</div>
+            <div class="pinyin-line">-</div>
+            <div class="eng-line">How do I write Afro</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">Dimelo</div>
+            <div class="pinyin-line">-</div>
+            <div class="eng-line">Tell me</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
