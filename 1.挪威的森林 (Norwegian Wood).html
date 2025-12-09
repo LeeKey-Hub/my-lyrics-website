@@ -3,90 +3,184 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Norwegian Wood - Advanced Nuance</title>
+    <title>Norwegian Wood - Learning Mode</title>
     <style>
+      :root {
+        --bg-color: #121212;
+        --card-bg: #181818;
+        --text-main: #ffffff;
+        --text-sub: #b3b3b3;
+        --accent: #1db954; /* Spotify Green */
+        --accent-hover: #1ed760;
+        --border-color: #282828;
+        
+        /* Educational Colors (Adjusted for Dark Mode) */
+        --tag-blue: #2e86de;
+        --tag-purple: #a55eea;
+        --tag-red: #eb4d4b;
+        --tag-green: #26de81;
+      }
+
       body {
-        font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
-        background-color: #f4f6f8;
-        color: #333;
+        font-family: "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
         line-height: 1.6;
         margin: 0;
-        padding: 30px;
+        padding-bottom: 80px; /* Space for footer */
+      }
+
+      /* --- NAV BAR --- */
+      .nav-bar {
+        background-color: rgba(18, 18, 18, 0.95);
+        padding: 15px 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        backdrop-filter: blur(10px);
+      }
+
+      .back-btn {
+        color: var(--text-sub);
+        text-decoration: none;
+        font-size: 0.9em;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        transition: color 0.2s;
+      }
+
+      .back-btn:hover {
+        color: var(--text-main);
+      }
+
+      .back-btn::before {
+        content: "←";
+        margin-right: 8px;
+        font-size: 1.2em;
       }
 
       .container {
-        max-width: 950px;
+        max-width: 900px;
         margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* --- HEADER SECTION --- */
+      .song-header {
+        text-align: center;
+        margin: 30px 0 40px 0;
       }
 
       h1 {
-        color: #2c3e50;
-        text-align: center;
-        font-size: 2.2em;
-        margin-bottom: 10px;
+        color: var(--text-main);
+        font-size: 2.5em;
+        margin-bottom: 5px;
+        letter-spacing: -0.5px;
       }
 
       .sub-header {
-        text-align: center;
-        color: #7f8c8d;
-        margin-bottom: 40px;
-        font-style: italic;
-      }
-
-      h2.section-title {
-        color: #34495e;
-        border-left: 5px solid #3498db;
-        padding-left: 12px;
-        margin-top: 40px;
+        color: var(--accent);
+        font-size: 1.1em;
+        font-weight: 500;
         margin-bottom: 20px;
-        font-size: 1.6em;
       }
 
-      /* --- VOCAB CARD --- */
+      /* TOOLBAR (New Feature) */
+      .tools-bar {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .tool-btn {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        color: var(--text-sub);
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+
+      .tool-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: translateY(-2px);
+      }
+
+      /* --- SECTION TITLES --- */
+      h2.section-title {
+        color: var(--text-main);
+        font-size: 1.5em;
+        margin-top: 50px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 10px;
+        display: flex;
+        align-items: center;
+      }
+      
+      h2.section-title::before {
+        content: "I"; /* Decorative bar */
+        color: var(--accent);
+        background: var(--accent);
+        width: 6px;
+        height: 24px;
+        border-radius: 2px;
+        display: inline-block;
+        margin-right: 12px;
+        font-size: 0; /* Hide text */
+      }
+
+      /* --- VOCAB CARD REDESIGN --- */
       .vocab-card {
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        margin-bottom: 30px;
-        border: 1px solid #e1e8ed;
+        background: var(--card-bg);
+        border-radius: 12px;
+        margin-bottom: 25px;
+        border: 1px solid var(--border-color); /* Subtle border */
         overflow: hidden;
       }
 
       .card-header {
-        background-color: #3498db;
-        color: white;
-        padding: 12px 20px;
+        background: linear-gradient(90deg, rgba(29,185,84,0.1) 0%, rgba(24,24,24,0) 100%);
+        padding: 15px 25px;
+        border-left: 5px solid var(--accent);
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
 
       .header-word {
-        font-size: 1.6em;
-        font-weight: bold;
+        font-size: 1.5em;
+        font-weight: 700;
+        color: var(--text-main);
       }
       .header-pinyin {
-        font-size: 1.2em;
-        opacity: 0.9;
+        font-size: 1.1em;
+        color: var(--accent);
         margin-left: 10px;
-        font-weight: 300;
+        font-weight: 400;
       }
       .header-meaning {
-        font-size: 1.1em;
+        color: var(--text-sub);
         font-style: italic;
-        opacity: 0.95;
       }
 
       .card-body {
-        padding: 15px 20px;
+        padding: 20px 25px;
       }
 
-      /* Row Layout */
       .concept-row {
         display: flex;
-        margin-bottom: 15px;
-        border-bottom: 1px dashed #eee;
-        padding-bottom: 15px;
+        margin-bottom: 20px;
+        border-bottom: 1px dashed #333;
+        padding-bottom: 20px;
       }
       .concept-row:last-child {
         border-bottom: none;
@@ -95,147 +189,163 @@
       }
 
       .concept-label {
-        width: 100px;
+        width: 80px;
         flex-shrink: 0;
-        font-weight: bold;
-        font-size: 0.8em;
+        font-size: 0.75em;
         text-transform: uppercase;
-        padding-top: 6px;
-        letter-spacing: 0.5px;
-      }
-
-      .label-target {
-        color: #3498db;
-      }
-      .label-syn {
-        color: #27ae60;
-      }
-      .label-ant {
-        color: #c0392b;
+        letter-spacing: 1px;
+        color: var(--text-sub);
+        padding-top: 5px;
       }
 
       .concept-content {
         flex-grow: 1;
       }
 
-      .word-focus {
-        display: inline-block;
-        font-size: 1.25em;
-        font-weight: bold;
-        color: #2c3e50;
-        margin-bottom: 6px;
-      }
-      .pinyin-focus {
-        color: #7f8c8d;
-        font-size: 0.95em;
-        margin-left: 8px;
-      }
-
-      /* Sentence Box Logic */
-      .sentence-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px; /* Space between the two use cases */
-      }
+      /* Specific Label Colors */
+      .label-target { color: var(--accent); }
+      .label-syn { color: var(--tag-green); }
+      .label-ant { color: var(--tag-red); }
 
       .sentence-box {
-        background-color: #f9fafb;
-        border-radius: 4px;
-        padding: 8px 12px;
-        font-size: 0.95em;
-        border-left: 3px solid #ddd;
+        background-color: rgba(255,255,255,0.03);
+        border-radius: 6px;
+        padding: 12px;
+        margin-top: 10px;
+        border-left: 2px solid #444;
       }
 
-      /* Differentiating the use cases */
       .use-case-tag {
-        font-size: 0.75em;
+        font-size: 0.7em;
         font-weight: bold;
-        color: #fff;
-        background-color: #95a5a6;
-        padding: 1px 5px;
-        border-radius: 3px;
-        margin-right: 6px;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-right: 8px;
+        text-transform: uppercase;
+        display: inline-block;
         vertical-align: middle;
       }
-      .tag-literal {
-        background-color: #3498db;
-      } /* Blue for Literal */
-      .tag-abstract {
-        background-color: #9b59b6;
-      } /* Purple for Abstract/Metaphor */
+      
+      .tag-literal { background-color: rgba(46, 134, 222, 0.2); color: #54a0ff; }
+      .tag-abstract { background-color: rgba(165, 94, 234, 0.2); color: #c985ff; }
 
-      .cn-sent {
-        color: #2c3e50;
-        font-weight: 500;
-      }
-      .py-sent {
-        color: #7f8c8d;
-        font-size: 0.9em;
-        margin-left: 8px;
-        font-style: italic;
-      }
-      .en-sent {
-        display: block;
-        color: #95a5a6;
-        font-size: 0.85em;
-        margin-top: 2px;
-      }
+      .cn-sent { color: var(--text-main); font-weight: 500; display: inline; }
+      .py-sent { color: var(--accent); font-size: 0.9em; margin-left: 8px; font-style: italic; }
+      .en-sent { display: block; color: var(--text-sub); font-size: 0.85em; margin-top: 4px; }
 
-      /* --- LYRICS TABLE --- */
+      /* --- LYRICS TABLE REDESIGN --- */
       .lyrics-table {
         width: 100%;
         border-collapse: collapse;
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        margin-top: 10px;
       }
+
       .lyrics-table th {
-        background-color: #2c3e50;
-        color: white;
-        padding: 12px 15px;
         text-align: left;
-      }
-      .lyrics-table td {
+        color: var(--text-sub);
+        font-size: 0.85em;
+        text-transform: uppercase;
         padding: 10px 15px;
-        border-bottom: 1px solid #f1f1f1;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .lyrics-table tr {
+        border-bottom: 1px solid #222;
+        transition: background-color 0.2s;
+      }
+
+      .lyrics-table tr:hover {
+        background-color: #222; /* Hover highlight effect */
+      }
+
+      .lyrics-table td {
+        padding: 18px 15px;
         vertical-align: top;
       }
-      .lyrics-table tr:hover {
-        background-color: #f4fcff;
-      }
+
       .hanzi-lyric {
-        font-size: 1.15em;
-        font-weight: bold;
-        color: #333;
+        font-size: 1.2em;
+        font-weight: 500;
+        color: var(--text-main);
         width: 35%;
       }
+
       .pinyin-lyric {
-        color: #2980b9;
+        color: var(--accent); /* Spotify Green for Pinyin */
         font-size: 1em;
         width: 30%;
+        font-family: "Segoe UI", sans-serif;
       }
+
       .eng-lyric {
-        color: #7f8c8d;
-        font-style: italic;
+        color: var(--text-sub);
         font-size: 0.95em;
         width: 35%;
       }
+
+      /* Highlighted words inside lyrics */
       .lyric-highlight {
-        color: #c0392b;
-        font-weight: 900;
-        background-color: #fff0f0;
-        padding: 0 4px;
-        border-radius: 3px;
+        color: #fff;
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 1px;
+      }
+
+      /* Chorus Section Marker */
+      .chorus-marker {
+        background-color: rgba(29, 185, 84, 0.1); /* Subtle green bg */
+      }
+      .chorus-label {
+        color: var(--accent);
+        font-weight: bold;
+        font-size: 0.8em;
+        letter-spacing: 2px;
+        text-align: center;
+        padding: 10px;
+      }
+
+      /* --- FOOTER --- */
+      .page-footer {
+        text-align: center;
+        margin-top: 50px;
+        color: #555;
+        font-size: 0.8em;
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 600px) {
+        .lyrics-table th { display: none; } /* Hide headers on mobile */
+        .lyrics-table td { display: block; width: 100%; padding: 4px 15px; }
+        .hanzi-lyric { padding-top: 15px; font-size: 1.3em; }
+        .pinyin-lyric { font-size: 0.9em; opacity: 0.9; }
+        .eng-lyric { padding-bottom: 15px; color: #777; font-size: 0.9em; }
+        .concept-row { flex-direction: column; }
+        .concept-label { margin-bottom: 5px; }
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1>🎵 挪威的森林 (Norwegian Wood)</h1>
-      <div class="sub-header">Advanced Vocabulary: Context & Nuance</div>
+    
+    <!-- STICKY NAV -->
+    <nav class="nav-bar">
+      <a href="index.html" class="back-btn">Back to Library</a>
+    </nav>
 
-      <h2 class="section-title">1. Vocabulary Focus</h2>
+    <div class="container">
+      
+      <!-- HEADER -->
+      <div class="song-header">
+        <h1>挪威的森林</h1>
+        <div class="sub-header">Norwegian Wood</div>
+        
+        <!-- USEFUL KITS -->
+        <div class="tools-bar">
+          <a href="https://www.mdbg.net/chinese/dictionary?page=worddict&wdrst=0&wdq=挪威的森林" target="_blank" class="tool-btn">📖 MDBG Dictionary</a>
+          <a href="https://translate.google.com/?sl=zh-CN&tl=en&text=挪威的森林&op=translate" target="_blank" class="tool-btn">🌏 Google Translate</a>
+          <a href="#" class="tool-btn" onclick="alert('Audio player feature coming soon!')">▶️ Play Audio</a>
+        </div>
+      </div>
+
+      <h2 class="section-title">Deep Dive Vocabulary</h2>
 
       <!-- CARD 1: 融化 -->
       <div class="vocab-card">
@@ -247,58 +357,34 @@
           <span class="header-meaning">To Melt</span>
         </div>
         <div class="card-body">
-          <!-- Target (2 Use Cases) -->
+          <!-- Target -->
           <div class="concept-row">
-            <div class="concept-label label-target">Target</div>
+            <div class="concept-label label-target">Context</div>
             <div class="concept-content">
-              <span class="word-focus">融化</span>
-              <span class="pinyin-focus">róng huà</span>
               <div class="sentence-group">
-                <!-- Use Case 1 -->
                 <div class="sentence-box">
                   <span class="use-case-tag tag-literal">Literal</span>
                   <span class="cn-sent">雪在阳光下<b>融化</b>。</span>
+                  <br>
                   <span class="py-sent">Xuě zài yángguāng xià rónghuà.</span>
-                  <span class="en-sent"
-                    >The snow melts under the sunlight.</span
-                  >
+                  <span class="en-sent">The snow melts under the sunlight.</span>
                 </div>
-                <!-- Use Case 2 -->
                 <div class="sentence-box">
                   <span class="use-case-tag tag-abstract">Metaphor</span>
                   <span class="cn-sent">她的微笑让我的心<b>融化</b>了。</span>
-                  <span class="py-sent"
-                    >Tā de wēixiào ràng wǒ de xīn rónghuà le.</span
-                  >
-                  <span class="en-sent"
-                    >Her smile melted my heart. (Emotional softening)</span
-                  >
+                  <br>
+                  <span class="py-sent">Tā de wēixiào ràng wǒ de xīn rónghuà le.</span>
+                  <span class="en-sent">Her smile melted my heart.</span>
                 </div>
               </div>
             </div>
           </div>
-          <!-- Synonym -->
+          <!-- Synonym/Antonym -->
           <div class="concept-row">
-            <div class="concept-label label-syn">Synonym</div>
+            <div class="concept-label label-syn">Related</div>
             <div class="concept-content">
-              <span class="word-focus">消融</span>
-              <span class="pinyin-focus">xiāo róng (Thaw)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">冰川正在消融。</span>
-                <span class="en-sent">Glaciers are thawing.</span>
-              </div>
-            </div>
-          </div>
-          <!-- Antonym -->
-          <div class="concept-row">
-            <div class="concept-label label-ant">Antonym</div>
-            <div class="concept-content">
-              <span class="word-focus">凝固</span>
-              <span class="pinyin-focus">níng gù (Solidify)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">水凝固成了冰。</span>
-                <span class="en-sent">Water solidified into ice.</span>
-              </div>
+              <span style="color: var(--tag-green)">Syn:</span> 消融 (Thaw) &nbsp;|&nbsp; 
+              <span style="color: var(--tag-red)">Ant:</span> 凝固 (Solidify)
             </div>
           </div>
         </div>
@@ -306,66 +392,25 @@
 
       <!-- CARD 2: 宁静 -->
       <div class="vocab-card">
-        <div class="card-header" style="background-color: #8e44ad">
+        <div class="card-header">
           <div>
             <span class="header-word">宁静</span>
             <span class="header-pinyin">níng jìng</span>
           </div>
-          <span class="header-meaning">Peaceful / Tranquil</span>
+          <span class="header-meaning">Tranquil / Peaceful</span>
         </div>
         <div class="card-body">
           <div class="concept-row">
-            <div class="concept-label label-target" style="color: #8e44ad">
-              Target
-            </div>
+            <div class="concept-label label-target">Context</div>
             <div class="concept-content">
-              <span class="word-focus">宁静</span>
-              <span class="pinyin-focus">níng jìng</span>
               <div class="sentence-group">
-                <!-- Use Case 1 -->
                 <div class="sentence-box">
                   <span class="use-case-tag tag-literal">Environment</span>
                   <span class="cn-sent">夜晚的森林非常<b>宁静</b>。</span>
-                  <span class="py-sent"
-                    >Yèwǎn de sēnlín fēicháng níngjìng.</span
-                  >
-                  <span class="en-sent"
-                    >The forest at night is very tranquil.</span
-                  >
+                  <br>
+                  <span class="py-sent">Yèwǎn de sēnlín fēicháng níngjìng.</span>
+                  <span class="en-sent">The forest at night is very tranquil.</span>
                 </div>
-                <!-- Use Case 2 -->
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-abstract">Inner State</span>
-                  <span class="cn-sent">我们需要保持内心的<b>宁静</b>。</span>
-                  <span class="py-sent"
-                    >Wǒmen xūyào bǎochí nèixīn de níngjìng.</span
-                  >
-                  <span class="en-sent">We need to maintain inner peace.</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Synonym -->
-          <div class="concept-row">
-            <div class="concept-label label-syn">Synonym</div>
-            <div class="concept-content">
-              <span class="word-focus">安静</span>
-              <span class="pinyin-focus">ān jìng (Quiet)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">请保持安静。</span>
-                <span class="en-sent">Please keep quiet.</span>
-              </div>
-            </div>
-          </div>
-          <!-- Antonym -->
-          <div class="concept-row">
-            <div class="concept-label label-ant">Antonym</div>
-            <div class="concept-content">
-              <span class="word-focus">喧闹</span>
-              <span class="pinyin-focus">xuān nào (Noisy)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">我不喜欢喧闹的街道。</span>
-                <span class="en-sent">I don't like noisy streets.</span>
               </div>
             </div>
           </div>
@@ -374,7 +419,7 @@
 
       <!-- CARD 3: 澄清 -->
       <div class="vocab-card">
-        <div class="card-header" style="background-color: #16a085">
+        <div class="card-header">
           <div>
             <span class="header-word">澄清</span>
             <span class="header-pinyin">chéng qīng</span>
@@ -383,73 +428,37 @@
         </div>
         <div class="card-body">
           <div class="concept-row">
-            <div class="concept-label label-target" style="color: #16a085">
-              Target
-            </div>
+            <div class="concept-label label-target">Context</div>
             <div class="concept-content">
-              <span class="word-focus">澄清</span>
-              <span class="pinyin-focus">chéng qīng</span>
               <div class="sentence-group">
-                <!-- Use Case 1 -->
                 <div class="sentence-box">
                   <span class="use-case-tag tag-literal">Visual</span>
-                  <span class="cn-sent">湖水很<b>澄清</b>，看见底下的鱼。</span>
-                  <span class="py-sent"
-                    >Húshuǐ hěn chéngqīng, kànjiàn dǐxià de yú.</span
-                  >
-                  <span class="en-sent"
-                    >The lake water is clear, seeing the fish below.</span
-                  >
+                  <span class="cn-sent">湖水很<b>澄清</b>。</span>
+                  <br>
+                  <span class="py-sent">Húshuǐ hěn chéngqīng.</span>
+                  <span class="en-sent">The lake water is very clear.</span>
                 </div>
-                <!-- Use Case 2 -->
                 <div class="sentence-box">
                   <span class="use-case-tag tag-abstract">Action</span>
                   <span class="cn-sent">公司必须<b>澄清</b>这个误会。</span>
-                  <span class="py-sent"
-                    >Gōngsī bìxū chéngqīng zhège wùhuì.</span
-                  >
-                  <span class="en-sent"
-                    >The company must clarify this misunderstanding.</span
-                  >
+                  <br>
+                  <span class="py-sent">Gōngsī bìxū chéngqīng zhège wùhuì.</span>
+                  <span class="en-sent">The company must clarify this misunderstanding.</span>
                 </div>
-              </div>
-            </div>
-          </div>
-          <!-- Synonym -->
-          <div class="concept-row">
-            <div class="concept-label label-syn">Synonym</div>
-            <div class="concept-content">
-              <span class="word-focus">清澈</span>
-              <span class="pinyin-focus">qīng chè (Crystal Clear)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">清澈的河水。</span>
-                <span class="en-sent">Crystal clear river water.</span>
-              </div>
-            </div>
-          </div>
-          <!-- Antonym -->
-          <div class="concept-row">
-            <div class="concept-label label-ant">Antonym</div>
-            <div class="concept-content">
-              <span class="word-focus">浑浊</span>
-              <span class="pinyin-focus">hún zhuó (Muddy)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">水变浑浊了。</span>
-                <span class="en-sent">The water turned muddy.</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <h2 class="section-title">2. Full Lyrics (Line-by-Line)</h2>
+      <h2 class="section-title">Lyrics Breakdown</h2>
 
       <table class="lyrics-table">
         <thead>
           <tr>
             <th>Hanzi</th>
             <th>Pinyin</th>
-            <th>English</th>
+            <th>Meaning</th>
           </tr>
         </thead>
         <tbody>
@@ -462,17 +471,12 @@
             <td class="hanzi-lyric">
               试着将它慢慢<span class="lyric-highlight">融化</span>
             </td>
-            <td class="pinyin-lyric">
-              Shìzhe jiāng tā mànmàn
-              <span class="lyric-highlight">rónghuà</span>
-            </td>
+            <td class="pinyin-lyric">Shìzhe jiāng tā mànmàn rónghuà</td>
             <td class="eng-lyric">Try to melt it slowly</td>
           </tr>
           <tr>
             <td class="hanzi-lyric">看我在你心中是否仍完美无瑕</td>
-            <td class="pinyin-lyric">
-              Kàn wǒ zài nǐ xīnzhōng shìfǒu réng wánměi wúxiá
-            </td>
+            <td class="pinyin-lyric">Kàn wǒ zài nǐ xīnzhōng shìfǒu réng wánměi wúxiá</td>
             <td class="eng-lyric">See if I am still perfect in your heart</td>
           </tr>
           <tr>
@@ -487,29 +491,21 @@
           </tr>
           <tr>
             <td class="hanzi-lyric">心中是否有我未曾到过的地方啊</td>
-            <td class="pinyin-lyric">
-              Xīnzhōng shìfǒu yǒu wǒ wèicéng dàoguò de dìfāng a
-            </td>
-            <td class="eng-lyric">
-              Is there a place in your heart I have never been?
-            </td>
+            <td class="pinyin-lyric">Xīnzhōng shìfǒu yǒu wǒ wèicéng dàoguò de dìfāng a</td>
+            <td class="eng-lyric">Is there a place in your heart I have never been?</td>
           </tr>
           <tr>
             <td class="hanzi-lyric">
               那里湖面总是<span class="lyric-highlight">澄清</span>
             </td>
-            <td class="pinyin-lyric">
-              Nàlǐ húmiàn zǒngshì <span class="lyric-highlight">chéngqīng</span>
-            </td>
+            <td class="pinyin-lyric">Nàlǐ húmiàn zǒngshì chéngqīng</td>
             <td class="eng-lyric">The lake surface there is always clear</td>
           </tr>
           <tr>
             <td class="hanzi-lyric">
               那里空气充满<span class="lyric-highlight">宁静</span>
             </td>
-            <td class="pinyin-lyric">
-              Nàlǐ kōngqì chōngmǎn <span class="lyric-highlight">níngjìng</span>
-            </td>
+            <td class="pinyin-lyric">Nàlǐ kōngqì chōngmǎn níngjìng</td>
             <td class="eng-lyric">The air there is full of tranquility</td>
           </tr>
           <tr>
@@ -523,61 +519,28 @@
             <td class="eng-lyric">Hiding memories you don't want to mention</td>
           </tr>
 
-          <tr style="background-color: #f1f8fc">
-            <td
-              colspan="3"
-              style="text-align: center; font-weight: bold; color: #2980b9"
-            >
-              --- CHORUS ---
-            </td>
+          <!-- CHORUS SEPARATOR -->
+          <tr class="chorus-marker">
+            <td colspan="3" class="chorus-label">--- CHORUS ---</td>
           </tr>
 
           <tr>
             <td class="hanzi-lyric">你说真心总是可以从头</td>
             <td class="pinyin-lyric">Nǐ shuō zhēnxīn zǒngshì kěyǐ cóngtóu</td>
-            <td class="eng-lyric">
-              You say a true heart can always start over
-            </td>
+            <td class="eng-lyric">You say a true heart can always start over</td>
           </tr>
           <tr>
             <td class="hanzi-lyric">真爱总是可以长久</td>
             <td class="pinyin-lyric">Zhēn'ài zǒngshì kěyǐ chángjiǔ</td>
             <td class="eng-lyric">True love can always last long</td>
           </tr>
-          <tr>
-            <td class="hanzi-lyric">为何你的眼神还有孤独时的落寞</td>
-            <td class="pinyin-lyric">
-              Wèihé nǐ de yǎnshén háiyǒu gūdú shí de luòmò
-            </td>
-            <td class="eng-lyric">
-              Why do your eyes still have the loneliness of solitude?
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">是否我只是你一种寄托</td>
-            <td class="pinyin-lyric">Shìfǒu wǒ zhǐshì nǐ yīzhǒng jìtuō</td>
-            <td class="eng-lyric">
-              Am I just a kind of emotional support for you?
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">填满你感情的缺口</td>
-            <td class="pinyin-lyric">Tiánmǎn nǐ gǎnqíng de quēkǒu</td>
-            <td class="eng-lyric">Filling the void in your emotions</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">心中那片森林何时能让我停留</td>
-            <td class="pinyin-lyric">
-              Xīnzhōng nà piàn sēnlín héshí néng ràng wǒ tíngliú
-            </td>
-            <td class="eng-lyric">
-              When will that forest in your heart let me stay?
-            </td>
-          </tr>
         </tbody>
       </table>
 
-      <br /><br />
+      <div class="page-footer">
+        Generated by My Chinese Song Hub
+      </div>
     </div>
+
   </body>
 </html>
