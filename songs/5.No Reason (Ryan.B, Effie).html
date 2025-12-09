@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>No Reason - Lyrics Study</title>
+    <style>
+      :root {
+        --bg-color: #121212;
+        --card-bg: #181818;
+        --card-hover: #282828;
+        --text-main: #ffffff;
+        --text-sub: #b3b3b3;
+        --accent: #d946ef; /* Neon Fuchsia */
+        --highlight: #a855f7; /* Purple */
+        --highlight-text: #e879f9;
+      }
+
+      body {
+        font-family: "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
+
+      /* --- NAVIGATION --- */
+      .top-nav {
+        padding: 20px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(18, 18, 18, 0.95);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #333;
+      }
+
+      .back-btn {
+        text-decoration: none;
+        color: var(--text-sub);
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: color 0.3s;
+      }
+      .back-btn:hover {
+        color: var(--text-main);
+      }
+
+      .tools-menu a {
+        color: var(--text-sub);
+        text-decoration: none;
+        font-size: 0.85em;
+        margin-left: 15px;
+        border: 1px solid #444;
+        padding: 6px 15px;
+        border-radius: 20px;
+        transition: all 0.3s;
+      }
+      .tools-menu a:hover {
+        border-color: var(--accent);
+        color: var(--text-main);
+        background: rgba(217, 70, 239, 0.1);
+      }
+
+      /* --- HERO HEADER --- */
+      .hero {
+        /* Gradient: Neon Purple top (0%) -> Deep Blue (20%) -> Black (100%) */
+        background: linear-gradient(
+          to bottom,
+          #e99ae5 0%,
+          #3b0764 60%,
+          #121212 100%
+        );
+        padding: 20px 40px;
+        display: flex;
+        align-items: flex-end;
+        gap: 24px;
+        height: 300px;
+        box-sizing: border-box;
+      }
+
+      .album-art-placeholder {
+        width: 232px;
+        height: 232px;
+        min-width: 232px;
+        box-shadow: 0 4px 60px rgba(168, 85, 247, 0.4); /* Purple glow shadow */
+        border-radius: 4px;
+        overflow: hidden;
+        background: #222;
+      }
+
+      .album-art-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .hero-text {
+        margin-bottom: 10px;
+      }
+
+      .hero-text h1 {
+        font-size: 4em;
+        margin: 0 0 10px 0;
+        font-weight: 900;
+        letter-spacing: -2px;
+        line-height: 1;
+      }
+
+      .hero-text p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1em;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .tag-pill {
+        display: inline-block;
+        font-size: 0.75em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 8px;
+        border-radius: 4px;
+      }
+
+      /* --- MAIN LAYOUT --- */
+      .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 50px;
+      }
+
+      h2.section-title {
+        color: var(--text-main);
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #333;
+        padding-bottom: 10px;
+        position: sticky;
+        top: 80px;
+        background: var(--bg-color);
+        z-index: 10;
+      }
+
+      /* --- VOCAB --- */
+      .vocab-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .vocab-card {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        padding: 20px;
+        border-left: 4px solid var(--accent);
+        transition: all 0.3s ease;
+      }
+      .vocab-card:hover {
+        background-color: var(--card-hover);
+        transform: translateX(5px);
+      }
+
+      .vocab-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 12px;
+      }
+      .target-word {
+        font-size: 1.6em;
+        font-weight: bold;
+        color: var(--text-main);
+      }
+      .target-pinyin {
+        font-size: 1em;
+        color: var(--accent);
+        margin-bottom: 5px;
+      }
+      .target-meaning {
+        font-size: 0.95em;
+        color: var(--text-sub);
+        font-style: italic;
+        border-top: 1px solid #333;
+        width: 100%;
+        padding-top: 5px;
+        margin-top: 5px;
+      }
+
+      .sentence-box {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 10px;
+        font-size: 0.85em;
+      }
+      .cn-sent {
+        display: block;
+        color: #ddd;
+        margin-bottom: 4px;
+      }
+      .en-sent {
+        display: block;
+        color: #777;
+        font-size: 0.9em;
+      }
+      .tag {
+        font-size: 0.7em;
+        padding: 2px 6px;
+        border-radius: 3px;
+        background: #333;
+        color: #ccc;
+        margin-right: 5px;
+        text-transform: uppercase;
+      }
+
+      /* --- LYRICS --- */
+      .lyrics-container {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 30px;
+      }
+
+      .lyric-row {
+        padding: 18px 15px;
+        border-bottom: 1px solid #2a2a2a;
+        transition: background 0.2s;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+      .lyric-row:hover {
+        background-color: #262626;
+        border-left: 3px solid var(--accent);
+        padding-left: 12px;
+      }
+
+      .hanzi-line {
+        font-size: 1.5em;
+        color: var(--text-main);
+        letter-spacing: 1px;
+        font-weight: 500;
+      }
+      .pinyin-line {
+        color: var(--accent);
+        font-size: 0.9em;
+        font-weight: 500;
+      }
+      .eng-line {
+        color: #666;
+        font-style: italic;
+        font-size: 0.95em;
+      }
+
+      .hl {
+        color: var(--highlight-text);
+        font-weight: bold;
+      }
+
+      /* Mobile responsive fix */
+      @media (max-width: 900px) {
+        .main-container {
+          grid-template-columns: 1fr;
+        }
+        .hero {
+          flex-direction: column;
+          align-items: flex-start;
+          height: auto;
+          padding-top: 40px;
+        }
+        .album-art-placeholder {
+          width: 180px;
+          height: 180px;
+          min-width: 180px;
+        }
+        .hero-text h1 {
+          font-size: 2.5em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="top-nav">
+      <a href="../index.html" class="back-btn"><span>←</span> Library</a>
+      <div class="tools-menu">
+        <a href="https://www.mdbg.net/chinese/dictionary" target="_blank"
+          >📖 Dict</a
+        >
+        <a href="https://translate.google.com/" target="_blank">Translate</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="album-art-placeholder">
+        <img
+          src="../assets/images/5.no-reason-ryan.B-effie.png"
+          alt="Album Art"
+        />
+      </div>
+      <div class="hero-text">
+        <span class="tag-pill">Chinese R&B / Club</span>
+        <h1>No Reason</h1>
+        <p>Ryan.B feat. Effie</p>
+      </div>
+    </header>
+
+    <div class="main-container">
+      <!-- VOCABULARY SECTION -->
+      <section>
+        <h2 class="section-title">Deep Dive Vocabulary</h2>
+        <div class="vocab-list">
+          <!-- Word 1 -->
+          <div class="vocab-card">
+            <div class="vocab-header">
+              <span class="target-word">不知不觉</span>
+              <span class="target-pinyin">bù zhī bù jué</span>
+              <span class="target-meaning">Unknowingly / Unconsciously</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Idiom</span>
+              <span class="cn-sent">时间<b>不知不觉</b>过去了。</span>
+              <span class="en-sent">Time passed unknowingly.</span>
+            </div>
+          </div>
+
+          <!-- Word 2 -->
+          <div class="vocab-card" style="border-left-color: #a855f7">
+            <div class="vocab-header">
+              <span class="target-word">勇气</span>
+              <span class="target-pinyin">yǒng qì</span>
+              <span class="target-meaning">Courage</span>
+            </div>
+            <div class="sentence-box">
+              <span class="cn-sent">我没有<b>勇气</b>告诉你。</span>
+              <span class="en-sent">I don't have the courage to tell you.</span>
+            </div>
+          </div>
+
+          <!-- Word 3 -->
+          <div class="vocab-card" style="border-left-color: #d946ef">
+            <div class="vocab-header">
+              <span class="target-word">甜蜜</span>
+              <span class="target-pinyin">tián mì</span>
+              <span class="target-meaning"
+                >Sweet / Sweetness (in relationship)</span
+              >
+            </div>
+            <div class="sentence-box">
+              <span class="cn-sent">回忆很<b>甜蜜</b>。</span>
+              <span class="en-sent">The memories are very sweet.</span>
+            </div>
+          </div>
+
+          <!-- Word 4 -->
+          <div class="vocab-card" style="border-left-color: #f472b6">
+            <div class="vocab-header">
+              <span class="target-word">距离</span>
+              <span class="target-pinyin">jù lí</span>
+              <span class="target-meaning">Distance</span>
+            </div>
+            <div class="sentence-box">
+              <span class="cn-sent">我们之间有<b>距离</b>。</span>
+              <span class="en-sent">There is a distance between us.</span>
+            </div>
+          </div>
+
+          <!-- Word 5 -->
+          <div class="vocab-card" style="border-left-color: #c084fc">
+            <div class="vocab-header">
+              <span class="target-word">挽留</span>
+              <span class="target-pinyin">wǎn liú</span>
+              <span class="target-meaning"
+                >To urge someone to stay / To detain</span
+              >
+            </div>
+            <div class="sentence-box">
+              <span class="cn-sent">我无法<b>挽留</b>他。</span>
+              <span class="en-sent">I cannot make him stay.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LYRICS SECTION -->
+      <section>
+        <h2 class="section-title">Lyrics</h2>
+        <div class="lyrics-container">
+          <!-- CHORUS -->
+          <div
+            style="
+              text-align: center;
+              padding: 10px;
+              color: var(--highlight-text);
+              letter-spacing: 2px;
+              font-weight: bold;
+              opacity: 0.8;
+            "
+          >
+            --- CHORUS ---
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">没有人可以去等待</div>
+            <div class="pinyin-line">Méiyǒu rén kěyǐ qù děngdài</div>
+            <div class="eng-line">No one can wait</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              <span class="hl">不知不觉</span>的放开你
+            </div>
+            <div class="pinyin-line">
+              <span class="hl">Bùzhī bùjué</span> de fàngkāi nǐ
+            </div>
+            <div class="eng-line">Unknowingly letting go of you</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              我们都没有那<span class="hl">勇气</span> baby
+            </div>
+            <div class="pinyin-line">
+              Wǒmen dōu méiyǒu nà <span class="hl">yǒngqì</span> baby
+            </div>
+            <div class="eng-line">Neither of us has that courage baby</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">I'm sorry, I'm so lonely</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">我们都没有错与对</div>
+            <div class="pinyin-line">Wǒmen dōu méiyǒu cuò yǔ duì</div>
+            <div class="eng-line">Between us there is no right or wrong</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">找不到任何一个原因</div>
+            <div class="pinyin-line">Zhǎo bù dào rènhé yīgè yuányīn</div>
+            <div class="eng-line">Can't find a single reason</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">没有理由的离开 baby</div>
+            <div class="pinyin-line">Méiyǒu lǐyóu de líkāi baby</div>
+            <div class="eng-line">Leaving without a reason baby</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">I'm sorry, I'm so lonely (Yeah, yeah)</div>
+          </div>
+
+          <!-- VERSE -->
+          <div
+            style="
+              text-align: center;
+              padding: 30px;
+              color: var(--text-sub);
+              letter-spacing: 2px;
+              font-size: 0.8em;
+            "
+          >
+            --- VERSE (Ryan.B) ---
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">看见信息不是不想回你</div>
+            <div class="pinyin-line">Kànjiàn xìnxī bùshì bùxiǎng huí nǐ</div>
+            <div class="eng-line">
+              Seeing the message, it's not that I don't want to reply
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              只是我们的对话少了一些<span class="hl">甜蜜</span>
+            </div>
+            <div class="pinyin-line">
+              Zhǐshì wǒmen de duìhuà shǎole yīxiē <span class="hl">tiánmì</span>
+            </div>
+            <div class="eng-line">
+              It's just that our conversation lacks some sweetness
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              看似很正常的语句 但透着<span class="hl">距离</span>
+            </div>
+            <div class="pinyin-line">
+              Kànsì hěn zhèngcháng de yǔjù dàn tòuzhe
+              <span class="hl">jùlí</span>
+            </div>
+            <div class="eng-line">
+              Seemingly normal sentences but revealing distance
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">我不知道该怎么对你 也许是正常的关係</div>
+            <div class="pinyin-line">
+              Wǒ bù zhīdào gāi zěnme duì nǐ yěxǔ shì zhèngcháng de guānxì
+            </div>
+            <div class="eng-line">
+              I don't know how to treat you, maybe it's a normal relationship
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">我每时每刻都在告诉自己</div>
+            <div class="pinyin-line">Wǒ měi shí měi kè dōu zài gàosù zìjǐ</div>
+            <div class="eng-line">I tell myself every moment</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">我还是很爱你的只是 lonely</div>
+            <div class="pinyin-line">Wǒ háishì hěn ài nǐ de zhǐshì lonely</div>
+            <div class="eng-line">
+              I still love you very much, I'm just lonely
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">不知道微信什么时候开始没有表情</div>
+            <div class="pinyin-line">
+              Bù zhīdào wēixìn shénme shíhòu kāishǐ méiyǒu biǎoqíng
+            </div>
+            <div class="eng-line">
+              Don't know when WeChat started having no expressions (emojis)
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">你的上班时间多了 没有那么多的高兴</div>
+            <div class="pinyin-line">
+              Nǐ de shàngbān shíjiān duōle méiyǒu nàme duō de gāoxìng
+            </div>
+            <div class="eng-line">
+              Your work hours increased, there isn't as much happiness
+            </div>
+          </div>
+
+          <!-- PRE-CHORUS -->
+          <div
+            style="
+              text-align: center;
+              padding: 20px;
+              color: var(--text-sub);
+              letter-spacing: 2px;
+              font-size: 0.8em;
+            "
+          >
+            --- PRE-CHORUS ---
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">回想起来 刚开始的时间</div>
+            <div class="pinyin-line">Huíxiǎng qǐlái gāng kāishǐ de shíjiān</div>
+            <div class="eng-line">
+              Thinking back to the time when we started
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">俩个人都在 都想办法离开</div>
+            <div class="pinyin-line">
+              Liǎng gè rén dōu zài dōu xiǎng bànfǎ líkāi
+            </div>
+            <div class="eng-line">
+              Both people were there, both trying to find a way to leave
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">没有理由的</div>
+            <div class="pinyin-line">Méiyǒu lǐyóu de</div>
+            <div class="eng-line">Without any reason</div>
+          </div>
+
+          <!-- CHORUS REPEAT -->
+          <div
+            style="
+              text-align: center;
+              padding: 20px;
+              color: var(--highlight-text);
+              letter-spacing: 2px;
+              font-weight: bold;
+              opacity: 0.8;
+            "
+          >
+            --- CHORUS ---
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">没有人可以去等待</div>
+            <div class="pinyin-line">Méiyǒu rén kěyǐ qù děngdài</div>
+            <div class="eng-line">No one can wait</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">不知不觉的放开你</div>
+            <div class="pinyin-line">Bùzhī bùjué de fàngkāi nǐ</div>
+            <div class="eng-line">Unknowingly letting go of you</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">我们都没有那勇气 baby</div>
+            <div class="pinyin-line">Wǒmen dōu méiyǒu nà yǒngqì baby</div>
+            <div class="eng-line">Neither of us has that courage baby</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">I'm sorry, I'm so lonely</div>
+          </div>
+
+          <!-- HOOK -->
+          <div
+            style="
+              text-align: center;
+              padding: 20px;
+              color: var(--text-sub);
+              letter-spacing: 2px;
+              font-size: 0.8em;
+            "
+          >
+            --- HOOK ---
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">理由 理由 理由 理由</div>
+            <div class="pinyin-line">Lǐyóu lǐyóu lǐyóu lǐyóu</div>
+            <div class="eng-line">Reasons, reasons, reasons, reasons</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              再多理由 无法<span class="hl">挽留</span>
+            </div>
+            <div class="pinyin-line">
+              Zài duō lǐyóu wúfǎ <span class="hl">wǎnliú</span>
+            </div>
+            <div class="eng-line">
+              No matter how many reasons, can't make you stay
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">爱情 爱情 爱情 爱情</div>
+            <div class="pinyin-line">Àiqíng àiqíng àiqíng àiqíng</div>
+            <div class="eng-line">Love, love, love, love</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">再多理由 说停就停</div>
+            <div class="pinyin-line">Zài duō lǐyóu shuō tíng jiù tíng</div>
+            <div class="eng-line">
+              No matter how many reasons, it stops when said so
+            </div>
+          </div>
+
+          <!-- BRIDGE -->
+          <div
+            style="
+              text-align: center;
+              padding: 20px;
+              color: var(--text-sub);
+              letter-spacing: 2px;
+              font-size: 0.8em;
+            "
+          >
+            --- BRIDGE ---
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">Yeah-yeah, whoo-ooh-ooh, mm</div>
+          </div>
+          <div class="lyric-row">
+            <div class="hanzi-line">I'm so lonely</div>
+          </div>
+          <div class="lyric-row">
+            <div class="hanzi-line">Yeah-yeah, whoo-ooh-ooh, mm-hmm</div>
+          </div>
+
+          <div
+            style="
+              text-align: center;
+              padding: 20px;
+              opacity: 0.5;
+              font-size: 0.8em;
+            "
+          >
+            (Chorus Repeats to Fade)
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

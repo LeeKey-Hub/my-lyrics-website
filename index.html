@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chinese Song Library</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #181818;
+            --card-hover: #282828;
+            --text-main: #ffffff;
+            --text-sub: #b3b3b3;
+            --accent: #1db954;
+        }
+        body {
+            font-family: "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding-bottom: 50px; }
+        
+        header { display: flex; flex-direction: column; align-items: center; margin-bottom: 40px; padding-top: 20px; }
+        h1 { font-size: 3em; margin-bottom: 10px; letter-spacing: -1px; text-align: center; }
+        p.subtitle { color: var(--text-sub); font-size: 1.1em; margin-bottom: 30px; }
+
+        /* Search */
+        .search-container { position: relative; width: 100%; max-width: 500px; }
+        #searchInput {
+            width: 100%; padding: 15px 25px; border-radius: 50px;
+            border: 1px solid #333; background-color: #2a2a2a; color: white;
+            font-size: 1.1em; outline: none; transition: 0.3s; box-sizing: border-box;
+        }
+        #searchInput:focus { border-color: var(--accent); background-color: #333; }
+
+        /* Grid */
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        /* Cards */
+        .song-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 16px;
+            text-decoration: none;
+            color: inherit;
+            transition: background-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .song-card:hover { background-color: var(--card-hover); }
+
+        .card-img-box {
+            width: 100%; aspect-ratio: 1 / 1;
+            border-radius: 6px; overflow: hidden; margin-bottom: 12px;
+            position: relative; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            background: #333;
+        }
+        .card-img-box img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .song-card:hover .card-img-box img { transform: scale(1.05); }
+
+        /* Genre Pill - UPDATED LAYOUT */
+        .genre-pill {
+            /* Positioned relative to flow, not absolute over image */
+            display: inline-block;
+            font-size: 0.65em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px; /* Space between pill and title */
+            
+            /* Visual Style: Outlined Accent */
+            color: #ffb74d;
+            border: 1px solid rgba(255, 183, 77, 0.3);
+            background: rgba(255, 183, 77, 0.1); 
+            padding: 2px 8px;
+            border-radius: 4px;
+            align-self: flex-start;
+            width: fit-content;
+        }
+
+        /* Play Button Overlay */
+        .play-overlay {
+            position: absolute; bottom: 8px; right: 8px;
+            width: 48px; height: 48px; border-radius: 50%;
+            background-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: translateY(8px); transition: all 0.3s ease;
+            z-index: 2;
+        }
+        .play-overlay::after { content: "▶"; font-size: 1.2em; color: black; margin-left: 2px; }
+        .song-card:hover .play-overlay { opacity: 1; transform: translateY(0); }
+
+        /* Text Info */
+        .song-title {
+            font-size: 1.1em; font-weight: 700; color: var(--text-main);
+            margin: 0 0 2px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .song-pinyin {
+            font-size: 0.85em; color: #ffd54f; font-weight: 500; margin-bottom: 4px;
+        }
+        .song-artist {
+            font-size: 0.9em; color: var(--text-sub); margin: 0;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .footer { text-align: center; margin-top: 60px; color: #555; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🎵 Chinese Song Hub</h1>
+        <p class="subtitle">Learn Chinese through Lyrics</p>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search title, artist or pinyin...">
+        </div>
+        <div class="tools" style="margin-top: 15px; font-size: 0.9em;">
+             <a href="https://www.mdbg.net/chinese/dictionary" target="_blank" style="color:#b3b3b3; text-decoration:none; margin: 0 10px;">📖 Dictionary</a>
+             <a href="https://translate.google.com/" target="_blank" style="color:#b3b3b3; text-decoration:none; margin: 0 10px;">G-Translate</a>
+        </div>
+    </header>
+    <div class="song-grid" id="songGrid">
+
+    <a href="songs/1.%E6%8C%AA%E5%A8%81%E7%9A%84%E6%A3%AE%E6%9E%97%20%28Norwegian%20Wood%29.html" class="song-card">
+        <!-- 1. Image first -->
+        <div class="card-img-box">
+            <img src="assets/images/1.norwegian-wood.png" alt="挪威的森林" loading="lazy">
+            <div class="play-overlay"></div>
+        </div>
+        
+        <!-- 2. Genre second (Moved here so it doesn't cover the art) -->
+        <span class="genre-pill">BLUES ROCK</span>
+        
+        <!-- 3. Text Info -->
+        <div class="song-title">挪威的森林</div>
+        <div class="song-pinyin">Nuó Wēi De Sēn Lín</div>
+        <p class="song-artist">Wu Bai & China Blue</p>
+    </a>
+    
+    <a href="songs/2.%E5%86%8D%E5%BA%A6%E9%87%8D%E7%9B%B8%E9%80%A2%20%28Meeting%20Again%29.html" class="song-card">
+        <!-- 1. Image first -->
+        <div class="card-img-box">
+            <img src="assets/images/2.meeting-again.png" alt="再度重相逢" loading="lazy">
+            <div class="play-overlay"></div>
+        </div>
+        
+        <!-- 2. Genre second (Moved here so it doesn't cover the art) -->
+        <span class="genre-pill">Classic Mandopop</span>
+        
+        <!-- 3. Text Info -->
+        <div class="song-title">再度重相逢</div>
+        <div class="song-pinyin">Zài Dù Zhòng Xiāng Féng</div>
+        <p class="song-artist">Wu Bai</p>
+    </a>
+    
+    <a href="songs/3.%E4%BD%A0%E7%9A%84%E6%A0%B7%E5%AD%90%20%28The%20Way%20You%20Are%29.html" class="song-card">
+        <!-- 1. Image first -->
+        <div class="card-img-box">
+            <img src="assets/images/3.the-way-you-are.png" alt="你的样子" loading="lazy">
+            <div class="play-overlay"></div>
+        </div>
+        
+        <!-- 2. Genre second (Moved here so it doesn't cover the art) -->
+        <span class="genre-pill">Mandopop / Folk Rock</span>
+        
+        <!-- 3. Text Info -->
+        <div class="song-title">你的样子</div>
+        <div class="song-pinyin">Nǐ De Yàng Zi</div>
+        <p class="song-artist">Lo Ta-yu (Luo Dayou)</p>
+    </a>
+    
+    <a href="songs/4.%E5%90%BB%E5%88%A5%20%28Goodbye%20Kiss%29.html" class="song-card">
+        <!-- 1. Image first -->
+        <div class="card-img-box">
+            <img src="assets/images/4.goodbye-kiss.png" alt="吻別" loading="lazy">
+            <div class="play-overlay"></div>
+        </div>
+        
+        <!-- 2. Genre second (Moved here so it doesn't cover the art) -->
+        <span class="genre-pill">Classic Mandopop</span>
+        
+        <!-- 3. Text Info -->
+        <div class="song-title">吻別</div>
+        <div class="song-pinyin">Wěn Bié</div>
+        <p class="song-artist">Jacky Cheung (張學友)</p>
+    </a>
+    
+    <a href="songs/5.No%20Reason%20%28Ryan.B%2C%20Effie%29.html" class="song-card">
+        <!-- 1. Image first -->
+        <div class="card-img-box">
+            <img src="assets/images/5.no-reason-ryan.B-effie.png" alt="No Reason" loading="lazy">
+            <div class="play-overlay"></div>
+        </div>
+        
+        <!-- 2. Genre second (Moved here so it doesn't cover the art) -->
+        <span class="genre-pill">Chinese R&B / Club</span>
+        
+        <!-- 3. Text Info -->
+        <div class="song-title">No Reason</div>
+        <div class="song-pinyin">No reason</div>
+        <p class="song-artist">Ryan.B feat. Effie</p>
+    </a>
+    
+    <a href="songs/6.%E8%AA%B0%E6%84%9B%E8%AA%B0%20%28Who%20Loves%20Who%29.html" class="song-card">
+        <!-- 1. Image first -->
+        <div class="card-img-box">
+            <img src="assets/images/6.who-loves-who.png" alt="誰愛誰" loading="lazy">
+            <div class="play-overlay"></div>
+        </div>
+        
+        <!-- 2. Genre second (Moved here so it doesn't cover the art) -->
+        <span class="genre-pill">Hip Hop / R&B</span>
+        
+        <!-- 3. Text Info -->
+        <div class="song-title">誰愛誰</div>
+        <div class="song-pinyin">Shuí Ài Shuí</div>
+        <p class="song-artist">Dizzy Dizzo ft. E.SO</p>
+    </a>
+    
+    </div>
+    <div class="footer"><p>Auto-generated by build_index.py</p></div>
+</div>
+
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const songGrid = document.getElementById('songGrid');
+    const cards = songGrid.getElementsByClassName('song-card');
+
+    searchInput.addEventListener('keyup', function() {
+        const filter = searchInput.value.toLowerCase();
+        for (let i = 0; i < cards.length; i++) {
+            const card = cards[i];
+            const text = card.innerText.toLowerCase();
+            if (text.indexOf(filter) > -1) {
+                card.style.display = "";
+            } else {
+                card.style.display = "none";
+            }
+        }
+    });
+</script>
+</body>
+</html>
