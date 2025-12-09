@@ -1,760 +1,464 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>你的样子 (The Way You Are) - Corrected</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Appearance - Lyrics Study</title>
     <style>
-      body {
-        font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
-        background-color: #f4f6f8;
-        color: #333;
-        line-height: 1.6;
-        margin: 0;
-        padding: 30px;
-      }
+        :root {
+            --bg-color: #121212;
+            --card-bg: #181818;
+            --card-hover: #282828;
+            --text-main: #FFFFFF;
+            --text-sub: #B3B3B3;
+            --accent: #e67e22; /* Burnt Orange for this song (Nostalgic feel) */
+            --highlight: #d35400; 
+        }
 
-      .container {
-        max-width: 950px;
-        margin: 0 auto;
-      }
+        body {
+            font-family: "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
 
-      h1 {
-        color: #2c3e50;
-        text-align: center;
-        font-size: 2.2em;
-        margin-bottom: 10px;
-      }
+        /* --- NAVIGATION & TOOLS --- */
+        .top-nav {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(18, 18, 18, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #333;
+        }
 
-      .sub-header {
-        text-align: center;
-        color: #7f8c8d;
-        margin-bottom: 40px;
-        font-style: italic;
-      }
+        .back-btn {
+            text-decoration: none;
+            color: var(--text-sub);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.3s;
+        }
+        .back-btn:hover { color: var(--text-main); }
+        .back-arrow { font-size: 1.2em; }
 
-      h2.section-title {
-        color: #34495e;
-        border-left: 5px solid #3498db;
-        padding-left: 12px;
-        margin-top: 40px;
-        margin-bottom: 20px;
-        font-size: 1.6em;
-      }
+        .tools-menu a {
+            color: var(--text-sub);
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-left: 20px;
+            border: 1px solid #333;
+            padding: 5px 12px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        .tools-menu a:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
 
-      /* --- VOCAB CARD --- */
-      .vocab-card {
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        margin-bottom: 30px;
-        border: 1px solid #e1e8ed;
-        overflow: hidden;
-      }
+        /* --- HERO HEADER --- */
+        .hero {
+            /* Nostalgic Brown/Orange Gradient */
+            background: linear-gradient(135deg, #5d4037 0%, #1a120b 100%);
+            padding: 60px 30px;
+            display: flex;
+            align-items: flex-end;
+            gap: 30px;
+        }
 
-      .card-header {
-        background-color: #3498db;
-        color: white;
-        padding: 12px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+        .album-art-placeholder {
+            width: 180px;
+            height: 180px;
+            background: #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: rgba(255,255,255,0.2);
+        }
 
-      .header-word {
-        font-size: 1.6em;
-        font-weight: bold;
-      }
-      .header-pinyin {
-        font-size: 1.2em;
-        opacity: 0.9;
-        margin-left: 10px;
-        font-weight: 300;
-      }
-      .header-meaning {
-        font-size: 1.1em;
-        font-style: italic;
-        opacity: 0.95;
-      }
+        .hero-text h1 {
+            font-size: 3em;
+            margin: 0;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+        .hero-text p {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.2em;
+            margin: 10px 0 0 0;
+        }
 
-      .card-body {
-        padding: 15px 20px;
-      }
+        /* --- MAIN LAYOUT --- */
+        .main-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr; /* Left: Vocab, Right: Lyrics */
+            gap: 40px;
+        }
 
-      .concept-row {
-        display: flex;
-        margin-bottom: 15px;
-        border-bottom: 1px dashed #eee;
-        padding-bottom: 15px;
-      }
-      .concept-row:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
-      }
+        h2.section-title {
+            color: var(--text-main);
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
 
-      .concept-label {
-        width: 100px;
-        flex-shrink: 0;
-        font-weight: bold;
-        font-size: 0.8em;
-        text-transform: uppercase;
-        padding-top: 6px;
-        letter-spacing: 0.5px;
-      }
+        /* --- VOCAB CARD --- */
+        .vocab-list { display: flex; flex-direction: column; gap: 20px; }
+        
+        .vocab-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid var(--accent);
+            transition: background 0.3s;
+        }
+        .vocab-card:hover { background-color: var(--card-hover); }
 
-      .label-target {
-        color: #3498db;
-      }
-      .label-syn {
-        color: #27ae60;
-      }
-      .label-ant {
-        color: #c0392b;
-      }
+        .vocab-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 15px;
+        }
+        .target-word { font-size: 1.8em; font-weight: bold; color: var(--text-main); }
+        .target-pinyin { font-size: 1.1em; color: var(--accent); margin-left: 10px; font-weight: 300; }
+        .target-meaning { font-size: 1em; color: var(--text-sub); font-style: italic; }
 
-      .concept-content {
-        flex-grow: 1;
-      }
+        .sentence-box {
+            background: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        .cn-sent { display: block; color: var(--text-main); margin-bottom: 4px; }
+        .en-sent { display: block; color: var(--text-sub); font-size: 0.85em; }
+        
+        .tag { font-size: 0.7em; padding: 2px 6px; border-radius: 4px; background: #333; color: #ccc; margin-right: 5px; vertical-align: middle; }
 
-      .word-focus {
-        display: inline-block;
-        font-size: 1.25em;
-        font-weight: bold;
-        color: #2c3e50;
-        margin-bottom: 6px;
-      }
-      .pinyin-focus {
-        color: #7f8c8d;
-        font-size: 0.95em;
-        margin-left: 8px;
-      }
+        /* --- LYRICS SECTION --- */
+        .lyrics-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+        }
 
-      .sentence-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
+        .lyric-row {
+            padding: 15px 10px;
+            border-bottom: 1px solid #2a2a2a;
+            transition: background 0.2s;
+        }
+        .lyric-row:hover {
+            background-color: #2a2a2a;
+            border-left: 3px solid var(--accent);
+        }
 
-      .sentence-box {
-        background-color: #f9fafb;
-        border-radius: 4px;
-        padding: 8px 12px;
-        font-size: 0.95em;
-        border-left: 3px solid #ddd;
-      }
+        .hanzi-line {
+            font-size: 1.4em;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+        .meta-line {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9em;
+        }
+        .pinyin-line { color: var(--accent); opacity: 0.9; }
+        .eng-line { color: var(--text-sub); font-style: italic; }
 
-      .use-case-tag {
-        font-size: 0.75em;
-        font-weight: bold;
-        color: #fff;
-        background-color: #95a5a6;
-        padding: 1px 5px;
-        border-radius: 3px;
-        margin-right: 6px;
-        vertical-align: middle;
-      }
-      .tag-literal {
-        background-color: #3498db;
-      }
-      .tag-abstract {
-        background-color: #9b59b6;
-      }
+        /* Highlight specific words in lyrics */
+        .highlight {
+            color: var(--accent);
+            font-weight: bold;
+            border-bottom: 1px dotted var(--accent);
+        }
 
-      .cn-sent {
-        color: #2c3e50;
-        font-weight: 500;
-      }
-      .py-sent {
-        color: #7f8c8d;
-        font-size: 0.9em;
-        margin-left: 8px;
-        font-style: italic;
-      }
-      .en-sent {
-        display: block;
-        color: #95a5a6;
-        font-size: 0.85em;
-        margin-top: 2px;
-      }
-
-      /* --- LYRICS TABLE --- */
-      .lyrics-table {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      }
-      .lyrics-table th {
-        background-color: #2c3e50;
-        color: white;
-        padding: 12px 15px;
-        text-align: left;
-      }
-      .lyrics-table td {
-        padding: 10px 15px;
-        border-bottom: 1px solid #f1f1f1;
-        vertical-align: top;
-      }
-      .lyrics-table tr:hover {
-        background-color: #f4fcff;
-      }
-      .hanzi-lyric {
-        font-size: 1.15em;
-        font-weight: bold;
-        color: #333;
-        width: 35%;
-      }
-      .pinyin-lyric {
-        color: #2980b9;
-        font-size: 1em;
-        width: 30%;
-      }
-      .eng-lyric {
-        color: #7f8c8d;
-        font-style: italic;
-        font-size: 0.95em;
-        width: 35%;
-      }
-
-      .lyric-highlight {
-        color: #c0392b;
-        font-weight: 900;
-        background-color: #fff0f0;
-        padding: 0 4px;
-        border-radius: 3px;
-      }
+        /* --- MOBILE --- */
+        @media (max-width: 768px) {
+            .main-container { grid-template-columns: 1fr; }
+            .hero { flex-direction: column; align-items: flex-start; }
+            .album-art-placeholder { width: 100px; height: 100px; }
+            .tools-menu { display: none; }
+        }
     </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>🎵 你的样子 (The Way You Are)</h1>
-      <div class="sub-header">Corrected Full Lyrics Version</div>
+</head>
+<body>
 
-      <h2 class="section-title">1. Vocabulary Focus</h2>
-
-      <!-- CARD 1: 呜咽 (Sobbing) -->
-      <div class="vocab-card">
-        <div class="card-header">
-          <div>
-            <span class="header-word">呜咽</span>
-            <span class="header-pinyin">wū yè</span>
-          </div>
-          <span class="header-meaning">Sobbing / Whimpering</span>
+    <!-- Sticky Nav -->
+    <nav class="top-nav">
+        <a href="index.html" class="back-btn">
+            <span class="back-arrow">←</span> Back to Library
+        </a>
+        <div class="tools-menu">
+            <a href="https://www.mdbg.net/chinese/dictionary" target="_blank">📖 Dictionary</a>
+            <a href="https://translate.google.com/" target="_blank">G-Translate</a>
         </div>
-        <div class="card-body">
-          <div class="concept-row">
-            <div class="concept-label label-target">Target</div>
-            <div class="concept-content">
-              <span class="word-focus">呜咽</span>
-              <span class="pinyin-focus">wū yè</span>
-              <div class="sentence-group">
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-literal">Action</span>
-                  <span class="cn-sent">孩子在角落里低声<b>呜咽</b>。</span>
-                  <span class="py-sent"
-                    >Háizi zài jiǎoluò lǐ dīshēng wūyè.</span
-                  >
-                  <span class="en-sent"
-                    >The child is sobbing quietly in the corner.</span
-                  >
-                </div>
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-abstract">Metaphor</span>
-                  <span class="cn-sent">那梦里<b>呜咽</b>中的小河。</span>
-                  <span class="py-sent">Nà mènglǐ wūyè zhōng de xiǎohé.</span>
-                  <span class="en-sent"
-                    >The little river sobbing in the dream (Sound of
-                    water).</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="concept-row">
-            <div class="concept-label label-syn">Synonym</div>
-            <div class="concept-content">
-              <span class="word-focus">哭泣</span>
-              <span class="pinyin-focus">kū qì (Weep)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">她伤心地哭泣。</span>
-                <span class="en-sent">She wept sadly.</span>
-              </div>
-            </div>
-          </div>
-          <div class="concept-row">
-            <div class="concept-label label-ant">Antonym</div>
-            <div class="concept-content">
-              <span class="word-focus">欢笑</span>
-              <span class="pinyin-focus">huān xiào (Laughing)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">房间里充满了欢笑。</span>
-                <span class="en-sent">The room is full of laughter.</span>
-              </div>
-            </div>
-          </div>
+    </nav>
+
+    <!-- Header / Hero Section -->
+    <header class="hero">
+        <div class="album-art-placeholder">🍂</div>
+        <div class="hero-text">
+            <p>LESSON #02</p>
+            <h1>你的样子</h1>
+            <p>Your Appearance - Lo Ta-yu (Luo Dayou)</p>
         </div>
-      </div>
+    </header>
 
-      <!-- CARD 2: 潇洒 (Unrestrained/Free) -->
-      <div class="vocab-card">
-        <div class="card-header" style="background-color: #8e44ad">
-          <div>
-            <span class="header-word">潇洒</span>
-            <span class="header-pinyin">xiāo sǎ</span>
-          </div>
-          <span class="header-meaning">Natural & Unrestrained / Elegant</span>
-        </div>
-        <div class="card-body">
-          <div class="concept-row">
-            <div class="concept-label label-target" style="color: #8e44ad">
-              Target
-            </div>
-            <div class="concept-content">
-              <span class="word-focus">潇洒</span>
-              <span class="pinyin-focus">xiāo sǎ</span>
-              <div class="sentence-group">
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-literal">Appearance</span>
-                  <span class="cn-sent">他的字写得很<b>潇洒</b>。</span>
-                  <span class="py-sent">Tā de zì xiě de hěn xiāosǎ.</span>
-                  <span class="en-sent"
-                    >His handwriting is very elegant/flowing.</span
-                  >
+    <!-- Main Content Grid -->
+    <div class="main-container">
+
+        <!-- LEFT COLUMN: VOCABULARY -->
+        <section>
+            <h2 class="section-title">Deep Dive Vocabulary</h2>
+            <div class="vocab-list">
+                
+                <!-- Card 1: Carve/Depict -->
+                <div class="vocab-card">
+                    <div class="vocab-header">
+                        <div>
+                            <span class="target-word">刻画</span>
+                            <span class="target-pinyin">kè huà</span>
+                        </div>
+                        <span class="target-meaning">To Carve / Depict</span>
+                    </div>
+                    <div class="sentence-box">
+                        <span class="tag">Literal</span>
+                        <span class="cn-sent">他在木头上<b>刻画</b>名字。</span>
+                        <span class="en-sent">He carved his name on the wood.</span>
+                    </div>
+                    <div class="sentence-box">
+                        <span class="tag">Metaphor</span>
+                        <span class="cn-sent">岁月在脸上<b>刻画</b>了皱纹。</span>
+                        <span class="en-sent">Time carved wrinkles on the face.</span>
+                    </div>
                 </div>
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-abstract">Personality</span>
-                  <span class="cn-sent"
-                    ><b>潇洒</b>的你，将心事化尽尘缘中。</span
-                  >
-                  <span class="py-sent"
-                    >Xiāosǎ de nǐ, jiāng xīnshì huà jìn chényuán zhōng.</span
-                  >
-                  <span class="en-sent"
-                    >The unrestrained you, dissolving worries into the dust of
-                    fate.</span
-                  >
+
+                <!-- Card 2: Stand Still -->
+                <div class="vocab-card" style="border-left-color: #a04000;">
+                    <div class="vocab-header">
+                        <div>
+                            <span class="target-word">伫立</span>
+                            <span class="target-pinyin">zhù lì</span>
+                        </div>
+                        <span class="target-meaning">Stand still (Poetic)</span>
+                    </div>
+                    <div class="sentence-box">
+                        <span class="cn-sent">她独自<b>伫立</b>在雨中。</span>
+                        <span class="en-sent">She stood still alone in the rain.</span>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="concept-row">
-            <div class="concept-label label-syn">Synonym</div>
-            <div class="concept-content">
-              <span class="word-focus">洒脱</span>
-              <span class="pinyin-focus">sǎ tuō (Free and easy)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">他性格很洒脱。</span>
-                <span class="en-sent"
-                  >His character is very free and easy.</span
-                >
-              </div>
-            </div>
-          </div>
-          <div class="concept-row">
-            <div class="concept-label label-ant">Antonym</div>
-            <div class="concept-content">
-              <span class="word-focus">拘束</span>
-              <span class="pinyin-focus">jū shù (Restrained/Awkward)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">她在陌生人面前很拘束。</span>
-                <span class="en-sent"
-                  >She is very restrained in front of strangers.</span
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- CARD 3: 溶解 (Dissolve) -->
-      <div class="vocab-card">
-        <div class="card-header" style="background-color: #27ae60">
-          <div>
-            <span class="header-word">溶解</span>
-            <span class="header-pinyin">róng jiě</span>
-          </div>
-          <span class="header-meaning">To Dissolve</span>
-        </div>
-        <div class="card-body">
-          <div class="concept-row">
-            <div class="concept-label label-target" style="color: #27ae60">
-              Target
-            </div>
-            <div class="concept-content">
-              <span class="word-focus">溶解</span>
-              <span class="pinyin-focus">róng jiě</span>
-              <div class="sentence-group">
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-literal">Science</span>
-                  <span class="cn-sent">盐在水中<b>溶解</b>。</span>
-                  <span class="py-sent">Yán zài shuǐ zhōng róngjiě.</span>
-                  <span class="en-sent">Salt dissolves in water.</span>
+                <!-- Card 3: Free/Unrestrained -->
+                <div class="vocab-card" style="border-left-color: #d35400;">
+                    <div class="vocab-header">
+                        <div>
+                            <span class="target-word">潇洒</span>
+                            <span class="target-pinyin">xiāo sǎ</span>
+                        </div>
+                        <span class="target-meaning">Chic / Unrestrained</span>
+                    </div>
+                    <div class="sentence-box">
+                        <span class="cn-sent">他活得很<b>潇洒</b>。</span>
+                        <span class="en-sent">He lives a very free and unrestrained life.</span>
+                    </div>
                 </div>
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-abstract">Metaphor</span>
-                  <span class="cn-sent">人世间总不能<b>溶解</b>你的样子。</span>
-                  <span class="py-sent"
-                    >Rénshìjiān zǒng bùnéng róngjiě nǐ de yàngzi.</span
-                  >
-                  <span class="en-sent"
-                    >The world can never dissolve (erase) your appearance.</span
-                  >
+
+            </div>
+        </section>
+
+        <!-- RIGHT COLUMN: LYRICS -->
+        <section>
+            <h2 class="section-title">Lyrics</h2>
+            <div class="lyrics-container">
+                
+                <div class="lyric-row">
+                    <div class="hanzi-line">我听到传来的谁的声音</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Wǒ tīngdào chuánlái de shuí de shēngyīn</span>
+                        <span class="eng-line">I hear someone's voice drifting over</span>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="concept-row">
-            <div class="concept-label label-syn">Synonym</div>
-            <div class="concept-content">
-              <span class="word-focus">溶化</span>
-              <span class="pinyin-focus">róng huà (Melt)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">雪溶化了。</span>
-                <span class="en-sent">The snow melted.</span>
-              </div>
-            </div>
-          </div>
-          <div class="concept-row">
-            <div class="concept-label label-ant">Antonym</div>
-            <div class="concept-content">
-              <span class="word-focus">凝结</span>
-              <span class="pinyin-focus">níng jié (Congeal)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">血液凝结。</span>
-                <span class="en-sent">Blood congeals.</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- CARD 4: 恩宠 (Grace/Favor) -->
-      <div class="vocab-card">
-        <div class="card-header" style="background-color: #16a085">
-          <div>
-            <span class="header-word">恩宠</span>
-            <span class="header-pinyin">ēn chǒng</span>
-          </div>
-          <span class="header-meaning">Grace / Favor / Pet</span>
-        </div>
-        <div class="card-body">
-          <div class="concept-row">
-            <div class="concept-label label-target" style="color: #16a085">
-              Target
-            </div>
-            <div class="concept-content">
-              <span class="word-focus">恩宠</span>
-              <span class="pinyin-focus">ēn chǒng</span>
-              <div class="sentence-group">
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-literal">Royal</span>
-                  <span class="cn-sent">她得到了国王的<b>恩宠</b>。</span>
-                  <span class="py-sent">Tā dédàole guówáng de ēnchǒng.</span>
-                  <span class="en-sent">She received the King's favor.</span>
+                <div class="lyric-row">
+                    <div class="hanzi-line">像那梦里呜咽中的小河</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Xiàng nà mènglǐ wūyè zhōng de xiǎohé</span>
+                        <span class="eng-line">Like the sobbing river in a dream</span>
+                    </div>
                 </div>
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-abstract">Life</span>
-                  <span class="cn-sent"
-                    >孤独的孩子，你是造物的<b>恩宠</b>。</span
-                  >
-                  <span class="py-sent"
-                    >Gūdú de háizi, nǐ shì zàowù de ēnchǒng.</span
-                  >
-                  <span class="en-sent"
-                    >Lonely child, you are the grace of creation (God's
-                    favorite).</span
-                  >
+
+                <div class="lyric-row">
+                    <div class="hanzi-line">我看到远去的谁的步伐</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Wǒ kàndào yuǎnqù de shuí de bùfá</span>
+                        <span class="eng-line">I see someone's footsteps fading away</span>
+                    </div>
                 </div>
-              </div>
+
+                <div class="lyric-row">
+                    <div class="hanzi-line">遮住告别时哀伤的眼神</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Zhēzhù gàobié shí āishāng de yǎnshén</span>
+                        <span class="eng-line">Hiding the sorrowful eyes of farewell</span>
+                    </div>
+                </div>
+
+                <!-- Chorus Start -->
+                <div class="lyric-row">
+                    <div class="hanzi-line">不明白的是为何你情愿</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Bù míngbái de shì wèihé nǐ qíngyuàn</span>
+                        <span class="eng-line">What I don't understand is why you are willing</span>
+                    </div>
+                </div>
+
+                <div class="lyric-row">
+                    <div class="hanzi-line">让风尘<span class="highlight">刻画</span>你的样子</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Ràng fēngchén <span class="highlight">kèhuà</span> nǐ de yàngzi</span>
+                        <span class="eng-line">To let the wind and dust carve your appearance</span>
+                    </div>
+                </div>
+
+                <div class="lyric-row">
+                    <div class="hanzi-line">就像早已忘情的世界</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Jiùxiàng zǎoyǐ wàngqíng de shìjiè</span>
+                        <span class="eng-line">Just like the world that has long forgotten love</span>
+                    </div>
+                </div>
+
+                <div class="lyric-row">
+                    <div class="hanzi-line">曾经拥有你的名字我的声音</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Céngjīng yōngyǒu nǐ de míngzì wǒ de shēngyīn</span>
+                        <span class="eng-line">Once held your name and my voice</span>
+                    </div>
+                </div>
+
+                <!-- Verse 2 -->
+                <div class="lyric-row">
+                    <div class="hanzi-line">那悲歌总会在梦中清醒</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Nà bēigē zǒng huì zài mèngzhōng qīngxǐng</span>
+                        <span class="eng-line">That sad song always wakes up within the dream</span>
+                    </div>
+                </div>
+
+                <div class="lyric-row">
+                    <div class="hanzi-line">诉说一点哀伤过的往事</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Sùshuō yīdiǎn āishāng guò de wǎngshì</span>
+                        <span class="eng-line">Telling of a past slightly tinged with sorrow</span>
+                    </div>
+                </div>
+
+                <div class="lyric-row">
+                    <div class="hanzi-line">那看似满不在乎转过身的</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Nà kànsì mǎn bù zàihū zhuǎn guò shēn de</span>
+                        <span class="eng-line">That silhouette turning away, seemingly uncaring</span>
+                    </div>
+                </div>
+
+                <div class="lyric-row">
+                    <div class="hanzi-line">是风干泪眼后萧瑟的影子</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Shì fēnggān lèiyǎn hòu xiāosè de yǐngzi</span>
+                        <span class="eng-line">Is the desolate shadow after drying tears</span>
+                    </div>
+                </div>
+
+                <!-- Chorus B -->
+                <div class="lyric-row">
+                    <div class="hanzi-line">不明白的是为何人世间</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Bù míngbái de shì wèihé rénshìjiān</span>
+                        <span class="eng-line">What I don't understand is why in this world</span>
+                    </div>
+                </div>
+
+                <div class="lyric-row">
+                    <div class="hanzi-line">总不能溶解你的样子</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Zǒng bùnéng róngjiě nǐ de yàngzi</span>
+                        <span class="eng-line">Can never dissolve your appearance</span>
+                    </div>
+                </div>
+
+                <div class="lyric-row">
+                    <div class="hanzi-line">是否来迟了明日的渊源</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Shìfǒu láichí le míngrì de yuānyuán</span>
+                        <span class="eng-line">Did tomorrow's destiny arrive too late?</span>
+                    </div>
+                </div>
+
+                <div class="lyric-row">
+                    <div class="hanzi-line">早谢了你的笑容我的心情</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Zǎo xiè le nǐ de xiàoróng wǒ de xīnqíng</span>
+                        <span class="eng-line">And your smile and my mood withered too early</span>
+                    </div>
+                </div>
+
+                <!-- Bridge / Climax -->
+                <div style="text-align:center; padding: 20px; color: var(--accent); letter-spacing: 2px; font-weight: bold; opacity: 0.8;">
+                    --- BRIDGE ---
+                </div>
+
+                <div class="lyric-row">
+                    <div class="hanzi-line">不变的你，<span class="highlight">伫立</span>在茫茫的尘世中</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Bùbiàn de nǐ, <span class="highlight">zhùlì</span> zài mángmáng de chénshì zhōng</span>
+                        <span class="eng-line">Unchanging you, standing in the vast dusty world</span>
+                    </div>
+                </div>
+
+                <div class="lyric-row">
+                    <div class="hanzi-line">聪明的孩子，提着易碎的灯笼</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Cōngmíng de háizi, tízhe yìsuì de dēnglóng</span>
+                        <span class="eng-line">Smart child, carrying a fragile lantern</span>
+                    </div>
+                </div>
+
+                <div class="lyric-row">
+                    <div class="hanzi-line"><span class="highlight">潇洒</span>的你，将心事化尽尘缘中</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line"><span class="highlight">Xiāosǎ</span> de nǐ, jiāng xīnshì huà jìn chényuán zhōng</span>
+                        <span class="eng-line">Free and easy you, dissolving worries into earthly fate</span>
+                    </div>
+                </div>
+
+                <div class="lyric-row">
+                    <div class="hanzi-line">孤独的孩子，你是造物的恩宠</div>
+                    <div class="meta-line">
+                        <span class="pinyin-line">Gūdú de háizi, nǐ shì zàowù de ēnchǒng</span>
+                        <span class="eng-line">Lonely child, you are the grace of creation</span>
+                    </div>
+                </div>
+                
             </div>
-          </div>
-          <div class="concept-row">
-            <div class="concept-label label-syn">Synonym</div>
-            <div class="concept-content">
-              <span class="word-focus">宠爱</span>
-              <span class="pinyin-focus">chǒng ài (Dote on)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">父母宠爱孩子。</span>
-                <span class="en-sent">Parents dote on their children.</span>
-              </div>
-            </div>
-          </div>
-          <div class="concept-row">
-            <div class="concept-label label-ant">Antonym</div>
-            <div class="concept-content">
-              <span class="word-focus">冷落</span>
-              <span class="pinyin-focus">lěng luò (Treat coldly)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">不要冷落客人。</span>
-                <span class="en-sent"
-                  >Don't give the cold shoulder to guests.</span
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <h2 class="section-title">2. Full Lyrics (Line-by-Line)</h2>
-
-      <table class="lyrics-table">
-        <thead>
-          <tr>
-            <th>Hanzi</th>
-            <th>Pinyin</th>
-            <th>English</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="hanzi-lyric">我听到传来的谁的声音</td>
-            <td class="pinyin-lyric">
-              Wǒ tīngdào chuánlái de shéi de shēngyīn
-            </td>
-            <td class="eng-lyric">I hear someone's voice drifting over</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">
-              像那梦里<span class="lyric-highlight">呜咽</span>中的小河
-            </td>
-            <td class="pinyin-lyric">
-              Xiàng nà mènglǐ <span class="lyric-highlight">wūyè</span> zhōng de
-              xiǎohé
-            </td>
-            <td class="eng-lyric">
-              Like the <span class="lyric-highlight">sobbing</span> little river
-              in a dream
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">我看到远去的谁的步伐</td>
-            <td class="pinyin-lyric">Wǒ kàndào yuǎnqù de shéi de bùfá</td>
-            <td class="eng-lyric">I see someone's footsteps fading away</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">遮住告别时哀伤的眼神</td>
-            <td class="pinyin-lyric">Zhēzhù gàobié shí āishāng de yǎnshén</td>
-            <td class="eng-lyric">Covering the sad eyes at farewell</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">不明白的是为何你情愿</td>
-            <td class="pinyin-lyric">Bù míngbái de shì wèihé nǐ qíngyuàn</td>
-            <td class="eng-lyric">
-              What I don't understand is why you are willing
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">让风尘刻画你的样子</td>
-            <td class="pinyin-lyric">Ràng fēngchén kèhuà nǐ de yàngzi</td>
-            <td class="eng-lyric">
-              To let wind and dust carve your appearance
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">就像早已忘情的世界</td>
-            <td class="pinyin-lyric">Jiù xiàng zǎoyǐ wàngqíng de shìjiè</td>
-            <td class="eng-lyric">
-              Just like a world that has long forgotten love
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">曾经拥有你的名字我的声音</td>
-            <td class="pinyin-lyric">
-              Céngjīng yōngyǒu nǐ de míngzì wǒ de shēngyīn
-            </td>
-            <td class="eng-lyric">Once possessed your name and my voice</td>
-          </tr>
-
-          <!-- CHORUS A -->
-          <tr style="background-color: #f1f8fc">
-            <td
-              colspan="3"
-              style="text-align: center; font-weight: bold; color: #2980b9"
-            >
-              --- CHORUS ---
-            </td>
-          </tr>
-
-          <tr>
-            <td class="hanzi-lyric">那悲歌总会在梦中清醒</td>
-            <td class="pinyin-lyric">
-              Nà bēigē zǒng huì zài mèngzhōng qīngxǐng
-            </td>
-            <td class="eng-lyric">
-              That sad song always wakes clearly from dreams
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">诉说一点哀伤过的往事</td>
-            <td class="pinyin-lyric">Sùshuō yīdiǎn āishāng guò de wǎngshì</td>
-            <td class="eng-lyric">Telling of some sad past events</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">那看似满不在乎转过身的</td>
-            <td class="pinyin-lyric">
-              Nà kànsì mǎn bù zàihū zhuǎn guò shēn de
-            </td>
-            <td class="eng-lyric">
-              That turning away which seemed so indifferent
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">是风干泪眼后潇瑟的影子</td>
-            <td class="pinyin-lyric">
-              Shì fēnggān lèiyǎn hòu xiāosè de yǐngzi
-            </td>
-            <td class="eng-lyric">
-              Is the desolate shadow after drying tearful eyes
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">不明白的是为何人世间</td>
-            <td class="pinyin-lyric">Bù míngbái de shì wèihé rénshìjiān</td>
-            <td class="eng-lyric">
-              What I don't understand is why in the world
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">
-              总不能<span class="lyric-highlight">溶解</span>你的样子
-            </td>
-            <td class="pinyin-lyric">
-              Zǒng bùnéng <span class="lyric-highlight">róngjiě</span> nǐ de
-              yàngzi
-            </td>
-            <td class="eng-lyric">
-              It can never <span class="lyric-highlight">dissolve</span> your
-              appearance
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">是否来迟了明日的渊源</td>
-            <td class="pinyin-lyric">Shìfǒu láichí le míngrì de yuānyuán</td>
-            <td class="eng-lyric">
-              Is it that tomorrow's destiny arrived too late?
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">早谢了你的笑容我的心情</td>
-            <td class="pinyin-lyric">
-              Zǎo xiè le nǐ de xiàoróng wǒ de xīnqíng
-            </td>
-            <td class="eng-lyric">Your smile and my mood withered too early</td>
-          </tr>
-
-          <!-- VERSE B -->
-          <tr>
-            <td class="hanzi-lyric">不变的你, 伫立在茫茫的尘世中</td>
-            <td class="pinyin-lyric">
-              Bùbiàn de nǐ, zhùlì zài mángmáng de chénshì zhōng
-            </td>
-            <td class="eng-lyric">
-              Unchanging you, standing in the boundless dusty world
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">聪明的孩子, 提着易碎的灯笼</td>
-            <td class="pinyin-lyric">
-              Cōngmíng de háizi, tí zhe yì suì de dēnglóng
-            </td>
-            <td class="eng-lyric">Clever child, carrying a fragile lantern</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">
-              <span class="lyric-highlight">潇洒</span>的你, 将心事化尽尘缘中
-            </td>
-            <td class="pinyin-lyric">
-              <span class="lyric-highlight">Xiāosǎ</span> de nǐ, jiāng xīnshì
-              huà jìn chényuán zhōng
-            </td>
-            <td class="eng-lyric">
-              <span class="lyric-highlight">Unrestrained</span> you, dissolving
-              worries into dust
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">
-              孤独的孩子, 你是造物的<span class="lyric-highlight">恩宠</span>
-            </td>
-            <td class="pinyin-lyric">
-              Gūdú de háizi, nǐ shì zàowù de
-              <span class="lyric-highlight">ēnchǒng</span>
-            </td>
-            <td class="eng-lyric">
-              Lonely child, you are the
-              <span class="lyric-highlight">grace</span> of creation
-            </td>
-          </tr>
-
-          <!-- REPEAT PART -->
-          <tr style="background-color: #f1f8fc">
-            <td
-              colspan="3"
-              style="text-align: center; font-weight: bold; color: #2980b9"
-            >
-              --- REPEAT VERSE 1 & CHORUS ---
-            </td>
-          </tr>
-
-          <tr>
-            <td class="hanzi-lyric">不变的你</td>
-            <td class="pinyin-lyric">Bùbiàn de nǐ</td>
-            <td class="eng-lyric">Unchanging you</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">伫立在茫茫的尘世中</td>
-            <td class="pinyin-lyric">Zhùlì zài mángmáng de chénshì zhōng</td>
-            <td class="eng-lyric">Standing in the boundless dusty world</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">聪明的孩子</td>
-            <td class="pinyin-lyric">Cōngmíng de háizi</td>
-            <td class="eng-lyric">Clever child</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">提着心爱的灯笼</td>
-            <td class="pinyin-lyric">Tí zhe xīn'ài de dēnglóng</td>
-            <td class="eng-lyric">Carrying the beloved lantern</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">
-              <span class="lyric-highlight">潇洒</span>的你
-            </td>
-            <td class="pinyin-lyric">
-              <span class="lyric-highlight">Xiāosǎ</span> de nǐ
-            </td>
-            <td class="eng-lyric">
-              <span class="lyric-highlight">Unrestrained</span> you
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">将心事化尽尘缘中</td>
-            <td class="pinyin-lyric">Jiāng xīnshì huà jìn chényuán zhōng</td>
-            <td class="eng-lyric">Dissolving worries into dust</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">孤独的孩子</td>
-            <td class="pinyin-lyric">Gūdú de háizi</td>
-            <td class="eng-lyric">Lonely child</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">
-              你是造物的<span class="lyric-highlight">恩宠</span>
-            </td>
-            <td class="pinyin-lyric">
-              Nǐ shì zàowù de <span class="lyric-highlight">ēnchǒng</span>
-            </td>
-            <td class="eng-lyric">
-              You are the <span class="lyric-highlight">grace</span> of creation
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <br /><br />
+        </section>
     </div>
-  </body>
+
+</body>
 </html>
