@@ -1,0 +1,81 @@
+I want you to act as an Expert Web Developer and Chinese Language Teacher.
+I will provide you with the **Input Data** for a song (Lyrics, Vocabulary, Theme).
+You must generate a **Single, Complete HTML File** using the exact design specifications below.
+
+### DESIGN SYSTEM (Do not change this structure, only fill the content)
+1.  **Style:** Modern Dark Mode (Spotify-style).
+2.  **Colors:** Use CSS Variables for the theme so it fits the song vibe.
+3.  **Components:**
+    *   **Hero Section:** Gradient background, Album Art placeholder, Title, Artist.
+    *   **Vocabulary Section:** Cards with colored left-borders. Each card has the Word, Pinyin, Meaning, and 2 Example Sentences (Literal + Metaphor/Abstract).
+    *   **Lyrics Section:** A clean grid layout (Hanzi, Pinyin, English).
+    *   **Highlighting:** You must identify the "Vocabulary Words" inside the Lyrics and wrap them in `<span class="highlight">` tags so they stand out.
+
+### THE CODE TEMPLATE
+Please use this HTML/CSS skeleton and inject my data into it:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[SONG TITLE] - Study</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #181818;
+            --text-main: #ffffff;
+            --text-sub: #b3b3b3;
+            /* YOU MUST UPDATE THESE 3 COLORS BASED ON MY INPUT THEME */
+            --accent: [INSERT MAIN ACCENT COLOR]; 
+            --highlight: [INSERT HIGHLIGHT COLOR];
+            --gradient-start: [INSERT GRADIENT COLOR 1];
+            --gradient-end: #121212;
+        }
+        body { font-family: "Segoe UI", sans-serif; background: var(--bg-color); color: var(--text-main); margin: 0; line-height: 1.6; }
+        .hero { background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end)); padding: 40px; display: flex; align-items: flex-end; gap: 30px; }
+        .hero h1 { font-size: 4em; margin: 0; line-height: 1; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; display: grid; grid-template-columns: 350px 1fr; gap: 40px; }
+        
+        /* VOCAB STYLES */
+        .vocab-list { display: flex; flex-direction: column; gap: 20px; }
+        .vocab-card { background: var(--card-bg); padding: 20px; border-radius: 8px; border-left: 5px solid var(--accent); }
+        .target-word { font-size: 1.5em; font-weight: bold; display: block; }
+        .target-pinyin { color: var(--accent); font-weight: bold; font-size: 0.9em; }
+        .sentence-box { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 6px; margin-top: 10px; font-size: 0.85em; }
+        .tag { font-size: 0.7em; background: #333; padding: 2px 6px; border-radius: 4px; margin-right: 5px; text-transform: uppercase; }
+        
+        /* LYRICS STYLES */
+        .lyrics-container { background: var(--card-bg); padding: 30px; border-radius: 12px; }
+        .lyric-row { display: grid; grid-template-columns: 1fr; gap: 5px; padding: 15px 0; border-bottom: 1px solid #333; }
+        .lyric-row:hover { background: #222; border-left: 3px solid var(--highlight); padding-left: 10px; }
+        .hanzi { font-size: 1.4em; font-weight: 500; color: #fff; }
+        .pinyin { color: var(--accent); font-size: 0.9em; }
+        .eng { color: #777; font-style: italic; font-size: 0.9em; }
+        .highlight { color: var(--highlight); font-weight: bold; }
+        
+        @media (max-width: 800px) { .container { grid-template-columns: 1fr; } .hero { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div>
+            <p style="text-transform:uppercase; letter-spacing:2px; font-size:0.8em;">[ARTIST]</p>
+            <h1>[SONG TITLE]</h1>
+        </div>
+    </div>
+    <div class="container">
+        <!-- SECTION 1: VOCABULARY -->
+        <div class="vocab-list">
+            <!-- GENERATE CARDS HERE BASED ON INPUT -->
+        </div>
+
+        <!-- SECTION 2: LYRICS -->
+        <div class="lyrics-container">
+            <!-- GENERATE LYRICS ROWS HERE BASED ON INPUT -->
+            <!-- REMEMBER TO WRAP TARGET WORDS IN <span class="highlight"> -->
+        </div>
+    </div>
+</body>
+</html>

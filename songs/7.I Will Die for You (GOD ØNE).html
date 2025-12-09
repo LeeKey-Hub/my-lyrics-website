@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>I Will Die for You - Lyrics Study</title>
+    <style>
+      :root {
+        --bg-color: #000000; /* Pure Black for intense vibe */
+        --card-bg: #111111;
+        --card-hover: #1a1a1a;
+        --text-main: #ffffff;
+        --text-sub: #a0a0a0;
+
+        /* THEME: "Sin City" Red / Dark & Intense */
+        --accent: #d50000; /* Deep Blood Red */
+        --highlight: #ff1744; /* Bright Neon Red for highlights */
+      }
+
+      body {
+        font-family: "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
+
+      /* --- NAVIGATION --- */
+      .top-nav {
+        padding: 20px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.85);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #222;
+      }
+
+      .back-btn {
+        text-decoration: none;
+        color: var(--text-sub);
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: color 0.3s;
+      }
+      .back-btn:hover {
+        color: var(--text-main);
+      }
+
+      .tools-menu a {
+        color: var(--text-sub);
+        text-decoration: none;
+        font-size: 0.85em;
+        margin-left: 15px;
+        border: 1px solid #444;
+        padding: 6px 15px;
+        border-radius: 20px;
+        transition: all 0.3s;
+      }
+      .tools-menu a:hover {
+        border-color: var(--accent);
+        color: var(--text-main);
+        background: rgba(213, 0, 0, 0.1);
+      }
+
+      /* --- HERO HEADER --- */
+      .hero {
+        /* Gradient: Dark Blood Red to Black */
+        background: linear-gradient(
+          to bottom,
+          #e66b8b 0%,
+          #f84866 40%,
+          rgb(78, 0, 0) 100%
+        );
+        padding: 20px 40px;
+        display: flex;
+        align-items: flex-end;
+        gap: 24px;
+        height: 300px;
+        box-sizing: border-box;
+      }
+
+      .album-art-placeholder {
+        width: 232px;
+        height: 232px;
+        min-width: 232px;
+        box-shadow: 0 4px 60px rgba(0, 0, 0, 0.6);
+        border-radius: 4px;
+        overflow: hidden;
+        background: #1a0000;
+      }
+
+      .album-art-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .hero-text {
+        margin-bottom: 10px;
+      }
+
+      .hero-text h1 {
+        font-size: 4em;
+        margin: 0 0 10px 0;
+        font-weight: 900;
+        letter-spacing: -2px;
+        line-height: 1;
+      }
+
+      .hero-text p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1em;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .tag-pill {
+        display: inline-block;
+        font-size: 0.75em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 8px;
+        border-radius: 4px;
+      }
+
+      /* --- MAIN LAYOUT --- */
+      .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 50px;
+      }
+
+      h2.section-title {
+        color: var(--text-main);
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #333;
+        padding-bottom: 10px;
+        position: sticky;
+        top: 80px;
+        background: var(--bg-color);
+        z-index: 10;
+      }
+
+      /* --- VOCAB --- */
+      .vocab-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .vocab-card {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        padding: 20px;
+        border-left: 4px solid var(--accent);
+        transition: all 0.3s ease;
+      }
+      .vocab-card:hover {
+        background-color: var(--card-hover);
+        transform: translateX(5px);
+      }
+
+      .vocab-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 12px;
+      }
+      .target-word {
+        font-size: 1.6em;
+        font-weight: bold;
+        color: var(--text-main);
+      }
+      .target-pinyin {
+        font-size: 1em;
+        color: var(--accent);
+        margin-bottom: 5px;
+      }
+      .target-meaning {
+        font-size: 0.95em;
+        color: var(--text-sub);
+        font-style: italic;
+        border-top: 1px solid #333;
+        width: 100%;
+        padding-top: 5px;
+        margin-top: 5px;
+      }
+
+      .sentence-box {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 10px;
+        font-size: 0.85em;
+      }
+      .cn-sent {
+        display: block;
+        color: #ddd;
+        margin-bottom: 4px;
+      }
+      .en-sent {
+        display: block;
+        color: #777;
+        font-size: 0.9em;
+      }
+      .tag {
+        font-size: 0.7em;
+        padding: 2px 6px;
+        border-radius: 3px;
+        background: #333;
+        color: #ccc;
+        margin-right: 5px;
+        text-transform: uppercase;
+      }
+
+      /* --- LYRICS --- */
+      .lyrics-container {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 30px;
+      }
+
+      .lyric-row {
+        padding: 18px 15px;
+        border-bottom: 1px solid #2a2a2a;
+        transition: background 0.2s;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+      .lyric-row:hover {
+        background-color: #1f1f1f;
+        border-left: 3px solid var(--highlight);
+        padding-left: 12px;
+      }
+
+      .hanzi-line {
+        font-size: 1.5em;
+        color: var(--text-main);
+        letter-spacing: 1px;
+        font-weight: 500;
+      }
+      .pinyin-line {
+        color: var(--accent);
+        font-size: 0.9em;
+        font-weight: 500;
+      }
+      .eng-line {
+        color: #666;
+        font-style: italic;
+        font-size: 0.95em;
+      }
+
+      .hl {
+        color: var(--highlight);
+        font-weight: bold;
+      }
+
+      @media (max-width: 900px) {
+        .main-container {
+          grid-template-columns: 1fr;
+        }
+        .hero {
+          flex-direction: column;
+          align-items: flex-start;
+          height: auto;
+          padding-top: 40px;
+        }
+        .album-art-placeholder {
+          width: 180px;
+          height: 180px;
+          min-width: 180px;
+        }
+        .hero-text h1 {
+          font-size: 2.5em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="top-nav">
+      <a href="../index.html" class="back-btn"><span>←</span> Library</a>
+      <div class="tools-menu">
+        <a href="https://www.mdbg.net/chinese/dictionary" target="_blank"
+          >📖 Dict</a
+        >
+        <a href="https://translate.google.com/" target="_blank">Translate</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="album-art-placeholder">
+        <!-- You can replace this src with the actual album art later -->
+        <img src="../assets/images/7.i-will-die-for-you.png" alt="Album Art" />
+      </div>
+      <div class="hero-text">
+        <span class="tag-pill">Melodic Rap / Emo Rap</span>
+        <h1>I Will Die for You</h1>
+        <p>God Øne</p>
+      </div>
+    </header>
+
+    <div class="main-container">
+      <!-- VOCABULARY SECTION -->
+      <section>
+        <h2 class="section-title">Deep Dive Vocabulary</h2>
+        <div class="vocab-list">
+          <!-- Word 1 -->
+          <div class="vocab-card" style="border-left-color: #ef5350">
+            <div class="vocab-header">
+              <span class="target-word">觸及</span>
+              <span class="target-pinyin">chù jí</span>
+              <span class="target-meaning"
+                >To touch / To reach (abstractly)</span
+              >
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Literal</span>
+              <span class="cn-sent">手指<b>觸及</b>冰冷的玻璃。</span>
+              <span class="en-sent">Fingers touched the cold glass.</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Abstract</span>
+              <span class="cn-sent">那是我們<b>觸及</b>不到的未來。</span>
+              <span class="en-sent">That is a future we cannot reach.</span>
+            </div>
+          </div>
+
+          <!-- Word 2 -->
+          <div class="vocab-card" style="border-left-color: #ffca28">
+            <div class="vocab-header">
+              <span class="target-word">彼岸</span>
+              <span class="target-pinyin">bǐ àn</span>
+              <span class="target-meaning"
+                >The other shore / The afterlife</span
+              >
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Literal</span>
+              <span class="cn-sent">船隻駛向<b>彼岸</b>。</span>
+              <span class="en-sent">The boat sailed to the other shore.</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Metaphor</span>
+              <span class="cn-sent">我在<b>彼岸</b>守著妳。</span>
+              <span class="en-sent"
+                >I guard you from the other side (implies death/distance).</span
+              >
+            </div>
+          </div>
+
+          <!-- Word 3 -->
+          <div class="vocab-card" style="border-left-color: #42a5f5">
+            <div class="vocab-header">
+              <span class="target-word">擺平</span>
+              <span class="target-pinyin">bǎi píng</span>
+              <span class="target-meaning"
+                >To settle / To fix / To smooth out</span
+              >
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Literal</span>
+              <span class="cn-sent">把地毯<b>擺平</b>。</span>
+              <span class="en-sent">Flatten/Straighten the carpet.</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Slang</span>
+              <span class="cn-sent">我會為妳<b>擺平</b>一切危機。</span>
+              <span class="en-sent">I will fix/handle all crises for you.</span>
+            </div>
+          </div>
+
+          <!-- Word 4 -->
+          <div class="vocab-card" style="border-left-color: #ab47bc">
+            <div class="vocab-header">
+              <span class="target-word">底線</span>
+              <span class="target-pinyin">dǐ xiàn</span>
+              <span class="target-meaning">Bottom line / Limit</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Literal</span>
+              <span class="cn-sent">球落在<b>底線</b>上。</span>
+              <span class="en-sent">The ball landed on the baseline.</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Abstract</span>
+              <span class="cn-sent">別動我愛的人，是我的<b>底線</b>。</span>
+              <span class="en-sent"
+                >Don't touch the one I love, that is my bottom line.</span
+              >
+            </div>
+          </div>
+
+          <!-- Word 5 -->
+          <div class="vocab-card" style="border-left-color: #ff7043">
+            <div class="vocab-header">
+              <span class="target-word">一廂情願</span>
+              <span class="target-pinyin">yī xiāng qíng yuàn</span>
+              <span class="target-meaning"
+                >Wishful thinking / One-sided willingness</span
+              >
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Idiom</span>
+              <span class="cn-sent">這只是你的<b>一廂情願</b>。</span>
+              <span class="en-sent">This is just your wishful thinking.</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Lyric</span>
+              <span class="cn-sent">是我<b>一廂情願</b>在給妳所有我的愛。</span>
+              <span class="en-sent"
+                >It is my one-sided willingness giving you all my love.</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LYRICS SECTION -->
+      <section>
+        <h2 class="section-title">Lyrics</h2>
+        <div class="lyrics-container">
+          <div class="lyric-row">
+            <div class="hanzi-line">想妳的風吹向哪去</div>
+            <div class="pinyin-line">Xiǎng nǐ de fēng chuī xiàng nǎ qù</div>
+            <div class="eng-line">
+              Where does the wind of missing you blow to?
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              吹向那我們<span class="hl">觸及</span>不到的未來
+            </div>
+            <div class="pinyin-line">
+              Chuī xiàng nà wǒmen <span class="hl">chùjí</span> bù dào de wèilái
+            </div>
+            <div class="eng-line">
+              Blowing towards that future we cannot
+              <span class="hl">reach</span>
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">是否還能讓我 see you again?</div>
+            <div class="pinyin-line">
+              Shìfǒu hái néng ràng wǒ see you again?
+            </div>
+            <div class="eng-line">Can you still let me see you again?</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">想到妳我的眼角就會泛成水災</div>
+            <div class="pinyin-line">
+              Xiǎngdào nǐ wǒ de yǎnjiǎo jiù huì fàn chéng shuǐzāi
+            </div>
+            <div class="eng-line">
+              Thinking of you, the corners of my eyes flood like a disaster
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">I, I can't watch you die</div>
+            <div class="pinyin-line">-</div>
+            <div class="eng-line">I, I can't watch you die</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              說過願意代替妳 我在月球等妳上來跟我在一起
+            </div>
+            <div class="pinyin-line">
+              Shuōguò yuànyì dàitì nǐ, wǒ zài yuèqiú děng nǐ shànglái gēn wǒ zài
+              yīqǐ
+            </div>
+            <div class="eng-line">
+              Said I'd take your place, I'm on the moon waiting for you to come
+              up and be with me
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">閉上雙眼妳就會在</div>
+            <div class="pinyin-line">Bìshàng shuāngyǎn nǐ jiù huì zài</div>
+            <div class="eng-line">Close my eyes and you will be there</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              我在<span class="hl">彼岸</span>守著妳 畢竟來不及說聲掰
+            </div>
+            <div class="pinyin-line">
+              Wǒ zài <span class="hl">bǐ'àn</span> shǒuzhe nǐ, bìjìng láibují
+              shuō shēng bāi
+            </div>
+            <div class="eng-line">
+              I guard you from the <span class="hl">other shore</span>, after
+              all, it was too late to say bye
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">I will die for you bae</div>
+            <div class="pinyin-line">-</div>
+            <div class="eng-line">I will die for you bae</div>
+          </div>
+
+          <!-- Chorus -->
+          <div
+            style="
+              text-align: center;
+              padding: 20px;
+              color: var(--accent);
+              letter-spacing: 2px;
+              font-weight: bold;
+              opacity: 0.6;
+            "
+          >
+            ● ● ●
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">為妳付出一切</div>
+            <div class="pinyin-line">Wèi nǐ fùchū yīqiè</div>
+            <div class="eng-line">Giving everything for you</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              為愛的人我可以願意<span class="hl">擺平</span>一切
+            </div>
+            <div class="pinyin-line">
+              Wèi ài de rén wǒ kěyǐ yuànyì <span class="hl">bǎipíng</span> yīqiè
+            </div>
+            <div class="eng-line">
+              For the one I love, I am willing to
+              <span class="hl">settle</span> everything
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              別動我愛的人 是我的<span class="hl">底線</span>
+            </div>
+            <div class="pinyin-line">
+              Bié dòng wǒ ài de rén shì wǒ de <span class="hl">dǐxiàn</span>
+            </div>
+            <div class="eng-line">
+              Don't touch the one I love, that is my
+              <span class="hl">bottom line</span>
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">就算被說是傻就算沒人理解 oh</div>
+            <div class="pinyin-line">
+              Jiùsuàn bèi shuō shì shǎ jiùsuàn méirén lǐjiě oh
+            </div>
+            <div class="eng-line">
+              Even if called foolish, even if no one understands oh
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">獻出所有生命在這罪惡都市</div>
+            <div class="pinyin-line">
+              Xiànchū suǒyǒu shēngmìng zài zhè zuì'è dūshì
+            </div>
+            <div class="eng-line">Sacrificing all life in this sin city</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">為我愛的人闖 oh</div>
+            <div class="pinyin-line">Wèi wǒ ài de rén chuǎng oh</div>
+            <div class="eng-line">Charging/Fighting for the one I love oh</div>
+          </div>
+
+          <!-- Verse 2 -->
+          <div
+            style="
+              text-align: center;
+              padding: 20px;
+              color: var(--accent);
+              letter-spacing: 2px;
+              font-weight: bold;
+              opacity: 0.6;
+            "
+          >
+            ● ● ●
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">我愛你的心 你咁有知影?</div>
+            <div class="pinyin-line">
+              Wǒ ài nǐ de xīn, Nǐ gān yǒu zhī yǐng? (Taiwanese)
+            </div>
+            <div class="eng-line">My heart that loves you, do you know?</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              是我<span class="hl">一廂情願</span>在給妳所有我的愛
+            </div>
+            <div class="pinyin-line">
+              Shì wǒ <span class="hl">yīxiāngqíngyuàn</span> zài gěi nǐ suǒyǒu
+              wǒ de ài
+            </div>
+            <div class="eng-line">
+              It is my <span class="hl">wishful thinking</span> giving you all
+              my love
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">就算你也無法看明白我的愛</div>
+            <div class="pinyin-line">
+              Jiùsuàn nǐ yě wúfǎ kàn míngbái wǒ de ài
+            </div>
+            <div class="eng-line">Even if you can't understand my love</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">但願你的回憶有我的身影</div>
+            <div class="pinyin-line">
+              Dànyuàn nǐ de huíyì yǒu wǒ de shēnyǐng
+            </div>
+            <div class="eng-line">
+              I only wish your memories contain my silhouette
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              我的槍會永遠為你<span class="hl">擺平</span>危機
+            </div>
+            <div class="pinyin-line">
+              Wǒ de qiāng huì yǒngyuǎn wèi nǐ
+              <span class="hl">bǎipíng</span> wéijī
+            </div>
+            <div class="eng-line">
+              My gun will always <span class="hl">settle</span> crises for you
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              You ain't gonna love me 但卻為你站在這裡
+            </div>
+            <div class="pinyin-line">... dàn què wèi nǐ zhàn zài zhèlǐ</div>
+            <div class="eng-line">
+              You ain't gonna love me, but I stand here for you
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">就算死也要跟你在一起</div>
+            <div class="pinyin-line">Jiùsuàn sǐ yě yào gēn nǐ zài yīqǐ</div>
+            <div class="eng-line">Even if I die, I want to be with you</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
