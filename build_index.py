@@ -1,45 +1,230 @@
 import os
 import re
 
-# 1. SETUP: Define the HTML Header and Styles
+# 1. SETUP: Define the HTML Header and Styles (Dark Mode / Spotify Style)
 html_head = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Chinese Song Library</title>
+    <title>My Chinese Song Hub</title>
     <style>
-        body { font-family: "Segoe UI", "Microsoft YaHei", sans-serif; background-color: #f0f2f5; color: #333; margin: 0; padding: 40px; }
-        .container { max-width: 1000px; margin: 0 auto; }
-        header { text-align: center; margin-bottom: 50px; }
-        h1 { color: #2c3e50; font-size: 2.5em; margin-bottom: 10px; }
-        p.subtitle { color: #7f8c8d; font-size: 1.2em; }
-        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
-        .song-card { background: white; border-radius: 12px; padding: 25px; text-decoration: none; color: inherit; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; border: 2px solid transparent; display: flex; flex-direction: column; justify-content: space-between; height: 180px; }
-        .song-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(52, 152, 219, 0.2); border-color: #3498db; }
-        .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
-        .song-number { font-size: 3em; font-weight: 900; color: #f0f2f5; line-height: 0.8; }
-        .song-info h2 { margin: 0; font-size: 1.3em; color: #2c3e50; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .song-info p { margin: 5px 0 0 0; color: #7f8c8d; font-size: 0.95em; }
-        .tag { display: inline-block; background-color: #eaf2f8; color: #3498db; padding: 4px 10px; border-radius: 20px; font-size: 0.8em; font-weight: bold; margin-top: 10px; }
-        .card-bottom { display: flex; justify-content: flex-end; align-items: center; }
-        .btn-text { color: #3498db; font-weight: bold; font-size: 0.9em; }
-        .refresh-note { text-align: center; margin-top: 50px; color: #95a5a6; font-size: 0.9em; }
+        :root {
+            --bg-color: #121212;
+            --card-bg: #181818;
+            --card-hover: #282828;
+            --text-main: #FFFFFF;
+            --text-sub: #B3B3B3;
+            --accent: #1DB954; /* Spotify Green */
+            --accent-hover: #1ed760;
+        }
+
+        body { 
+            font-family: "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 20px; 
+            line-height: 1.5;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding-bottom: 50px;}
+
+        /* Header & Search Styling */
+        header { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            margin-bottom: 40px; 
+            padding-top: 20px;
+        }
+        
+        h1 { font-size: 3em; margin-bottom: 10px; letter-spacing: -1px; }
+        p.subtitle { color: var(--text-sub); font-size: 1.1em; margin-bottom: 30px; }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: none;
+            background-color: #333;
+            color: white;
+            font-size: 1.1em;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box; /* Important for padding */
+        }
+
+        #searchInput:focus {
+            background-color: #444;
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        /* External Tools Links */
+        .tools { margin-top: 15px; font-size: 0.9em; }
+        .tools a { color: var(--text-sub); margin: 0 10px; text-decoration: none; border-bottom: 1px dotted var(--text-sub); }
+        .tools a:hover { color: var(--accent); border-color: var(--accent); }
+
+        /* Grid Layout */
+        .song-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+
+        /* Card Styling */
+        .song-card { 
+            background: var(--card-bg); 
+            border-radius: 8px; 
+            padding: 20px; 
+            text-decoration: none; 
+            color: inherit; 
+            transition: all 0.3s ease; 
+            display: flex; 
+            flex-direction: column; 
+            height: 200px; 
+            position: relative;
+            overflow: hidden;
+        }
+
+        .song-card:hover { 
+            background-color: var(--card-hover); 
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.5);
+        }
+
+        .card-top { flex-grow: 1; }
+
+        /* The Song Number - Styled like a subtle background watermark */
+        .song-number { 
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            font-size: 5em; 
+            font-weight: 900; 
+            color: rgba(255,255,255,0.03); 
+            z-index: 0;
+        }
+
+        .song-info { position: relative; z-index: 1; }
+        .song-info h2 { 
+            margin: 0 0 5px 0; 
+            font-size: 1.4em; 
+            color: var(--text-main); 
+            font-weight: 700;
+        }
+        .song-info p { margin: 0; color: var(--text-sub); font-size: 0.95em; }
+
+        .tag-container { margin-top: 15px; }
+        .tag { 
+            display: inline-block; 
+            background-color: rgba(255,255,255,0.1); 
+            color: var(--text-main); 
+            padding: 4px 10px; 
+            border-radius: 4px; 
+            font-size: 0.75em; 
+            font-weight: 600; 
+            letter-spacing: 0.5px;
+        }
+
+        /* The Play Button (Visual only) */
+        .play-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0; /* Hidden by default */
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+        
+        .play-btn::after {
+            content: "▶";
+            color: black;
+            font-size: 1.2em;
+            margin-left: 2px; /* Visual correction */
+        }
+
+        .song-card:hover .play-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .footer { text-align: center; margin-top: 60px; color: #555; font-size: 0.8em; }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            h1 { font-size: 2em; }
+            .song-card:hover .play-btn { opacity: 1; } /* Always show button on mobile if needed */
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <header>
-        <h1>🎵 My Chinese Song Library</h1>
-        <p class="subtitle">Deep Dive Vocabulary & Lyrics Study</p>
+        <h1>🇨🇳 Lyrics Hub</h1>
+        <p class="subtitle">Learn Chinese through Music</p>
+        
+        <!-- Search Bar Added Here -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for artists, songs, or lyrics...">
+        </div>
+
+        <!-- External Tools Section -->
+        <div class="tools">
+            <span>Study Tools:</span>
+            <a href="https://www.mdbg.net/chinese/dictionary" target="_blank">MDBG Dictionary</a>
+            <a href="https://translate.google.com/" target="_blank">Google Translate</a>
+            <a href="https://chinese.yabla.com/chinese-pinyin-chart.php" target="_blank">Pinyin Chart</a>
+        </div>
     </header>
-    <div class="song-grid">
+
+    <div class="song-grid" id="songGrid">
 """
 
+# Note: We add a small JS script at the end for the search logic
 html_footer = """
     </div>
-    <p class="refresh-note">Generated by build_index.py</p>
+    <div class="footer">
+        <p>Built with ❤️ for Language Learning</p>
+    </div>
 </div>
+
+<script>
+    // SEARCH FUNCTIONALITY
+    const searchInput = document.getElementById('searchInput');
+    const songGrid = document.getElementById('songGrid');
+    const cards = songGrid.getElementsByClassName('song-card');
+
+    searchInput.addEventListener('keyup', function() {
+        const filter = searchInput.value.toLowerCase();
+
+        for (let i = 0; i < cards.length; i++) {
+            const card = cards[i];
+            // We search the text content of the whole card (Title + English Title)
+            const textContent = card.textContent || card.innerText;
+            
+            if (textContent.toLowerCase().indexOf(filter) > -1) {
+                card.style.display = ""; // Show
+            } else {
+                card.style.display = "none"; // Hide
+            }
+        }
+    });
+</script>
 </body>
 </html>
 """
@@ -51,14 +236,12 @@ files = os.listdir(current_folder)
 songs = []
 
 # Regex to match: "1.Chinese Name (English Name).html"
-# It handles spaces and different types of parenthesis
 pattern = re.compile(r'^(\d+)\s*\.\s*(.+?)\s*[（(](.+?)[)）]\.html$')
 
 for file in files:
     if file.endswith(".html") and file != "index.html":
         match = pattern.match(file)
         if match:
-            # We found a song file!
             num = int(match.group(1))
             cn_title = match.group(2).strip()
             en_title = match.group(3).strip()
@@ -70,28 +253,28 @@ for file in files:
                 "filename": file
             })
 
-# 3. SORT: Sort by number (1, 2, 3...)
+# 3. SORT: Sort by number
 songs.sort(key=lambda x: x["num"])
 
 # 4. BUILD: Generate Card HTML
 cards_html = ""
 for song in songs:
-    # Add a leading zero if number < 10 (e.g., "01")
     display_num = f"{song['num']:02d}"
 
     card = f"""
         <a href="{song['filename']}" class="song-card">
+            <div class="song-number">{display_num}</div>
             <div class="card-top">
                 <div class="song-info">
                     <h2>{song['cn']}</h2>
                     <p>{song['en']}</p>
-                    <span class="tag">Lesson #{song['num']}</span>
+                    <div class="tag-container">
+                        <span class="tag">Lesson {song['num']}</span>
+                    </div>
                 </div>
-                <div class="song-number">{display_num}</div>
             </div>
-            <div class="card-bottom">
-                <span class="btn-text">Start Learning →</span>
-            </div>
+            <!-- The Play Button creates that 'Spotify' interaction feel -->
+            <div class="play-btn"></div>
         </a>
     """
     cards_html += card
@@ -100,4 +283,4 @@ for song in songs:
 with open("index.html", "w", encoding="utf-8") as f:
     f.write(html_head + cards_html + html_footer)
 
-print(f"✅ Success! Found {len(songs)} songs. 'index.html' has been updated.")
+print(f"✅ Success! Found {len(songs)} songs. Website updated with Dark Mode & Search.")
