@@ -1,443 +1,519 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meeting Again - Lyrics Study</title>
     <style>
-        :root {
-            --bg-color: #121212;
-            --card-bg: #181818;
-            --card-hover: #282828;
-            --text-main: #FFFFFF;
-            --text-sub: #B3B3B3;
-            --accent: #1DB954; /* Spotify Green for global accents */
-            --highlight: #e91e63; /* Pink for this song's specific highlight */
-        }
+      :root {
+        --bg-color: #121212;
+        --card-bg: #181818;
+        --card-hover: #282828;
+        --text-main: #ffffff;
+        --text-sub: #b3b3b3;
+        --accent: #1db954; /* Global Accent */
+        --highlight: #e91e63; /* Song Specific Highlight */
+      }
 
-        body {
-            font-family: "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
+      body {
+        font-family: "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
 
-        /* --- NAVIGATION & TOOLS --- */
-        .top-nav {
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(18, 18, 18, 0.9);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #333;
-        }
+      /* --- NAVIGATION --- */
+      .top-nav {
+        padding: 20px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(18, 18, 18, 0.95);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #333;
+      }
 
-        .back-btn {
-            text-decoration: none;
-            color: var(--text-sub);
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: color 0.3s;
-        }
-        .back-btn:hover { color: var(--text-main); }
-        .back-arrow { font-size: 1.2em; }
+      .back-btn {
+        text-decoration: none;
+        color: var(--text-sub);
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: color 0.3s;
+      }
+      .back-btn:hover {
+        color: var(--text-main);
+      }
 
-        .tools-menu a {
-            color: var(--text-sub);
-            text-decoration: none;
-            font-size: 0.9em;
-            margin-left: 20px;
-            border: 1px solid #333;
-            padding: 5px 12px;
-            border-radius: 20px;
-            transition: all 0.3s;
-        }
-        .tools-menu a:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
+      .tools-menu a {
+        color: var(--text-sub);
+        text-decoration: none;
+        font-size: 0.85em;
+        margin-left: 15px;
+        border: 1px solid #444;
+        padding: 6px 15px;
+        border-radius: 20px;
+        transition: all 0.3s;
+      }
+      .tools-menu a:hover {
+        border-color: var(--accent);
+        color: var(--text-main);
+        background: rgba(29, 185, 84, 0.1);
+      }
 
-        /* --- HERO HEADER --- */
-        .hero {
-            /* Purple/Pink Gradient for "Meeting/Love" vibe */
-            background: linear-gradient(135deg, #8e44ad 0%, #c0392b 100%);
-            padding: 60px 30px;
-            display: flex;
-            align-items: flex-end;
-            gap: 30px;
-        }
+      /* --- HERO HEADER (Spotify Standard) --- */
+      .hero {
+        /* Unique Gradient: Purple to Red, fading to Black */
+        background: linear-gradient(
+          to bottom,
+          #8e44ad 0%,
+          #c0392b 80%,
+          #121212 100%
+        );
+        padding: 20px 40px;
+        display: flex;
+        align-items: flex-end;
+        gap: 24px;
+        height: 300px;
+        box-sizing: border-box;
+      }
 
-        .album-art-placeholder {
-            width: 180px;
-            height: 180px;
-            background: #333;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4em;
-            color: rgba(255,255,255,0.2);
-        }
+      .album-art-placeholder {
+        width: 232px;
+        height: 232px;
+        min-width: 232px;
+        box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
+        border-radius: 4px;
+        overflow: hidden;
+        background: #333;
+      }
 
-        .hero-text h1 {
-            font-size: 3em;
-            margin: 0;
-            font-weight: 900;
-            letter-spacing: -1px;
-        }
-        .hero-text p {
-            color: rgba(255,255,255,0.8);
-            font-size: 1.2em;
-            margin: 10px 0 0 0;
-        }
+      .album-art-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
 
-        /* --- MAIN LAYOUT --- */
+      .hero-text {
+        margin-bottom: 10px;
+      }
+
+      .hero-text h1 {
+        font-size: 4em;
+        margin: 0 0 10px 0;
+        font-weight: 900;
+        letter-spacing: -2px;
+        line-height: 1;
+      }
+
+      .hero-text p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1em;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .tag-pill {
+        display: inline-block;
+        font-size: 0.75em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 2px 8px;
+        border-radius: 4px;
+      }
+
+      /* --- MAIN LAYOUT --- */
+      .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 50px;
+      }
+
+      h2.section-title {
+        color: var(--text-main);
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #333;
+        padding-bottom: 10px;
+        position: sticky;
+        top: 80px;
+        background: var(--bg-color);
+        z-index: 10;
+      }
+
+      /* --- VOCAB --- */
+      .vocab-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .vocab-card {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        padding: 20px;
+        border-left: 4px solid var(--accent);
+        transition: all 0.3s ease;
+      }
+      .vocab-card:hover {
+        background-color: var(--card-hover);
+        transform: translateX(5px);
+      }
+
+      .vocab-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 12px;
+      }
+      .target-word {
+        font-size: 1.6em;
+        font-weight: bold;
+        color: var(--text-main);
+      }
+      .target-pinyin {
+        font-size: 1em;
+        color: var(--accent);
+        margin-bottom: 5px;
+      }
+      .target-meaning {
+        font-size: 0.95em;
+        color: var(--text-sub);
+        font-style: italic;
+        border-top: 1px solid #333;
+        width: 100%;
+        padding-top: 5px;
+        margin-top: 5px;
+      }
+
+      .sentence-box {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 10px;
+        font-size: 0.85em;
+      }
+      .cn-sent {
+        display: block;
+        color: #ddd;
+        margin-bottom: 4px;
+      }
+      .en-sent {
+        display: block;
+        color: #777;
+        font-size: 0.9em;
+      }
+      .tag {
+        font-size: 0.7em;
+        padding: 2px 6px;
+        border-radius: 3px;
+        background: #333;
+        color: #ccc;
+        margin-right: 5px;
+        text-transform: uppercase;
+      }
+
+      /* --- LYRICS --- */
+      .lyrics-container {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 30px;
+      }
+
+      .lyric-row {
+        padding: 18px 15px;
+        border-bottom: 1px solid #2a2a2a;
+        transition: background 0.2s;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+      .lyric-row:hover {
+        background-color: #262626;
+        border-left: 3px solid var(--highlight);
+        padding-left: 12px;
+      }
+
+      .hanzi-line {
+        font-size: 1.5em;
+        color: var(--text-main);
+        letter-spacing: 1px;
+        font-weight: 500;
+      }
+      .pinyin-line {
+        color: var(--accent);
+        font-size: 0.9em;
+        font-weight: 500;
+      }
+      .eng-line {
+        color: #666;
+        font-style: italic;
+        font-size: 0.95em;
+      }
+
+      .highlight {
+        color: var(--highlight);
+        font-weight: bold;
+      }
+
+      @media (max-width: 900px) {
         .main-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            display: grid;
-            grid-template-columns: 1fr 1.5fr; /* Left: Vocab, Right: Lyrics */
-            gap: 40px;
+          grid-template-columns: 1fr;
         }
-
-        h2.section-title {
-            color: var(--text-main);
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
+        .hero {
+          flex-direction: column;
+          align-items: flex-start;
+          height: auto;
+          padding-top: 40px;
         }
-
-        /* --- VOCAB CARD --- */
-        .vocab-list { display: flex; flex-direction: column; gap: 20px; }
-        
-        .vocab-card {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            padding: 20px;
-            border-left: 4px solid var(--accent);
-            transition: background 0.3s;
+        .album-art-placeholder {
+          width: 180px;
+          height: 180px;
+          min-width: 180px;
         }
-        .vocab-card:hover { background-color: var(--card-hover); }
-
-        .vocab-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 15px;
+        .hero-text h1 {
+          font-size: 2.5em;
         }
-        .target-word { font-size: 1.8em; font-weight: bold; color: var(--text-main); }
-        .target-pinyin { font-size: 1.1em; color: var(--accent); margin-left: 10px; font-weight: 300; }
-        .target-meaning { font-size: 1em; color: var(--text-sub); font-style: italic; }
-
-        .sentence-box {
-            background: rgba(255,255,255,0.05);
-            padding: 10px;
-            border-radius: 6px;
-            margin-top: 10px;
-            font-size: 0.9em;
-        }
-        .cn-sent { display: block; color: var(--text-main); margin-bottom: 4px; }
-        .en-sent { display: block; color: var(--text-sub); font-size: 0.85em; }
-        
-        .tag { font-size: 0.7em; padding: 2px 6px; border-radius: 4px; background: #333; color: #ccc; margin-right: 5px; vertical-align: middle; }
-
-        /* --- LYRICS SECTION --- */
-        .lyrics-container {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-        }
-
-        .lyric-row {
-            padding: 15px 10px;
-            border-bottom: 1px solid #2a2a2a;
-            transition: background 0.2s;
-        }
-        .lyric-row:hover {
-            background-color: #2a2a2a;
-            border-left: 3px solid var(--highlight);
-        }
-
-        .hanzi-line {
-            font-size: 1.4em;
-            color: var(--text-main);
-            margin-bottom: 4px;
-            letter-spacing: 1px;
-        }
-        .meta-line {
-            display: flex;
-            gap: 15px;
-            font-size: 0.9em;
-        }
-        .pinyin-line { color: var(--accent); opacity: 0.9; }
-        .eng-line { color: var(--text-sub); font-style: italic; }
-
-        .highlight {
-            color: var(--highlight);
-            font-weight: bold;
-        }
-
-        /* --- MOBILE --- */
-        @media (max-width: 768px) {
-            .main-container { grid-template-columns: 1fr; }
-            .hero { flex-direction: column; align-items: flex-start; }
-            .album-art-placeholder { width: 100px; height: 100px; }
-            .tools-menu { display: none; }
-        }
+      }
     </style>
-</head>
-<body>
-
-    <!-- Sticky Nav -->
+  </head>
+  <body>
     <nav class="top-nav">
-        <a href="index.html" class="back-btn">
-            <span class="back-arrow">←</span> Back to Library
-        </a>
-        <div class="tools-menu">
-            <a href="https://www.mdbg.net/chinese/dictionary" target="_blank">📖 Dictionary</a>
-            <a href="https://translate.google.com/" target="_blank">G-Translate</a>
-        </div>
+      <a href="index.html" class="back-btn"><span>←</span> Library</a>
+      <div class="tools-menu">
+        <a href="https://www.mdbg.net/chinese/dictionary" target="_blank"
+          >📖 Dict</a
+        >
+        <a href="https://translate.google.com/" target="_blank">Translate</a>
+      </div>
     </nav>
 
-    <!-- Header / Hero Section -->
     <header class="hero">
-        <div class="album-art-placeholder">🎵</div>
-        <div class="hero-text">
-            <p>LESSON #02</p>
-            <h1>再度重相逢</h1>
-            <p>Meeting Again - Wu Bai</p>
-        </div>
+      <div class="album-art-placeholder">
+        <img
+          src="Album cover/2.再度重相逢 (Meeting Again).png"
+          alt="Album Art"
+        />
+      </div>
+      <div class="hero-text">
+        <span class="tag-pill">Classic Mandopop</span>
+        <h1>再度重相逢</h1>
+        <p>Meeting Again — Wu Bai</p>
+      </div>
     </header>
 
-    <!-- Main Content Grid -->
     <div class="main-container">
-
-        <!-- LEFT COLUMN: VOCABULARY -->
-        <section>
-            <h2 class="section-title">Deep Dive Vocabulary</h2>
-            <div class="vocab-list">
-                
-                <!-- Card 1: Hazy -->
-                <div class="vocab-card" style="border-left-color: #95a5a6;">
-                    <div class="vocab-header">
-                        <div>
-                            <span class="target-word">朦胧</span>
-                            <span class="target-pinyin">méng lóng</span>
-                        </div>
-                        <span class="target-meaning">Hazy / Blurry</span>
-                    </div>
-                    <div class="sentence-box">
-                        <span class="tag">Literal</span>
-                        <span class="cn-sent">今晚月色<b>朦胧</b>。</span>
-                        <span class="en-sent">The moonlight is hazy tonight.</span>
-                    </div>
-                    <div class="sentence-box">
-                        <span class="tag">Abstract</span>
-                        <span class="cn-sent">他对童年的记忆很<b>朦胧</b>。</span>
-                        <span class="en-sent">His memory of childhood is very blurry.</span>
-                    </div>
-                </div>
-
-                <!-- Card 2: Simple -->
-                <div class="vocab-card" style="border-left-color: #2ecc71;">
-                    <div class="vocab-header">
-                        <div>
-                            <span class="target-word">简单</span>
-                            <span class="target-pinyin">jiǎn dān</span>
-                        </div>
-                        <span class="target-meaning">Simple</span>
-                    </div>
-                    <div class="sentence-box">
-                        <span class="cn-sent">这个问题很<b>简单</b>。</span>
-                        <span class="en-sent">This problem is very simple.</span>
-                    </div>
-                </div>
-
-                <!-- Card 3: Arrange -->
-                <div class="vocab-card" style="border-left-color: #f39c12;">
-                    <div class="vocab-header">
-                        <div>
-                            <span class="target-word">安排</span>
-                            <span class="target-pinyin">ān pái</span>
-                        </div>
-                        <span class="target-meaning">To Arrange / Fate</span>
-                    </div>
-                    <div class="sentence-box">
-                        <span class="tag">Fate</span>
-                        <span class="cn-sent">一切都是命运的<b>安排</b>。</span>
-                        <span class="en-sent">Everything is the arrangement of fate.</span>
-                    </div>
-                </div>
-
-                <!-- Card 4: Meet -->
-                <div class="vocab-card" style="border-left-color: #e91e63;">
-                    <div class="vocab-header">
-                        <div>
-                            <span class="target-word">相逢</span>
-                            <span class="target-pinyin">xiāng féng</span>
-                        </div>
-                        <span class="target-meaning">To Meet (by chance)</span>
-                    </div>
-                    <div class="sentence-box">
-                        <span class="cn-sent">我们终于在巴黎<b>相逢</b>。</span>
-                        <span class="en-sent">We finally met in Paris.</span>
-                    </div>
-                </div>
-
+      <!-- VOCABULARY -->
+      <section>
+        <h2 class="section-title">Deep Dive Vocabulary</h2>
+        <div class="vocab-list">
+          <div class="vocab-card" style="border-left-color: #95a5a6">
+            <div class="vocab-header">
+              <span class="target-word">朦胧</span>
+              <span class="target-pinyin">méng lóng</span>
+              <span class="target-meaning">Hazy / Blurry</span>
             </div>
-        </section>
-
-        <!-- RIGHT COLUMN: LYRICS -->
-        <section>
-            <h2 class="section-title">Lyrics</h2>
-            <div class="lyrics-container">
-                
-                <div class="lyric-row">
-                    <div class="hanzi-line">你说人生如梦</div>
-                    <div class="meta-line">
-                        <span class="pinyin-line">Nǐ shuō rénshēng rú mèng</span>
-                        <span class="eng-line">You say life is like a dream</span>
-                    </div>
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line">我说人生如秀</div>
-                    <div class="meta-line">
-                        <span class="pinyin-line">Wǒ shuō rénshēng rú xiù</span>
-                        <span class="eng-line">I say life is like a show</span>
-                    </div>
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line">哪有什么不同</div>
-                    <div class="meta-line">
-                        <span class="pinyin-line">Nǎ yǒu shénme bùtóng</span>
-                        <span class="eng-line">What difference is there?</span>
-                    </div>
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line">不都一样<span class="highlight">朦胧</span></div>
-                    <div class="meta-line">
-                        <span class="pinyin-line">Bù dōu yīyàng <span class="highlight">ménglóng</span></span>
-                        <span class="eng-line">Isn't it all equally hazy?</span>
-                    </div>
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line"><span class="highlight">朦胧</span>中有你</div>
-                    <div class="meta-line">
-                        <span class="pinyin-line"><span class="highlight">Ménglóng</span> zhōng yǒu nǐ</span>
-                        <span class="eng-line">In the haze there is you</span>
-                    </div>
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line">有你跟我就已经足够</div>
-                    <div class="meta-line">
-                        <span class="pinyin-line">Yǒu nǐ gēn wǒ jiù yǐjīng zúgòu</span>
-                        <span class="eng-line">Having you and me is already enough</span>
-                    </div>
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line">你就在我的世界</div>
-                    <div class="meta-line">
-                        <span class="pinyin-line">Nǐ jiù zài wǒ de shìjiè</span>
-                        <span class="eng-line">You are right here in my world</span>
-                    </div>
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line">升起了彩虹</div>
-                    <div class="meta-line">
-                        <span class="pinyin-line">Shēngqǐle cǎihóng</span>
-                        <span class="eng-line">Raising a rainbow</span>
-                    </div>
-                </div>
-
-                <!-- Divider for Chorus -->
-                <div style="text-align:center; padding: 25px; color: var(--highlight); letter-spacing: 2px; font-weight: bold; opacity: 0.8;">
-                    --- CHORUS ---
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line"><span class="highlight">简单</span>爱你心所爱</div>
-                    <div class="meta-line">
-                        <span class="pinyin-line"><span class="highlight">Jiǎndān</span> ài nǐ xīn suǒ ài</span>
-                        <span class="eng-line">Simply love what your heart loves</span>
-                    </div>
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line">世界也变得大了起来</div>
-                    <div class="meta-line">
-                        <span class="pinyin-line">Shìjiè yě biànde dàle qǐlái</span>
-                        <span class="eng-line">The world also becomes bigger</span>
-                    </div>
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line">所有花都为你开</div>
-                    <div class="meta-line">
-                        <span class="pinyin-line">Suǒyǒu huā dōu wèi nǐ kāi</span>
-                        <span class="eng-line">All the flowers bloom for you</span>
-                    </div>
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line">所有景物也为了你<span class="highlight">安排</span></div>
-                    <div class="meta-line">
-                        <span class="pinyin-line">Suǒyǒu jǐngwù yě wèile nǐ <span class="highlight">ānpái</span></span>
-                        <span class="eng-line">All scenery is also arranged for you</span>
-                    </div>
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line">我们是如此的不同</div>
-                    <div class="meta-line">
-                        <span class="pinyin-line">Wǒmen shì rúcǐ de bùtóng</span>
-                        <span class="eng-line">We are so different</span>
-                    </div>
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line">肯定前世就已经深爱过</div>
-                    <div class="meta-line">
-                        <span class="pinyin-line">Kěndìng qiánshì jiù yǐjīng shēn àiguò</span>
-                        <span class="eng-line">Must have loved deeply in a previous life</span>
-                    </div>
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line">讲好了这一辈子</div>
-                    <div class="meta-line">
-                        <span class="pinyin-line">Jiǎng hǎole zhè yībèizi</span>
-                        <span class="eng-line">Agreed that in this life</span>
-                    </div>
-                </div>
-
-                <div class="lyric-row">
-                    <div class="hanzi-line">再度重<span class="highlight">相逢</span></div>
-                    <div class="meta-line">
-                        <span class="pinyin-line">Zàidù chóng <span class="highlight">xiāngféng</span></span>
-                        <span class="eng-line">We meet again</span>
-                    </div>
-                </div>
-
+            <div class="sentence-box">
+              <span class="tag">Literal</span>
+              <span class="cn-sent">今晚月色<b>朦胧</b>。</span>
+              <span class="en-sent">The moonlight is hazy tonight.</span>
             </div>
-        </section>
+          </div>
+
+          <div class="vocab-card" style="border-left-color: #2ecc71">
+            <div class="vocab-header">
+              <span class="target-word">简单</span>
+              <span class="target-pinyin">jiǎn dān</span>
+              <span class="target-meaning">Simple</span>
+            </div>
+            <div class="sentence-box">
+              <span class="cn-sent">这个问题很<b>简单</b>。</span>
+              <span class="en-sent">This problem is very simple.</span>
+            </div>
+          </div>
+
+          <div class="vocab-card" style="border-left-color: #f39c12">
+            <div class="vocab-header">
+              <span class="target-word">安排</span>
+              <span class="target-pinyin">ān pái</span>
+              <span class="target-meaning">To Arrange / Fate</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Fate</span>
+              <span class="cn-sent">一切都是命运的<b>安排</b>。</span>
+              <span class="en-sent"
+                >Everything is the arrangement of fate.</span
+              >
+            </div>
+          </div>
+
+          <div class="vocab-card" style="border-left-color: #e91e63">
+            <div class="vocab-header">
+              <span class="target-word">相逢</span>
+              <span class="target-pinyin">xiāng féng</span>
+              <span class="target-meaning">To Meet (by chance)</span>
+            </div>
+            <div class="sentence-box">
+              <span class="cn-sent">我们终于在巴黎<b>相逢</b>。</span>
+              <span class="en-sent">We finally met in Paris.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LYRICS -->
+      <section>
+        <h2 class="section-title">Lyrics</h2>
+        <div class="lyrics-container">
+          <div class="lyric-row">
+            <div class="hanzi-line">你说人生如梦</div>
+            <div class="pinyin-line">Nǐ shuō rénshēng rú mèng</div>
+            <div class="eng-line">You say life is like a dream</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">我说人生如秀</div>
+            <div class="pinyin-line">Wǒ shuō rénshēng rú xiù</div>
+            <div class="eng-line">I say life is like a show</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">哪有什么不同</div>
+            <div class="pinyin-line">Nǎ yǒu shénme bùtóng</div>
+            <div class="eng-line">What difference is there?</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              不都一样<span class="highlight">朦胧</span>
+            </div>
+            <div class="pinyin-line">
+              Bù dōu yīyàng <span class="highlight">ménglóng</span>
+            </div>
+            <div class="eng-line">Isn't it all equally hazy?</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              <span class="highlight">朦胧</span>中有你
+            </div>
+            <div class="pinyin-line">
+              <span class="highlight">Ménglóng</span> zhōng yǒu nǐ
+            </div>
+            <div class="eng-line">In the haze there is you</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">有你跟我就已经足够</div>
+            <div class="pinyin-line">Yǒu nǐ gēn wǒ jiù yǐjīng zúgòu</div>
+            <div class="eng-line">Having you and me is already enough</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">你就在我的世界</div>
+            <div class="pinyin-line">Nǐ jiù zài wǒ de shìjiè</div>
+            <div class="eng-line">You are right here in my world</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">升起了彩虹</div>
+            <div class="pinyin-line">Shēngqǐle cǎihóng</div>
+            <div class="eng-line">Raising a rainbow</div>
+          </div>
+
+          <!-- Chorus -->
+          <div
+            style="
+              text-align: center;
+              padding: 30px;
+              color: var(--highlight);
+              letter-spacing: 2px;
+              font-weight: bold;
+              opacity: 0.6;
+            "
+          >
+            ● ● ●
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              <span class="highlight">简单</span>爱你心所爱
+            </div>
+            <div class="pinyin-line">
+              <span class="highlight">Jiǎndān</span> ài nǐ xīn suǒ ài
+            </div>
+            <div class="eng-line">Simply love what your heart loves</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">世界也变得大了起来</div>
+            <div class="pinyin-line">Shìjiè yě biànde dàle qǐlái</div>
+            <div class="eng-line">The world also becomes bigger</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">所有花都为你开</div>
+            <div class="pinyin-line">Suǒyǒu huā dōu wèi nǐ kāi</div>
+            <div class="eng-line">All the flowers bloom for you</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              所有景物也为了你<span class="highlight">安排</span>
+            </div>
+            <div class="pinyin-line">
+              Suǒyǒu jǐngwù yě wèile nǐ <span class="highlight">ānpái</span>
+            </div>
+            <div class="eng-line">All scenery is also arranged for you</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">我们是如此的不同</div>
+            <div class="pinyin-line">Wǒmen shì rúcǐ de bùtóng</div>
+            <div class="eng-line">We are so different</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">肯定前世就已经深爱过</div>
+            <div class="pinyin-line">Kěndìng qiánshì jiù yǐjīng shēn àiguò</div>
+            <div class="eng-line">
+              Must have loved deeply in a previous life
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">讲好了这一辈子</div>
+            <div class="pinyin-line">Jiǎng hǎole zhè yībèizi</div>
+            <div class="eng-line">Agreed that in this life</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              再度重<span class="highlight">相逢</span>
+            </div>
+            <div class="pinyin-line">
+              Zàidù chóng <span class="highlight">xiāngféng</span>
+            </div>
+            <div class="eng-line">We meet again</div>
+          </div>
+        </div>
+      </section>
     </div>
-
-</body>
+  </body>
 </html>

@@ -3,738 +3,661 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>吻別 (Goodbye Kiss) - Deep Dive Learning</title>
+    <title>Goodbye Kiss - Lyrics Study</title>
     <style>
+      :root {
+        --bg-color: #121212;
+        --card-bg: #181818;
+        --card-hover: #282828;
+        --text-main: #ffffff;
+        --text-sub: #b3b3b3;
+        --accent: #e74c3c; /* Bright Red Accent */
+        --highlight: #ff7675; /* Lighter red for text highlight */
+      }
+
       body {
-        font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
-        background-color: #f4f6f8;
-        color: #333;
-        line-height: 1.6;
+        font-family: "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
         margin: 0;
-        padding: 30px;
+        padding: 0;
+        line-height: 1.6;
       }
 
-      .container {
-        max-width: 950px;
-        margin: 0 auto;
-      }
-
-      h1 {
-        color: #2c3e50;
-        text-align: center;
-        font-size: 2.2em;
-        margin-bottom: 10px;
-      }
-
-      .sub-header {
-        text-align: center;
-        color: #7f8c8d;
-        margin-bottom: 40px;
-        font-style: italic;
-      }
-
-      h2.section-title {
-        color: #34495e;
-        border-left: 5px solid #3498db;
-        padding-left: 12px;
-        margin-top: 40px;
-        margin-bottom: 20px;
-        font-size: 1.6em;
-      }
-
-      /* --- VOCAB CARD --- */
-      .vocab-card {
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        margin-bottom: 30px;
-        border: 1px solid #e1e8ed;
-        overflow: hidden;
-      }
-
-      .card-header {
-        background-color: #3498db;
-        color: white;
-        padding: 12px 20px;
+      /* --- NAVIGATION --- */
+      .top-nav {
+        padding: 20px 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        background: rgba(18, 18, 18, 0.95);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #333;
       }
 
-      .header-word {
-        font-size: 1.6em;
+      .back-btn {
+        text-decoration: none;
+        color: var(--text-sub);
         font-weight: bold;
-      }
-      .header-pinyin {
-        font-size: 1.2em;
-        opacity: 0.9;
-        margin-left: 10px;
-        font-weight: 300;
-      }
-      .header-meaning {
-        font-size: 1.1em;
-        font-style: italic;
-        opacity: 0.95;
-      }
-
-      .card-body {
-        padding: 15px 20px;
-      }
-
-      .concept-row {
         display: flex;
-        margin-bottom: 15px;
-        border-bottom: 1px dashed #eee;
-        padding-bottom: 15px;
+        align-items: center;
+        gap: 10px;
+        transition: color 0.3s;
       }
-      .concept-row:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
+      .back-btn:hover {
+        color: var(--text-main);
       }
 
-      .concept-label {
-        width: 100px;
-        flex-shrink: 0;
-        font-weight: bold;
-        font-size: 0.8em;
-        text-transform: uppercase;
-        padding-top: 6px;
-        letter-spacing: 0.5px;
+      .tools-menu a {
+        color: var(--text-sub);
+        text-decoration: none;
+        font-size: 0.85em;
+        margin-left: 15px;
+        border: 1px solid #444;
+        padding: 6px 15px;
+        border-radius: 20px;
+        transition: all 0.3s;
+      }
+      .tools-menu a:hover {
+        border-color: var(--accent);
+        color: var(--text-main);
+        background: rgba(231, 76, 60, 0.2);
       }
 
-      .label-target {
-        color: #3498db;
-      }
-      .label-syn {
-        color: #27ae60;
-      }
-      .label-ant {
-        color: #c0392b;
+      /* --- HERO HEADER --- */
+      .hero {
+        /* User Requested Gradient - Fits the Red Album Cover */
+        background: linear-gradient(
+          to bottom,
+          #96251d 0%,
+          #882d2c 20%,
+          #4e1d19 80%,
+          #121212 100%
+        );
+        padding: 20px 40px;
+        display: flex;
+        align-items: flex-end;
+        gap: 24px;
+        height: 300px;
+        box-sizing: border-box;
       }
 
-      .concept-content {
-        flex-grow: 1;
+      .album-art-placeholder {
+        width: 232px;
+        height: 232px;
+        min-width: 232px;
+        box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
+        border-radius: 4px;
+        overflow: hidden;
+        background: #1a1a1a;
+      }
+      .album-art-placeholder img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
       }
 
-      .word-focus {
+      .hero-text {
+        margin-bottom: 10px;
+      }
+
+      .hero-text h1 {
+        font-size: 4em;
+        margin: 0 0 10px 0;
+        font-weight: 900;
+        letter-spacing: -2px;
+        line-height: 1;
+      }
+
+      .hero-text p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1em;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .tag-pill {
         display: inline-block;
-        font-size: 1.25em;
-        font-weight: bold;
-        color: #2c3e50;
-        margin-bottom: 6px;
-      }
-      .pinyin-focus {
-        color: #7f8c8d;
-        font-size: 0.95em;
-        margin-left: 8px;
+        font-size: 0.75em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 2px 8px;
+        border-radius: 4px;
       }
 
-      .sentence-group {
+      /* --- MAIN LAYOUT --- */
+      .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 50px;
+      }
+
+      h2.section-title {
+        color: var(--text-main);
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #333;
+        padding-bottom: 10px;
+        position: sticky;
+        top: 80px;
+        background: var(--bg-color);
+        z-index: 10;
+      }
+
+      /* --- VOCAB --- */
+      .vocab-list {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 20px;
+      }
+
+      .vocab-card {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        padding: 20px;
+        border-left: 4px solid var(--accent);
+        transition: all 0.3s ease;
+      }
+      .vocab-card:hover {
+        background-color: var(--card-hover);
+        transform: translateX(5px);
+      }
+
+      .vocab-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 12px;
+      }
+      .target-word {
+        font-size: 1.6em;
+        font-weight: bold;
+        color: var(--text-main);
+      }
+      .target-pinyin {
+        font-size: 1em;
+        color: var(--accent);
+        margin-bottom: 5px;
+      }
+      .target-meaning {
+        font-size: 0.95em;
+        color: var(--text-sub);
+        font-style: italic;
+        border-top: 1px solid #333;
+        width: 100%;
+        padding-top: 5px;
+        margin-top: 5px;
       }
 
       .sentence-box {
-        background-color: #f9fafb;
-        border-radius: 4px;
-        padding: 8px 12px;
-        font-size: 0.95em;
-        border-left: 3px solid #ddd;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 10px;
+        font-size: 0.85em;
       }
-
-      .use-case-tag {
-        font-size: 0.75em;
-        font-weight: bold;
-        color: #fff;
-        background-color: #95a5a6;
-        padding: 1px 5px;
-        border-radius: 3px;
-        margin-right: 6px;
-        vertical-align: middle;
-      }
-      .tag-literal {
-        background-color: #3498db;
-      }
-      .tag-abstract {
-        background-color: #9b59b6;
-      }
-
       .cn-sent {
-        color: #2c3e50;
-        font-weight: 500;
-      }
-      .py-sent {
-        color: #7f8c8d;
-        font-size: 0.9em;
-        margin-left: 8px;
-        font-style: italic;
+        display: block;
+        color: #ddd;
+        margin-bottom: 4px;
       }
       .en-sent {
         display: block;
-        color: #95a5a6;
-        font-size: 0.85em;
-        margin-top: 2px;
+        color: #777;
+        font-size: 0.9em;
+      }
+      .tag {
+        font-size: 0.7em;
+        padding: 2px 6px;
+        border-radius: 3px;
+        background: #333;
+        color: #ccc;
+        margin-right: 5px;
+        text-transform: uppercase;
       }
 
-      /* --- LYRICS TABLE --- */
-      .lyrics-table {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      /* --- LYRICS --- */
+      .lyrics-container {
+        background: var(--card-bg);
+        border-radius: 12px;
+        padding: 30px;
       }
-      .lyrics-table th {
-        background-color: #2c3e50;
-        color: white;
-        padding: 12px 15px;
-        text-align: left;
+
+      .lyric-row {
+        padding: 18px 15px;
+        border-bottom: 1px solid #2a2a2a;
+        transition: background 0.2s;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 5px;
       }
-      .lyrics-table td {
-        padding: 10px 15px;
-        border-bottom: 1px solid #f1f1f1;
-        vertical-align: top;
+      .lyric-row:hover {
+        background-color: #262626;
+        border-left: 3px solid var(--accent);
+        padding-left: 12px;
       }
-      .lyrics-table tr:hover {
-        background-color: #f4fcff;
+
+      .hanzi-line {
+        font-size: 1.5em;
+        color: var(--text-main);
+        letter-spacing: 1px;
+        font-weight: 500;
       }
-      .hanzi-lyric {
-        font-size: 1.15em;
-        font-weight: bold;
-        color: #333;
-        width: 35%;
+      .pinyin-line {
+        color: var(--accent);
+        font-size: 0.9em;
+        font-weight: 500;
       }
-      .pinyin-lyric {
-        color: #2980b9;
-        font-size: 1em;
-        width: 30%;
-      }
-      .eng-lyric {
-        color: #7f8c8d;
+      .eng-line {
+        color: #666;
         font-style: italic;
         font-size: 0.95em;
-        width: 35%;
       }
 
-      .lyric-highlight {
-        color: #c0392b;
-        font-weight: 900;
-        background-color: #fff0f0;
-        padding: 0 4px;
-        border-radius: 3px;
+      .hl {
+        color: var(--highlight);
+        font-weight: bold;
+      }
+
+      /* Mobile responsive fix */
+      @media (max-width: 900px) {
+        .main-container {
+          grid-template-columns: 1fr;
+        }
+        .hero {
+          flex-direction: column;
+          align-items: flex-start;
+          height: auto;
+          padding-top: 40px;
+        }
+        .album-art-placeholder {
+          width: 180px;
+          height: 180px;
+          min-width: 180px;
+        }
+        .hero-text h1 {
+          font-size: 2.5em;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1>🎵 吻別 (Goodbye Kiss)</h1>
-      <div class="sub-header">Artist: Jacky Cheung (张学友)</div>
+    <nav class="top-nav">
+      <a href="index.html" class="back-btn"><span>←</span> Library</a>
+      <div class="tools-menu">
+        <a href="https://www.mdbg.net/chinese/dictionary" target="_blank"
+          >📖 Dict</a
+        >
+        <a href="https://translate.google.com/" target="_blank">Translate</a>
+      </div>
+    </nav>
 
-      <h2 class="section-title">1. Vocabulary Focus</h2>
+    <header class="hero">
+      <div class="album-art-placeholder">
+        <img src="Album cover/4.吻別 (Goodbye Kiss).png" alt="Album Art" />
+      </div>
+      <div class="hero-text">
+        <span class="tag-pill">Classic Mandopop</span>
+        <h1>吻別</h1>
+        <p>Goodbye Kiss — Jacky Cheung (張學友)</p>
+      </div>
+    </header>
 
-      <!-- CARD 1: 敷衍 (Perfunctory) -->
-      <div class="vocab-card">
-        <div class="card-header">
-          <div>
-            <span class="header-word">敷衍</span>
-            <span class="header-pinyin">fū yǎn</span>
+    <div class="main-container">
+      <!-- VOCAB -->
+      <section>
+        <h2 class="section-title">Deep Dive Vocabulary</h2>
+        <div class="vocab-list">
+          <!-- Word 1 -->
+          <div class="vocab-card">
+            <div class="vocab-header">
+              <span class="target-word">敷衍</span>
+              <span class="target-pinyin">fū yǎn</span>
+              <span class="target-meaning"
+                >Perfunctory / To fake it / Half-hearted</span
+              >
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Common</span>
+              <span class="cn-sent">不要<b>敷衍</b>我。</span>
+              <span class="en-sent"
+                >Don't just give me a perfunctory answer.</span
+              >
+            </div>
           </div>
-          <span class="header-meaning"
-            >Perfunctory / To go through the motions</span
+
+          <!-- Word 2 -->
+          <div class="vocab-card" style="border-left-color: #f1c40f">
+            <div class="vocab-header">
+              <span class="target-word">无邪</span>
+              <span class="target-pinyin">wú xié</span>
+              <span class="target-meaning">Innocent / Pure / Without evil</span>
+            </div>
+            <div class="sentence-box">
+              <span class="cn-sent">天真<b>无邪</b>的笑容。</span>
+              <span class="en-sent">An innocent and pure smile.</span>
+            </div>
+          </div>
+
+          <!-- Word 3 -->
+          <div class="vocab-card" style="border-left-color: #e74c3c">
+            <div class="vocab-header">
+              <span class="target-word">狂乱</span>
+              <span class="target-pinyin">kuáng luàn</span>
+              <span class="target-meaning">Chaotic / Delirious / Wild</span>
+            </div>
+            <div class="sentence-box">
+              <span class="cn-sent"><b>狂乱</b>的夜。</span>
+              <span class="en-sent">A wild, chaotic night.</span>
+            </div>
+          </div>
+
+          <!-- Word 4 -->
+          <div class="vocab-card" style="border-left-color: #9b59b6">
+            <div class="vocab-header">
+              <span class="target-word">哀怨</span>
+              <span class="target-pinyin">āi yuàn</span>
+              <span class="target-meaning">Sad / Resentful / Grief</span>
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Emotion</span>
+              <span class="cn-sent">眼神中带着<b>哀怨</b>。</span>
+              <span class="en-sent"
+                >There is grief and resentment in the eyes.</span
+              >
+            </div>
+          </div>
+
+          <!-- Word 5 -->
+          <div class="vocab-card" style="border-left-color: #95a5a6">
+            <div class="vocab-header">
+              <span class="target-word">云烟</span>
+              <span class="target-pinyin">yún yān</span>
+              <span class="target-meaning"
+                >Mist & Smoke / Ephemeral (vanishing quickly)</span
+              >
+            </div>
+            <div class="sentence-box">
+              <span class="tag">Metaphor</span>
+              <span class="cn-sent">往事如<b>云烟</b>。</span>
+              <span class="en-sent"
+                >The past is like mist and smoke (gone forever).</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LYRICS -->
+      <section>
+        <h2 class="section-title">Lyrics</h2>
+        <div class="lyrics-container">
+          <!-- Verse 1 -->
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              前尘往事成<span class="hl">云烟</span> 消散在彼此眼前
+            </div>
+            <div class="pinyin-line">
+              Qiánchén wǎngshì chéng <span class="hl">yúnyān</span>, xiāosàn zài
+              bǐcǐ yǎnqián
+            </div>
+            <div class="eng-line">
+              The past turns to mist and smoke, dissipating before our eyes
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              就连说过了再见 也看不见你有些<span class="hl">哀怨</span>
+            </div>
+            <div class="pinyin-line">
+              Jiùlián shuōguòle zàijiàn, yě kànbùjiàn nǐ yǒuxiē
+              <span class="hl">āiyuàn</span>
+            </div>
+            <div class="eng-line">
+              Even after saying goodbye, I see no sadness in you
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              给我的一切 你不过是在<span class="hl">敷衍</span>
+            </div>
+            <div class="pinyin-line">
+              Gěi wǒ de yīqiè, nǐ bùguò shì zài <span class="hl">fūyǎn</span>
+            </div>
+            <div class="eng-line">
+              Everything you gave me, you were just faking it
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              你笑的越<span class="hl">无邪</span> 我就会爱你爱得更狂野
+            </div>
+            <div class="pinyin-line">
+              Nǐ xiào de yuè <span class="hl">wúxié</span>, wǒ jiù huì ài nǐ ài
+              dé gèng kuángyě
+            </div>
+            <div class="eng-line">
+              The more innocently you smile, the more wildly I love you
+            </div>
+          </div>
+
+          <!-- Bridge -->
+          <div style="margin-top: 20px; margin-bottom: 10px"></div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">总在刹那间有一些了解</div>
+            <div class="pinyin-line">Zǒng zài chànà jiān yǒu yīxiē liǎojiě</div>
+            <div class="eng-line">
+              Suddenly, in a flash, I understand a little
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">说过的话不可能会实现</div>
+            <div class="pinyin-line">Shuōguò de huà bù kěnéng huì shíxiàn</div>
+            <div class="eng-line">The words spoken can never come true</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">就在一转眼发现你的脸</div>
+            <div class="pinyin-line">Jiù zài yī zhuǎnyǎn fāxiàn nǐ de liǎn</div>
+            <div class="eng-line">
+              In the blink of an eye, I realize your face
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">已经陌生不会再像从前</div>
+            <div class="pinyin-line">
+              Yǐjīng mòshēng bù huì zài xiàng cóngqián
+            </div>
+            <div class="eng-line">
+              Is already strange, never to be like before
+            </div>
+          </div>
+
+          <!-- Pre-Chorus -->
+          <div style="margin-top: 20px; margin-bottom: 10px"></div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">我的世界开始下雪</div>
+            <div class="pinyin-line">Wǒ de shìjiè kāishǐ xiàxuě</div>
+            <div class="eng-line">My world begins to snow</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">冷得让我无法多爱一天</div>
+            <div class="pinyin-line">Lěng dé ràng wǒ wúfǎ duō ài yītiān</div>
+            <div class="eng-line">So cold I can't love for one more day</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">冷得连隐藏的遗憾 都那么的明显</div>
+            <div class="pinyin-line">
+              Lěng dé lián yǐncáng de yíhàn, dōu nàme de míngxiǎn
+            </div>
+            <div class="eng-line">
+              So cold that even hidden regrets are so obvious
+            </div>
+          </div>
+
+          <!-- Chorus -->
+          <div
+            style="
+              text-align: center;
+              padding: 30px;
+              color: var(--accent);
+              letter-spacing: 2px;
+              font-weight: bold;
+              opacity: 0.6;
+            "
           >
-        </div>
-        <div class="card-body">
-          <div class="concept-row">
-            <div class="concept-label label-target">Target</div>
-            <div class="concept-content">
-              <span class="word-focus">敷衍</span>
-              <span class="pinyin-focus">fū yǎn</span>
-              <div class="sentence-group">
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-literal">Work/Action</span>
-                  <span class="cn-sent">他工作态度很<b>敷衍</b>。</span>
-                  <span class="py-sent">Tā gōngzuò tàidù hěn fūyǎn.</span>
-                  <span class="en-sent"
-                    >His work attitude is very perfunctory (he doesn't
-                    care).</span
-                  >
-                </div>
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-abstract">Relationship</span>
-                  <span class="cn-sent">你不过是在<b>敷衍</b>我。</span>
-                  <span class="py-sent">Nǐ bùguò shì zài fūyǎn wǒ.</span>
-                  <span class="en-sent"
-                    >You are just going through the motions with me (fake
-                    effort).</span
-                  >
-                </div>
-              </div>
-            </div>
+            ● ● ●
           </div>
-          <div class="concept-row">
-            <div class="concept-label label-syn">Synonym</div>
-            <div class="concept-content">
-              <span class="word-focus">应付</span>
-              <span class="pinyin-focus">yìng fu (To deal with/cope)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">他在应付客人。</span>
-                <span class="en-sent"
-                  >He is just dealing with the guests (without sincerity).</span
-                >
-              </div>
-            </div>
-          </div>
-          <div class="concept-row">
-            <div class="concept-label label-ant">Antonym</div>
-            <div class="concept-content">
-              <span class="word-focus">认真</span>
-              <span class="pinyin-focus">rèn zhēn (Serious/Earnest)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">请认真听讲。</span>
-                <span class="en-sent">Please listen earnestly.</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- CARD 2: 陌生 (Strange/Unfamiliar) -->
-      <div class="vocab-card">
-        <div class="card-header" style="background-color: #8e44ad">
-          <div>
-            <span class="header-word">陌生</span>
-            <span class="header-pinyin">mò shēng</span>
-          </div>
-          <span class="header-meaning">Strange / Unfamiliar</span>
-        </div>
-        <div class="card-body">
-          <div class="concept-row">
-            <div class="concept-label label-target" style="color: #8e44ad">
-              Target
-            </div>
-            <div class="concept-content">
-              <span class="word-focus">陌生</span>
-              <span class="pinyin-focus">mò shēng</span>
-              <div class="sentence-group">
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-literal">Environment</span>
-                  <span class="cn-sent">我来到了一个<b>陌生</b>的城市。</span>
-                  <span class="py-sent"
-                    >Wǒ láidàole yīgè mòshēng de chéngshì.</span
-                  >
-                  <span class="en-sent"
-                    >I arrived in a strange/unfamiliar city.</span
-                  >
-                </div>
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-abstract">Feeling</span>
-                  <span class="cn-sent">你的脸已经<b>陌生</b>。</span>
-                  <span class="py-sent">Nǐ de liǎn yǐjīng mòshēng.</span>
-                  <span class="en-sent"
-                    >Your face has already become unfamiliar (we grew
-                    apart).</span
-                  >
-                </div>
-              </div>
+          <div class="lyric-row">
+            <div class="hanzi-line">我和你吻别在无人的街</div>
+            <div class="pinyin-line">Wǒ hé nǐ wěnbié zài wúrén de jiē</div>
+            <div class="eng-line">
+              I kiss you goodbye on the deserted street
             </div>
           </div>
-          <div class="concept-row">
-            <div class="concept-label label-syn">Synonym</div>
-            <div class="concept-content">
-              <span class="word-focus">生疏</span>
-              <span class="pinyin-focus"
-                >shēng shū (Out of practice/Distant)</span
-              >
-              <div class="sentence-box">
-                <span class="cn-sent">我们的关系变生疏了。</span>
-                <span class="en-sent"
-                  >Our relationship has become distant.</span
-                >
-              </div>
-            </div>
-          </div>
-          <div class="concept-row">
-            <div class="concept-label label-ant">Antonym</div>
-            <div class="concept-content">
-              <span class="word-focus">熟悉</span>
-              <span class="pinyin-focus">shú xī (Familiar)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">这里我很熟悉。</span>
-                <span class="en-sent">I am very familiar with this place.</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- CARD 3: 狂野 (Wild) -->
-      <div class="vocab-card">
-        <div class="card-header" style="background-color: #27ae60">
-          <div>
-            <span class="header-word">狂野</span>
-            <span class="header-pinyin">kuáng yě</span>
-          </div>
-          <span class="header-meaning">Wild / Untamed</span>
-        </div>
-        <div class="card-body">
-          <div class="concept-row">
-            <div class="concept-label label-target" style="color: #27ae60">
-              Target
-            </div>
-            <div class="concept-content">
-              <span class="word-focus">狂野</span>
-              <span class="pinyin-focus">kuáng yě</span>
-              <div class="sentence-group">
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-literal">Nature</span>
-                  <span class="cn-sent"><b>狂野</b>的大自然。</span>
-                  <span class="py-sent">Kuángyě de dàzìrán.</span>
-                  <span class="en-sent">The wild nature.</span>
-                </div>
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-abstract">Emotion/Style</span>
-                  <span class="cn-sent">我会爱你爱得更<b>狂野</b>。</span>
-                  <span class="py-sent">Wǒ huì ài nǐ ài de gèng kuángyě.</span>
-                  <span class="en-sent"
-                    >I will love you even more wildly/passionately.</span
-                  >
-                </div>
-              </div>
+          <div class="lyric-row">
+            <div class="hanzi-line">让风痴笑我不能拒绝</div>
+            <div class="pinyin-line">Ràng fēng chīxiào wǒ bùnéng jùjué</div>
+            <div class="eng-line">
+              Letting the wind sneer at my inability to refuse
             </div>
           </div>
-          <div class="concept-row">
-            <div class="concept-label label-syn">Synonym</div>
-            <div class="concept-content">
-              <span class="word-focus">疯狂</span>
-              <span class="pinyin-focus">fēng kuáng (Crazy)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">疯狂的想法。</span>
-                <span class="en-sent">Crazy ideas.</span>
-              </div>
-            </div>
-          </div>
-          <div class="concept-row">
-            <div class="concept-label label-ant">Antonym</div>
-            <div class="concept-content">
-              <span class="word-focus">文静</span>
-              <span class="pinyin-focus">wén jìng (Gentle/Quiet)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">她是个文静的女孩。</span>
-                <span class="en-sent">She is a gentle and quiet girl.</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- CARD 4: 拒绝 (Refuse) -->
-      <div class="vocab-card">
-        <div class="card-header" style="background-color: #16a085">
-          <div>
-            <span class="header-word">拒绝</span>
-            <span class="header-pinyin">jù jué</span>
-          </div>
-          <span class="header-meaning">To Refuse / To Reject</span>
-        </div>
-        <div class="card-body">
-          <div class="concept-row">
-            <div class="concept-label label-target" style="color: #16a085">
-              Target
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              我和你吻别在<span class="hl">狂乱</span>的夜
             </div>
-            <div class="concept-content">
-              <span class="word-focus">拒绝</span>
-              <span class="pinyin-focus">jù jué</span>
-              <div class="sentence-group">
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-literal">Action</span>
-                  <span class="cn-sent">他<b>拒绝</b>了我的礼物。</span>
-                  <span class="py-sent">Tā jùjué le wǒ de lǐwù.</span>
-                  <span class="en-sent">He refused my gift.</span>
-                </div>
-                <div class="sentence-box">
-                  <span class="use-case-tag tag-abstract">Fate/Emotion</span>
-                  <span class="cn-sent">我不能<b>拒绝</b>命运。</span>
-                  <span class="py-sent">Wǒ bùnéng jùjué mìngyùn.</span>
-                  <span class="en-sent">I cannot refuse/reject destiny.</span>
-                </div>
-              </div>
+            <div class="pinyin-line">
+              Wǒ hé nǐ wěnbié zài <span class="hl">kuángluàn</span> de yè
+            </div>
+            <div class="eng-line">I kiss you goodbye in the chaotic night</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">我的心 等着迎接伤悲</div>
+            <div class="pinyin-line">Wǒ de xīn, děngzhe yíngjiē shāngbēi</div>
+            <div class="eng-line">
+              My heart is waiting to welcome the sorrow
             </div>
           </div>
-          <div class="concept-row">
-            <div class="concept-label label-syn">Synonym</div>
-            <div class="concept-content">
-              <span class="word-focus">回绝</span>
-              <span class="pinyin-focus">huí jué (Decline)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">我不忍心回绝他。</span>
-                <span class="en-sent">I couldn't bear to decline him.</span>
-              </div>
+
+          <!-- Verse 2 (Full) -->
+          <div style="margin-top: 20px; margin-bottom: 10px"></div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">想要给你的思念 就像风筝断了线</div>
+            <div class="pinyin-line">
+              Xiǎng yào gěi nǐ de sīniàn jiù xiàng fēngzhēng duànle xiàn
+            </div>
+            <div class="eng-line">
+              The thoughts I want to give you are like a kite with a broken
+              string
             </div>
           </div>
-          <div class="concept-row">
-            <div class="concept-label label-ant">Antonym</div>
-            <div class="concept-content">
-              <span class="word-focus">接受</span>
-              <span class="pinyin-focus">jiē shòu (Accept)</span>
-              <div class="sentence-box">
-                <span class="cn-sent">请接受我的道歉。</span>
-                <span class="en-sent">Please accept my apology.</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <h2 class="section-title">2. Full Lyrics (Line-by-Line)</h2>
-
-      <table class="lyrics-table">
-        <thead>
-          <tr>
-            <th>Hanzi</th>
-            <th>Pinyin</th>
-            <th>English</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="hanzi-lyric">前尘往事成云烟</td>
-            <td class="pinyin-lyric">Qiánchén wǎngshì chéng yúnyān</td>
-            <td class="eng-lyric">Past dust and old matters turn into mist</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">消散在彼此眼前</td>
-            <td class="pinyin-lyric">Xiāosàn zài bǐcǐ yǎnqián</td>
-            <td class="eng-lyric">Dissipating before our eyes</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">就连说过了再见也看不见你有些哀怨</td>
-            <td class="pinyin-lyric">
-              Jiùlián shuōguò le zàijiàn yě kàn bùjiàn nǐ yǒuxiē āiyuàn
-            </td>
-            <td class="eng-lyric">
-              Even after saying goodbye, I can't see your resentment
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">
-              给我的一切 你不过是在<span class="lyric-highlight">敷衍</span>
-            </td>
-            <td class="pinyin-lyric">
-              Gěi wǒ de yīqiè nǐ bùguò shì zài
-              <span class="lyric-highlight">fūyǎn</span>
-            </td>
-            <td class="eng-lyric">
-              Everything you gave me, you were just
-              <span class="lyric-highlight">perfunctory</span>
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">
-              你笑的越无邪 我就会爱你爱得更<span class="lyric-highlight"
-                >狂野</span
-              >
-            </td>
-            <td class="pinyin-lyric">
-              Nǐ xiào de yuè wúxié wǒ jiù huì ài nǐ ài de gèng
-              <span class="lyric-highlight">kuángyě</span>
-            </td>
-            <td class="eng-lyric">
-              The more innocently you smile, the more
-              <span class="lyric-highlight">wildly</span> I will love you
-            </td>
-          </tr>
-
-          <tr>
-            <td class="hanzi-lyric">总在刹那间有一些了解</td>
-            <td class="pinyin-lyric">Zǒng zài chànà jiān yǒu yīxiē liǎojiě</td>
-            <td class="eng-lyric">
-              Always in an instant, I have some understanding
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">说过的话不可能会实现</td>
-            <td class="pinyin-lyric">Shuōguò de huà bù kěnéng huì shíxiàn</td>
-            <td class="eng-lyric">The words spoken will never come true</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">就在一转眼发现你的脸</td>
-            <td class="pinyin-lyric">Jiù zài yī zhuǎnyǎn fāxiàn nǐ de liǎn</td>
-            <td class="eng-lyric">
-              Just in the blink of an eye, I realized your face
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">
-              已经<span class="lyric-highlight">陌生</span>不会再像从前
-            </td>
-            <td class="pinyin-lyric">
-              Yǐjīng <span class="lyric-highlight">mòshēng</span> bù huì zài
-              xiàng cóngqián
-            </td>
-            <td class="eng-lyric">
-              Is already <span class="lyric-highlight">strange</span> and won't
-              be like before
-            </td>
-          </tr>
-
-          <!-- PRE-CHORUS -->
-          <tr style="background-color: #f1f8fc">
-            <td
-              colspan="3"
-              style="text-align: center; font-weight: bold; color: #2980b9"
-            >
-              --- PRE-CHORUS ---
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">我的世界开始下雪</td>
-            <td class="pinyin-lyric">Wǒ de shìjiè kāishǐ xiàxuě</td>
-            <td class="eng-lyric">My world starts to snow</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">冷得让我无法多爱一天</td>
-            <td class="pinyin-lyric">Lěng de ràng wǒ wúfǎ duō ài yītiān</td>
-            <td class="eng-lyric">
-              Cold enough that I can't love for one more day
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">冷得连隐藏的遗憾</td>
-            <td class="pinyin-lyric">Lěng de lián yǐncáng de yíhàn</td>
-            <td class="eng-lyric">Cold enough that even hidden regrets</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">都那么的明显</td>
-            <td class="pinyin-lyric">Dōu nàme de míngxiǎn</td>
-            <td class="eng-lyric">Are so obvious</td>
-          </tr>
-
-          <!-- CHORUS -->
-          <tr style="background-color: #f1f8fc">
-            <td
-              colspan="3"
-              style="text-align: center; font-weight: bold; color: #2980b9"
-            >
-              --- CHORUS ---
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">我和你吻别在无人的街</td>
-            <td class="pinyin-lyric">Wǒ hé nǐ wěnbié zài wúrén de jiē</td>
-            <td class="eng-lyric">I kiss you goodbye on the deserted street</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">
-              让风痴笑我不能<span class="lyric-highlight">拒绝</span>
-            </td>
-            <td class="pinyin-lyric">
-              Ràng fēng chīxiào wǒ bùnéng
-              <span class="lyric-highlight">jùjué</span>
-            </td>
-            <td class="eng-lyric">
-              Let the wind jeer that I cannot
-              <span class="lyric-highlight">refuse</span>
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">我和你吻别在狂乱的夜</td>
-            <td class="pinyin-lyric">Wǒ hé nǐ wěnbié zài kuángluàn de yè</td>
-            <td class="eng-lyric">I kiss you goodbye in the chaotic night</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">我的心 等着迎接伤悲</td>
-            <td class="pinyin-lyric">Wǒ de xīn děngzhe yíngjiē shāngbēi</td>
-            <td class="eng-lyric">My heart is waiting to welcome sorrow</td>
-          </tr>
-
-          <!-- VERSE 2 -->
-          <tr style="background-color: #f1f8fc">
-            <td
-              colspan="3"
-              style="text-align: center; font-weight: bold; color: #2980b9"
-            >
-              --- VERSE 2 ---
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">想要给你的思念就像风箏断了线</td>
-            <td class="pinyin-lyric">
-              Xiǎngyào gěi nǐ de sīniàn jiù xiàng fēngzheng duànle xiàn
-            </td>
-            <td class="eng-lyric">
-              The longing I want to give you is like a kite with a broken string
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">飞不进你的世界也温暖不了你的视线</td>
-            <td class="pinyin-lyric">
+          <div class="lyric-row">
+            <div class="hanzi-line">飞不进你的世界 也温暖不了你的视线</div>
+            <div class="pinyin-line">
               Fēi bù jìn nǐ de shìjiè yě wēnnuǎn bùliǎo nǐ de shìxiàn
-            </td>
-            <td class="eng-lyric">
-              Can't fly into your world, nor warm your sight
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">我已经看见一齣悲剧正上演</td>
-            <td class="pinyin-lyric">
+            </div>
+            <div class="eng-line">
+              Cannot fly into your world, nor warm your line of sight
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">我已经看见 一出悲剧正上演</div>
+            <div class="pinyin-line">
               Wǒ yǐjīng kànjiàn yī chū bēijù zhèng shàngyǎn
-            </td>
-            <td class="eng-lyric">I have already seen a tragedy playing out</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">剧终没有喜悦 我仍然躲在你的梦里面</td>
-            <td class="pinyin-lyric">
-              Jùzhōng méiyǒu xǐyuè wǒ réngrán duǒ zài nǐ de mèng lǐmiàn
-            </td>
-            <td class="eng-lyric">
-              No joy at the end, I still hide inside your dream
-            </td>
-          </tr>
+            </div>
+            <div class="eng-line">
+              I have already seen a tragedy being staged
+            </div>
+          </div>
 
-          <!-- REPEAT -->
-          <tr style="background-color: #f1f8fc">
-            <td
-              colspan="3"
-              style="text-align: center; font-weight: bold; color: #2980b9"
-            >
-              --- REPEAT PRE-CHORUS & CHORUS ---
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">我和你吻别在无人的街</td>
-            <td class="pinyin-lyric">Wǒ hé nǐ wěnbié zài wúrén de jiē</td>
-            <td class="eng-lyric">I kiss you goodbye on the deserted street</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">
-              让风痴笑我不能<span class="lyric-highlight">拒绝</span>
-            </td>
-            <td class="pinyin-lyric">
-              Ràng fēng chīxiào wǒ bùnéng
-              <span class="lyric-highlight">jùjué</span>
-            </td>
-            <td class="eng-lyric">
-              Let the wind jeer that I cannot
-              <span class="lyric-highlight">refuse</span>
-            </td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">我和你吻别在狂乱的夜</td>
-            <td class="pinyin-lyric">Wǒ hé nǐ wěnbié zài kuángluàn de yè</td>
-            <td class="eng-lyric">I kiss you goodbye in the chaotic night</td>
-          </tr>
-          <tr>
-            <td class="hanzi-lyric">我的心 等着迎接伤悲</td>
-            <td class="pinyin-lyric">Wǒ de xīn děngzhe yíngjiē shāngbēi</td>
-            <td class="eng-lyric">My heart is waiting to welcome sorrow</td>
-          </tr>
-        </tbody>
-      </table>
+          <div class="lyric-row">
+            <div class="hanzi-line">剧终没有喜悦 我仍然躲在你的梦里面</div>
+            <div class="pinyin-line">
+              Jù zhōng méiyǒu xǐyuè wǒ réngrán duǒ zài nǐ de mèng lǐmiàn
+            </div>
+            <div class="eng-line">
+              No joy at the end of the show, I am still hiding inside your dream
+            </div>
+          </div>
 
-      <br /><br />
+          <!-- Repeat Chorus -->
+          <div
+            style="
+              text-align: center;
+              padding: 30px;
+              color: var(--accent);
+              letter-spacing: 2px;
+              font-weight: bold;
+              opacity: 0.6;
+            "
+          >
+            ● ● ●
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">我和你吻别在无人的街</div>
+            <div class="pinyin-line">Wǒ hé nǐ wěnbié zài wúrén de jiē</div>
+            <div class="eng-line">
+              I kiss you goodbye on the deserted street
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">让风痴笑我不能拒绝</div>
+            <div class="pinyin-line">Ràng fēng chīxiào wǒ bùnéng jùjué</div>
+            <div class="eng-line">
+              Letting the wind sneer at my inability to refuse
+            </div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">
+              我和你吻别在<span class="hl">狂乱</span>的夜
+            </div>
+            <div class="pinyin-line">
+              Wǒ hé nǐ wěnbié zài <span class="hl">kuángluàn</span> de yè
+            </div>
+            <div class="eng-line">I kiss you goodbye in the chaotic night</div>
+          </div>
+
+          <div class="lyric-row">
+            <div class="hanzi-line">我的心 等着迎接伤悲</div>
+            <div class="pinyin-line">Wǒ de xīn, děngzhe yíngjiē shāngbēi</div>
+            <div class="eng-line">
+              My heart is waiting to welcome the sorrow
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </body>
 </html>
